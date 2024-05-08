@@ -1,0 +1,19 @@
+{
+    "add": {
+        "title": "Crear director de departamento",
+        "firstName": "Nombre",
+        "lastName": "Apellido",
+        "email": "Correo electrónico",
+        "country": "País",
+        "state": "Estado",
+        "city": "Ciudad",
+        "phone": "Teléfono",
+        "msgAdd": "Enviaremos un correo electrónico a {{email}}. Sigue los pasos para activar la cuenta.",
+        "update": "Actualizar director de departamento",
+        "msgEdit": "Director de departamento actualizado exitosamente!",
+        "delete": "Eliminar director de departamento",
+        "msgDelete": "¿Estás seguro de eliminar a {{director}}?",
+        "edit": "Editar director de departamento",
+        "msgDelete1": "Director de departamento eliminado exitosamente!"
+    }
+}

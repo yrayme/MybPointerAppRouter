@@ -1,0 +1,89 @@
+{
+  "language": "Idioma",  
+  "pagination": "Página {{start}} de {{end}}",
+  "notAdded": "No has añadido ninguno.",
+  "select": "Seleccione",
+  "loading": "Cargando...",
+  "nothing-found": "No se ha encontrado nada.",
+  "inactivity": "¡Atención! Tu sesión expirará en {{seg}} segundos.",
+  "formValidator": {
+    "required": "El campo es obligatorio",
+    "email": "Correo electrónico no válido",
+    "minCharacters": "Min {{qty}} caracteres",
+    "maxCharacters": "Max {{qty}} caracteres",
+    "invalidPassword": "La contraseña no es válida",
+    "passwordNotMatch": "¡Las contraseñas no coinciden!",
+    "invalid": "El campo no es válido",
+    "number": "El campo debe ser un número",
+    "endTime": "La hora final debe ser mayor a la hora inicial"
+  },
+  "buttons": {
+    "next": "Siguiente",
+    "back": "Anterior",
+    "save": "Guardar",
+    "resend": "Reenviar",
+    "cancel": "Cancelar",
+    "apply": "Aplicar",
+    "add": "Agregar",
+    "update": "Actualizar",
+    "accept": "Aceptar",
+    "submit": "Enviar",
+    "prev": "Anterior",
+    "delete": "Eliminar",
+    "assign": "Asignar",
+    "approve": "Aprobar",
+    "decline": "Declinar",
+    "search": "Búsqueda",
+    "reset": "Resetear",
+    "clear": "Limpiar",
+    "active": "Activo",
+    "inactive": "Inactivo"
+  },
+  "languages": {
+    "es": "Español",
+    "en": "Ingles"
+  },
+  "menu": {
+    "settings": "Configuración",
+    "dashboard": "Tablero",
+    "calendar": "Calendario",
+    "appointment": "Seguimiento de citas",
+    "goals": "Metas",
+    "cross": "Cruce de ventas",
+    "users": "Usuarios",
+    "sellers": "Vendedores",
+    "companies": "Compañias",
+    "managers": "Gerentes de ventas",
+    "coordinator": "Coordinador de eventos",
+    "logout": "Cerrar sesión",
+    "directors": "Directores",
+    "promotors": "Promotores",
+    "admin": "Administratores",
+    "locations": "Ubicaciones",
+    "sales": "Ventas",
+    "home": "Home"
+  },
+  "dateRange": {
+    "today": "Hoy",
+    "yesterday": "Ayer",
+    "week": "Esta semana",
+    "lastWeek": "Semana pasada",
+    "month": "Este mes",
+    "lastMonth": "Mes pasado",
+    "year": "Este año",
+    "lastYear": "Año pasado"
+  },
+  "filter": {
+    "show": "Mostrar filtros",
+    "hide": "Ocultar filtros",
+    "export": "Exportar",
+    "pdf": "Pdf",
+    "excel": "Excel"
+  },
+  "excel": {
+    "user": "Usuario"
+  },
+  "users":{
+    "npn": "Npn"
+  }
+}

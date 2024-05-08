@@ -1,0 +1,14 @@
+{
+    "create": "Crear Gerente de ventas",
+    "name": "Nombre",
+    "lastName": "Apellido",
+    "phone": "Telefóno",
+    "email": "Correo electrónico",
+    "msgCreate": "Enviamos un correo electrónico a {{email}}. Siga los pasos para activar la cuenta.",
+    "edit": "Editar Gerente de ventas",
+    "update": "Actualizar Gerente de ventas",
+    "msgUpdate": "Gerente de ventas actualizado exitosamente!",
+    "delete": "Eliminar Gerentes de ventas",
+    "msgDelete": "¿Estás seguro de eliminar a {{manager}}?",
+    "msgDelete1": "Gerente de ventas eliminado exitosamente!"
+}

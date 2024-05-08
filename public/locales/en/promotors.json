@@ -1,0 +1,15 @@
+{
+    "coordinator": "Coordinator",
+    "add": "Create promotor",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "phone": "Phone number",
+    "email": "Email",
+    "msgCreate": "We send an email to {{email}}. follow the steps to activate the account.",
+    "edit": "Edit promotor",
+    "update": "Update promotor",
+    "msgUpdate": "Promotor updated successfull!",
+    "delete": "Delete promotor",
+    "msgDelete": "Are you sure to delete {{promotor}}?",
+    "msgDelete1": "Promotor deleted successfull!"    
+}

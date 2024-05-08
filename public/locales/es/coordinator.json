@@ -1,0 +1,15 @@
+{
+    "coordinator": "Coordinador de eventos",
+    "add": "Crear coordinador de eventos",    
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "phone": "Telefóno",
+    "email": "Correo electrónico",
+    "msgCreate": "Enviamos un correo electrónico a {{email}}. Siga los pasos para activar la cuenta.",
+    "edit": "Editar coordinador de eventos",
+    "update": "Actualizar coordinador de eventos",
+    "msgUpdate": "coordinador de eventos actualizado exitosamente!",
+    "delete": "Eliminar coordinador de eventos",
+    "msgDelete": "¿Estás seguro de eliminar a {{coordinator}}?",
+    "msgDelete1": "coordinador de eventos eliminado exitosamente!"
+}

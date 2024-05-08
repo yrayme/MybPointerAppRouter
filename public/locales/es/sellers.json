@@ -1,0 +1,21 @@
+{
+    "manager": "Gerente de ventas",
+    "add": {
+        "title": "Agregar Vendedor",
+        "name": "Nombre",
+        "lastName": "Apellido",
+        "email": "Correo electrónico",
+        "san": " Número SAN",
+        "npn": "Número NPN",
+        "phone": "Teléfono",
+        "role": "Role superior",
+        "msgAdd": "Enviaremos un correo electrónico a {{email}}. Sigue los pasos para activar la cuenta.",
+        "update": "Actualizar vendedor",
+        "msgEdit": "Vendedor actualizado exitosamente!",
+        "delete": "Eliminar vendedor",
+        "msgDelete": "¿Estás seguro de eliminar a {{seller}}?",
+        "select": "Seleccione",
+        "edit": "Editar vendedor",
+        "msgDelete1": "Vendedor eliminado exitosamente!"
+    }
+}

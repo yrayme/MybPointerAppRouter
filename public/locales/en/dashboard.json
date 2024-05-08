@@ -1,0 +1,29 @@
+{
+    "hello": "Hello, {{name}}",
+    "goal": "Goal",
+    "monthlyGoal": "Monthly group goal",
+    "aep": "AEP",
+    "oep": "OEP",
+    "roy": "ROY",
+    "totalSales": "Total sales",
+    "date": "Choose a date",
+    "pos": "Upcomming POS",
+    "appointmemts": "Upcoming appointmemts",
+    "schedule": "See all",
+    "planned": "Planned",
+    "executed": "Executed",
+    "indicators": {
+        "sales": "Ventas",
+        "appointments": "Appointments kept",
+        "events": "Events kept",
+        "pending": "Pending appointments",
+        "title": "What do you wish to do today?",
+        "make": "Make a data",
+        "make1": "report",
+        "pos": "Create new",
+        "pos1": "POS",
+        "new-appointment": "Create new appointmemt",
+        "medical": "Create a medical",
+        "medical1": "appointmemt"
+    }
+}

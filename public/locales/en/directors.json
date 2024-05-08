@@ -1,0 +1,19 @@
+{
+    "add": {
+        "title": "Create department director",
+        "firstName": "First name",
+        "lastName": "Last name",
+        "email": "Email",
+        "country": "Country",
+        "state": "State",
+        "city": "City",
+        "phone": "Phone number",
+        "msgAdd": "We send an email to {{email}}. follow the steps to activate the account.",
+        "update": "Update department director",
+        "msgEdit": "department director updated successfull!",
+        "delete": "Delete department director",
+        "msgDelete": "Are you sure to delete {{director}}?",
+        "edit": "Edit department director",
+        "msgDelete1": "Department director deleted successfull!"
+    }
+}

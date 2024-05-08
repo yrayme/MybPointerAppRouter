@@ -1,0 +1,56 @@
+{
+    "add": "Assign goal",
+    "msgAdd": "Goal assigned successfull!",
+    "update": "Update goal",
+    "msgUpdate": "Goal updated successfull!",
+    "filter": {
+        "managers": "Sales manager",
+        "region": "Region",
+        "date": "Date",
+        "show": "Show filters",
+        "hide": "Hide filters",
+        "export": "Export",
+        "pdf": "Pdf",
+        "excel": "Excel",
+        "search": "Search"
+    },
+    "managers": {
+        "title": "Sales manager",
+        "email": "Email",
+        "current": "Current goals (%)",
+        "current1": "Current goals (#)",
+        "goal": "Monthly goal",
+        "team": "Team goals",
+        "input": "Input goal",
+        "placeholder": "Enter goal",
+        "phone": "Phone number"
+    },
+    "sellers": {        
+        "title": "Sellers",
+        "email": "Email",
+        "current": "Current goals (%)",
+        "current1": "Current goals (#)",
+        "goal": "Monthly goal",
+        "input": "Input goal",
+        "placeholder": "Enter goal",
+        "pending": "Pending goals to be assigned",
+        "manager": "Sales manager"
+    },
+    "clients": {
+        "title": "Clients",
+        "email": "Email",
+        "address": "affiliate address",
+        "productSold": "Product Sold",
+        "previous": "Previous product",
+        "date": "Date of eligibility",
+        "status": "Status",
+        "name": "Affiliate name",
+        "phone": "Phone number",
+        "mrbi": "MRBI",
+        "customer": "Customer source",
+        "update": "Update Client",
+        "msgUpdate": "Client updated successfull!",
+        "seller": "Seller",
+        "sale-address": "Sale address"
+    }
+}

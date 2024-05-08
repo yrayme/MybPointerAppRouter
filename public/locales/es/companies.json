@@ -1,0 +1,57 @@
+{
+    "admin": "Administrador",
+    "yes": "Si",
+    "no": "No",
+    "create": {
+        "title": "Crear compañia",
+        "msgCreate": "Enviamos un correo electrónico a {{email}}. Siga los pasos para activar la cuenta",
+        "edit": "Editar compañia",
+        "update": "Actualizar compañia",
+        "msgUpdate": "compañia actualizada exitosamente!",
+        "delete": "eliminar compañia",
+        "msgDelete": "¿Estás seguro de eliminar a {{company}}?",
+        "msgDelete1": "compañia eliminada exitosamente!",
+        "agency": {
+            "title": "Información de la agencia",
+            "tax": "Número de identificación fiscal",
+            "legalName": "Nombre legal",
+            "primaryphone": "Primer telefóno",
+            "secondPhone": "Segundo telefóno",
+            "fax": "Fax#",
+            "description": "¿La Agencia utiliza o ha utilizado alguna vez un nombre distinto del indicado anteriormente?",
+            "entity": "Tipo de entidad (por favor seleccione uno) :",
+            "corporation": "Sociedad",
+            "liability": "Sociedad de responsabilidad limitada",
+            "partnerShip": "Sociedad colectiva",
+            "propietor": "Propietario único",
+            "npn": "Agencia NPN #",
+            "san": "Agencia SAN # ",
+            "contact": "Nombre de contacto"
+        },
+        "bussiness": {
+            "title": "Dirección comercial",
+            "agency": "Nombre de la agencia",
+            "street": "Calle",
+            "box": "Apartado de correos",
+            "country": "País",
+            "state": "Estado",
+            "city": "Ciudad",
+            "zip": "código postal"
+        },
+        "Shipping": {
+            "title": "Dirección de envío (debe ser la dirección postal)",
+            "same": "Igual que la dirección de la empresa"
+        },
+        "email": {
+            "title": "Dirección de correo electrónico",
+            "email": "Correo electrónico",
+            "placeholder": "Ex. test@gmail.com"
+        },
+        "website": {
+            "title": "Dirección(es) del sitio web",
+            "description": "Indique todas las direcciones de los sitios web y de los agregadores de préstamos en los que la agencia comercializa o pretende comercializar o vender productos de algún modo:",
+            "or": "o",
+            "text": "La agencia actualemente no tiene la intención de tener un sitio web comercialice o venda productos."
+        }
+    }
+}

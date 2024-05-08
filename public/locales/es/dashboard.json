@@ -1,0 +1,15 @@
+{
+    "hello": "Hola, {{name}}",
+    "goal": "Meta",
+    "monthlyGoal": "Metas mensuales de grupo",
+    "aep": "AEP",
+    "oep": "OEP",
+    "roy": "ROY",
+    "totalSales": "Ventas totales",
+    "date": "Escoge una fecha",
+    "pos": "POS próximos",
+    "appointmemts": "Citas próximas",
+    "schedule": "Ver toda la programación",
+    "planned": "Planeadas",
+    "executed": "Ejecutadas"
+}

@@ -1,0 +1,21 @@
+{
+    "manager": "Sales manager",
+    "add": {
+        "title": "Add Seller",
+        "name": "First name",
+        "lastName": "Last name",
+        "email": "Email",
+        "san": "SAN number",
+        "npn": "NPN number",
+        "phone": "Phone number",
+        "role": "Superior role",
+        "msgAdd": "We send an email to {{email}}. follow the steps to activate the account.",
+        "update": "Update seller",
+        "msgEdit": "Seller updated successfull!",
+        "delete": "Delete seller",
+        "msgDelete": "Are you sure to delete {{seller}}?",
+        "select": "Select",
+        "edit": "Edit seller",
+        "msgDelete1": "Seller deleted successfull!"
+    }
+}

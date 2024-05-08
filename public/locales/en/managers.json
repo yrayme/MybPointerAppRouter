@@ -1,0 +1,14 @@
+{
+    "create": "Create Sales manager",
+    "name": "First name",
+    "lastName": "Last name",
+    "phone": "Phone number",
+    "email": "Email",
+    "msgCreate": "We send an email to {{email}}. follow the steps to activate the account.",
+    "edit": "Edit Sales manager",
+    "update": "Update Sales manager",
+    "msgUpdate": "Sales manager updated successfull!",
+    "delete": "Delete Sales manager",
+    "msgDelete": "Are you sure to delete {{manager}}?",
+    "msgDelete1": "Sales manager deleted successfull!"
+}

@@ -1,0 +1,12 @@
+{
+    "description": "Here’s an overview of your appointments",
+    "customer": "Customer name",
+    "product": "Product name",
+    "appointment": "Appointment",
+    "status": {
+        "scheduled": "Scheduled",
+        "recontact": "Recontact",
+        "no-interest": "No Interest",
+        "not-interested": "Not Interested"
+    }
+}

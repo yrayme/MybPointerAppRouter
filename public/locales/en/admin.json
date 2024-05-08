@@ -1,0 +1,16 @@
+{
+    "company": "Company",
+    "add": "Create administrator",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "phone": "Phone number",
+    "email": "Email",
+    "san": "San number",
+    "msgCreate": "We send an email to {{email}}. follow the steps to activate the account.",
+    "edit": "Edit administrator",
+    "update": "Update administrator",
+    "msgUpdate": "Administrator updated successfull!",
+    "delete": "Delete administrator",
+    "msgDelete": "Are you sure to delete {{admin}}?",
+    "msgDelete1": "Administrator deleted successfull!"    
+}

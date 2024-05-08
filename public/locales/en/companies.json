@@ -1,0 +1,57 @@
+{
+    "admin": "Administrator",
+    "yes": "Yes",
+    "no": "No",
+    "create": {
+        "title": "Create company",
+        "msgCreate": "We send an email to {{email}} follow the steps to activate the account.",
+        "edit": "Edit company",
+        "update": "Update company",
+        "msgUpdate": "Company updated successfull!",
+        "delete": "Delete company",
+        "msgDelete": "Are you sure to delete {{company}}?",
+        "msgDelete1": "Company deleted successfull!",
+        "agency": {
+            "title": "Agency Information",
+            "tax": "Federal Tax ID",
+            "legalName": "Agency Full Legal Name",
+            "primaryphone": "Primary phone",
+            "secondPhone": "Secondary phone",
+            "fax": "Fax#",
+            "description": "Is the Agency now using or has it ever used any name other than show above?",
+            "entity": "Type of Entity (please check one) :",
+            "corporation": "Corporation",
+            "liability": "Limited Liability Corporation",
+            "partnerShip": "Partnership",
+            "propietor": "Sole Proprietor",
+            "npn": "Agency NPN #",
+            "san": "Agency SAN # ",
+            "contact": "Contact name"
+        },
+        "bussiness": {
+            "title": "Bussiness Address",
+            "agency": "Agency name",
+            "street": "Street",
+            "box": "PO Box",
+            "country": "Country",
+            "state": "State",
+            "city": "City",
+            "zip": "Zip"
+        },
+        "Shipping": {
+            "title": "Shipping Address (must be street address)",
+            "same": "Same as bussiness adreess"
+        },
+        "email": {
+            "title": "Email address",
+            "email": "Email",
+            "placeholder": "Ex. test@gmail.com"
+        },
+        "website": {
+            "title": "Website address(es)",
+            "description": "Please list all website address and any lend aggregator sites where the agency currently or intends to market or Sell Products in any way:",
+            "or": "or",
+            "text": "The Agency does not currently have nor does the Agency intend to have a Website where the Agency Marke or Sells Products."
+        }
+    }
+}

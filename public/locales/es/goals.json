@@ -1,0 +1,56 @@
+{
+    "add": "Assignar meta",
+    "msgAdd": "Meta assignada exitosamente!",
+    "update": "Actualizar meta",
+    "msgUpdate": "Meta actualizada exitosamente!",
+    "filter": {
+        "managers": "Gerentes de ventas",
+        "region": "Región",
+        "date": "Fecha",
+        "show": "Mostrar filtros",
+        "hide": "Ocultar filtros",
+        "export": "Exportar",
+        "pdf": "Pdf",
+        "excel": "Excel",
+        "search": "Búsqueda"
+    },
+    "managers": {
+        "title": "Gerentes de ventas",
+        "email": "Correo electrónico",
+        "current": "Metas actuales (%)",
+        "current1": "Metas actuales (#)",
+        "goal": "Meta mensual",
+        "team": "Metas del equipo",
+        "input": "Campo Meta",
+        "placeholder": "Introduzca meta",
+        "phone": "Teléfono"
+    },
+    "sellers": {        
+        "title": "Vendedores",
+        "email": "Correo electrónico",
+        "current": "Metas actuales (%)",
+        "current1": "Metas actuales (#)",
+        "goal": "Meta mensual",
+        "input": "Campo Meta",
+        "placeholder": "Introduzca meta",
+        "pending": "Metas pendientes por asignar",
+        "manager": "Gerente de ventas"
+    },
+    "clients": {
+        "title": "Clientes",
+        "email": "Correo electrónico",
+        "address": "Dirección del afiliado",
+        "productSold": "Producto vendido",
+        "previous": "Producto previo",
+        "date": "Fecha de elegibilidad",
+        "status": "Estatus",
+        "name": "Nombre del afiliado",
+        "phone": "Teléfono",
+        "mrbi": "MRBI",
+        "customer": "Origen del cliente",
+        "update": "Actualizar cliente",
+        "msgUpdate": "Cliente actualizado exitosamente!",
+        "seller": "Vendedor",
+        "sale-address": "Dirección de venta"
+    }
+}

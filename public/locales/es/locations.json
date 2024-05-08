@@ -1,0 +1,40 @@
+{
+    "filter": {
+        "country": "País",
+        "region": "Region",
+        "date": "Fecha",
+        "show": "Mostrar filtros",
+        "hide": "Ocultar filtros",
+        "export": "Exportar",
+        "pdf": "Pdf",
+        "excel": "Excel",
+        "search": "Búsqueda"
+    },
+    "table": {
+        "name": "Nombre",
+        "country": "País",
+        "state": "Estado",
+        "city": "Ciudad",
+        "phone": "Teléfono",
+        "address": "Dirección",
+        "actions": "Acciones"
+    },
+    "add": {
+        "title": "Crear ubicación",
+        "name": "Nombre",
+        "country": "País",
+        "state": "Estado",
+        "city": "Ciudad",
+        "phone": "Teléfono de contacto",
+        "address": "Dirección",
+        "email": "Correo electrónico de contacto",
+        "msgCreate": "Ubicación creada exitosamente!",
+        "edit": "Editar ubicación",
+        "update": "Actualizar ubicación",
+        "msgUpdate": "ubicación actualizada exitosamente!",
+        "delete": "Delete ubicación",
+        "msgDelete": "¿Estás seguro de eliminar a {{location}}?",
+        "msgDelete1": "Ubicación eliminada exitosamente!" 
+        
+    }
+}

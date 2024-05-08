@@ -1,0 +1,30 @@
+{
+    "table": {
+        "client": "Client",
+        "appointment": "Appointment",
+        "status": "Status",
+        "actions": "Actions"        
+    },
+    "title": "Sales report",
+    "name": "Affiliate name",
+    "phone": "Phone number",
+    "email": "Email",
+    "mrbi": "MRBI",
+    "date": "Date of eligibility",
+    "address": "Affiliate address",
+    "product-sold": "Product sold",
+    "date-sold": "Date of product sold",
+    "prev-product": "Previous product",
+    "date-prev": "Date of previous product",
+    "from": "Sale address",
+    "add": "Sale created",
+    "msgAdd": "Sale created successfull!",  
+    "edit": "Edit sale",
+    "update": "Update sale",
+    "msgUpdate": "Sale updated successfull!",
+    "delete": "Delete sale",
+    "msgDelete": "Are you sure to delete this sale {{sale}}?",
+    "msgDelete1": "Sale deleted successfull!",
+    "category": "Category",
+    "year": "Year"
+}

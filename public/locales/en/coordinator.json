@@ -1,0 +1,15 @@
+{
+    "coordinator": "Coordinator",
+    "add": "Create event coordinator",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "phone": "Phone number",
+    "email": "Email",
+    "msgCreate": "We send an email to {{email}}. follow the steps to activate the account.",
+    "edit": "Edit event coordinator",
+    "update": "Update event coordinator",
+    "msgUpdate": "event coordinator updated successfull!",
+    "delete": "Delete event coordinator",
+    "msgDelete": "Are you sure to delete {{coordinator}}?",
+    "msgDelete1": "event coordinator deleted successfull!"    
+}

@@ -1,0 +1,30 @@
+{
+    "table": {
+        "client": "Cliente",
+        "appointment": "Cita",
+        "status": "Estatus",
+        "actions": "Acciones"        
+    },
+    "title": "Reporte de ventas",
+    "name": "Nombre del afiliado",
+    "phone": "Teléfono",
+    "email": "Correo electrónico",
+    "mrbi": "MRBI",
+    "date": "Fecha de elegibilidad",
+    "address": "Dirección del afiliado",
+    "product-sold": "Producto vendido",
+    "date-sold": "Fecha de producto vendido",
+    "prev-product": "Producto anterior",
+    "date-prev": "Fecha de producto anterior",
+    "from": "Dirección de la venta",
+    "add": "Venta creada",
+    "msgAdd": "Venta creada exitosamente!",  
+    "edit": "Editar venta",
+    "update": "Actualizar venta",
+    "msgUpdate": "Venta actualizada exitosamente!",
+    "delete": "eliminar venta",
+    "msgDelete": "¿Estas seguro de eliminar esta venta {{sale}}?",
+    "msgDelete1": "Venta eliminada exitosamente!",
+    "category": "Categoría",
+    "year": "Año"  
+}

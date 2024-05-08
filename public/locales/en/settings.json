@@ -1,0 +1,38 @@
+{
+    "button": "Save your changes",
+    "profile": {        
+        "title": "Profile",
+        "name": "First name",
+        "lastName": "Last name",
+        "email": "Email",
+        "phone": "Phone number",
+        "country": "Country",
+        "state": "State",
+        "city": "City",
+        "zip": "Zip code",
+        "address": "Address",
+        "update": "Update profile",
+        "msgUpdate": "Profile updated successful!"
+    },
+    "password": {        
+        "title": "Password",
+        "currentPassword": "Current password",
+        "newPassword": "New password",
+        "confirmPassword": "Confirm password",
+        "update": "Update password",
+        "msgUpdate": "Password updated successful!"
+    },
+    "access": {
+        "title": "Access by rol",
+        "table": {
+            "role": "Role",
+            "access": "Access",
+            "actions": "Actions"
+        },
+        "manager": "Sales manager",
+        "check": "Check all",
+        "delete": "Delete register",
+        "msgDelete": "Are you sure to delete the register {{name}}?",
+        "msgDelete1": "Register deleted successfull!"
+    }
+}

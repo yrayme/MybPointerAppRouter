@@ -1,0 +1,16 @@
+{
+    "company": "Compañia",
+    "add": "Crear administrador",    
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "phone": "Telefóno",
+    "email": "Correo electrónico",
+    "san": "Número San",
+    "msgCreate": "Enviamos un correo electrónico a {{email}}. Siga los pasos para activar la cuenta.",
+    "edit": "Editar administrador",
+    "update": "Actualizar administrador",
+    "msgUpdate": "Administrador actualizado exitosamente!",
+    "delete": "Eliminar administrador",
+    "msgDelete": "¿Estás seguro de eliminar a {{admin}}?",
+    "msgDelete1": "Administrador eliminado exitosamente!"
+}

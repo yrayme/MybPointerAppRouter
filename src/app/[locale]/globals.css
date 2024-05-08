@@ -1,0 +1,166 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-primary: #88C946;
+  --color-primary-dark: #408000;
+  --color-primary-light: #E8F5DA;
+  --color-blue: #00AAE4;
+  --color-white: #ffffff;
+  --color-orange: #F58A07;
+  --color-yellow: #FFCC00;
+  --color-yellow-light: #FFFFBF;
+  --color-red: #FF274E;
+  --color-red-light: #F5CCC8;
+  --color-dark-pink: #E1448B;
+  --color-black: #000000;
+  --color-gray: #E0E6EF;
+  --color-light-gray: #DEDEDE;
+  --color-gray-1: #7C8DA6;
+  --color-background-gray: #FAFAFF;
+  --color-purple: #9A25B4;
+  --color-green-light: #29B9B9;
+}
+
+.light {
+}
+
+.dark {
+}
+/* :root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+} */
+
+.customRadio {
+  position: relative;
+  display: inline-block;
+  height: 1.6rem;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}
+
+.customRadio input[type="radio"] {
+  opacity: 0;
+  position: absolute;
+  left: 0;
+  top: 0;
+  cursor: pointer;
+}
+
+.customRadio input[type="radio"]:checked + .radioLabel:before {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  height: 12px;
+  width: 12px;
+}
+
+.customRadio .radioLabel:before {
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: 6.2px;
+  width: 0.7rem;
+  height: 0.7rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
+
+.customRadio .radioLabel {
+  position: relative;
+  cursor: pointer;
+  padding-left: 2rem;
+  display: inline-block;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  margin-bottom: 0;
+}
+
+.react-datepicker__day--selected, .react-datepicker__day--in-selecting-range, .react-datepicker__day--in-range, .react-datepicker__month-text--selected, .react-datepicker__month-text--in-selecting-range, .react-datepicker__month-text--in-range, .react-datepicker__quarter-text--selected, .react-datepicker__quarter-text--in-selecting-range, .react-datepicker__quarter-text--in-range, .react-datepicker__year-text--selected, .react-datepicker__year-text--in-selecting-range, .react-datepicker__year-text--in-range {
+  background-color: #88C946 !important;
+}
+
+.rbc-month-header{
+  background-color: #DEDEDE !important;
+  border-bottom: 1px solid #DEDEDE;
+  height: 50px;
+}
+
+.rbc-header{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #DEDEDE;
+}
+
+.rbc-month-view {
+  border: none !important;
+  border-radius: 20px !important;
+}
+
+.rbc-off-range-bg {
+  background: white !important;
+}
+
+.rbc-month-row{
+  border-radius: 0px 0px 20px 0px;
+}
+
+.rdtPicker{
+  min-width: 100px !important;
+}
+
+.rdtBtn{
+  color:#88C946 !important;
+}
+
+.rdtCount{
+  font-size: 14px !important;
+}
+
+.rbc-date-cell .rbc-button-link{
+  pointer-events: none;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+	background-color: white;
+}
+
+
+::-webkit-scrollbar-track {
+  background-color: white;
+	border-radius: 10px;
+   
+}
+
+::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+  background-color: var(--color-light-gray);
+}

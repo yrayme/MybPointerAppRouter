@@ -1,0 +1,93 @@
+{
+  "language": "Language",  
+  "pagination": "Page {{start}} of {{end}}",
+  "notAdded": "You have not added any",
+  "select": "Select",
+  "loading": "Loading...",
+  "nothing-found": "Nothing found.",
+  "inactivity": "Attention! Your session will expire in {{seg}} seconds.",
+  "welcome": "Welcome",
+  "search": "Search",
+  "notifications": "Notifications",
+  "chat": "Chat",
+  "formValidator": {
+    "required": "The field is required",
+    "email": "Invalid email",
+    "minCharacters": "Min {{qty}} characters",
+    "maxCharacters": "Max {{qty}} characters",
+    "invalidPassword": "Password is invalid",
+    "passwordNotMatch": "Passwords don't match!",
+    "invalid": "The field is invalid",
+    "number": "The field must be a number",
+    "endTime": "End time must be later than start time"
+  },
+  "buttons": {
+    "next": "Next",
+    "back": "Back",
+    "save": "Save",
+    "resend": "Resend",
+    "cancel": "Cancel",
+    "apply": "Apply",
+    "add": "Add",
+    "update": "Update",
+    "accept": "Accept",
+    "submit": "Submit",
+    "prev": "Previous",
+    "delete": "Delete",
+    "assign": "Assign",
+    "approve": "Approve",
+    "decline": "Decline",
+    "search": "Search",
+    "reset": "Reset",
+    "clear": "Clear",
+    "active": "Active",
+    "inactive": "Inactive"
+  },
+  "languages": {
+    "es": "Spanish",
+    "en": "English"
+  },
+  "menu": {
+    "settings": "Settings",
+    "dashboard": "Dashboard",
+    "calendar": "Calendar",
+    "appointment": "Appointment tracker",
+    "goals": "Goals",
+    "cross": "Cross sales",
+    "users": "Users",
+    "sellers": "Sellers",
+    "companies": "Companies",
+    "managers": "Sales manager",
+    "coordinator": "Event coordinator",
+    "logout": "Log out",
+    "directors": "Directors",
+    "promotors": "Promotors",
+    "admin": "Administrators",
+    "locations": "Locations",
+    "sales": "Sales",
+    "home": "Home"
+  },
+  "dateRange": {
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "week": "This week",
+    "lastWeek": "Last week",
+    "month": "This month",
+    "lastMonth": "Last month",
+    "year": "This year",
+    "lastYear": "Last year"
+  },
+  "filter": {
+    "show": "Show filters",
+    "hide": "Hide filters",
+    "export": "Export",
+    "pdf": "Pdf",
+    "excel": "Excel"
+  },
+  "excel": {
+    "user": "User"
+  },
+  "users":{
+    "npn": "Npn"
+  }
+}

@@ -1,0 +1,12 @@
+{
+    "description": "Aquí tienes un resumen de tus citas",
+    "customer": "Nombre del cliente",
+    "product": "Nombre del producto",
+    "appointment": "Cita",
+    "status": {
+        "scheduled": "Programado",
+        "recontact": "Recontactar",
+        "no-interest": "Sin interés",
+        "not-interested": "No interesado"
+    }
+}
