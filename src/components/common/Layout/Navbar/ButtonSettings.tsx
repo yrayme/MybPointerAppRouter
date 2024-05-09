@@ -47,11 +47,11 @@ const ButtonSettings: React.FC<ButtonProps> = ({ mobile }) => {
                             <Menu.Item>
                                 {({ active }) => (
                                     <button
-                                        className={`${active ? 'bg-primary opacity-80 text-white' : 'text-gray-1'
+                                        className={`${active ? 'bg-primary opacity-80 text-white' : 'text-gray-4'
                                             } group flex w-full items-center rounded-md px-2 py-2 text-base font-medium gap-x-3 justify-center`}
                                         onClick={() => router.push("/settings")}
                                     >
-                                        <AllIcons name="SettingsIcon" className={`${active ? "text-white" : "text-primary"} h-6 w-6`} />
+                                        <AllIcons name="SettingsIcon" className={`${active ? "text-white" : "text-gray-4"} h-6 w-6`} />
                                         {t("common:menu:settings")}
                                     </button>
                                 )}

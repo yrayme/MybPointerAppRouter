@@ -1,3 +1,4 @@
+'use client'
 import { ImagesCommon } from "@/constants";
 import { Roles, colorsHome, typeMenu } from "@/constants/general";
 import { useCommonContext } from "@/contexts/CommonContext";
@@ -11,7 +12,8 @@ import { redirect, useParams, useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { StaticRange, Range } from 'react-date-range';
-import { 
+import * as echarts from 'echarts';
+import {
     addDays,
     addWeeks,
     startOfYear,
@@ -22,8 +24,10 @@ import {
     addYears,
     startOfWeek,
     endOfWeek,
-    isSameDay } from 'date-fns';
+    isSameDay
+} from 'date-fns';
 import { useQuery } from "react-query";
+import useWindowSize from "./useWindowSize";
 
 export const useSidebar = () => {
     const router = useRouter();
@@ -31,11 +35,10 @@ export const useSidebar = () => {
     const [menuItems, setMenuItems] = useState<MenuItems[]>([]);
     const layout = useLayoutContext();
     const { data: dataUser }: any = useSession();
-    console.log("session", dataUser)
     // if (!session) redirect ("/auth/login")
 
     useEffect(() => {
-        if (dataUser && dataUser.user?.menu.length > 0) {
+        if (dataUser && dataUser.user?.menu?.length > 0) {
             const newMenu = dataUser?.user?.menu.map((men: MenuItems) => {
                 return addAttributesMenu(men.type_menu, men);
             })
@@ -192,7 +195,7 @@ export const useCountries = () => {
             }
         }
         if (!lists.countries.length) getCountriesAll();
-    }, [ lists ])
+    }, [lists])
 
     useEffect(() => {
         if (!lists.countries.length && countries) getList(GET_COUNTRIES, countries);
@@ -309,34 +312,34 @@ export const useDashboard = () => {
 
     const [indicatorsHome, setIndicatorsHome] = useState<IndicatorsProps[]>([
         {
-          id: 1,
-          name: t("dashboard:goal"),
-          value: "20%",
-          gauge: "20"
+            id: 1,
+            name: t("dashboard:goal"),
+            value: "20%",
+            gauge: "20"
         },
         {
-          id: 2,
-          name: t("dashboard:monthlyGoal"),
-          value: "30%",
-          gauge: "30"
+            id: 2,
+            name: t("dashboard:monthlyGoal"),
+            value: "30%",
+            gauge: "30"
         },
         {
-          id: 3,
-          name: t("dashboard:aep"),
-          value: "10%",
-          gauge: "10"
+            id: 3,
+            name: t("dashboard:aep"),
+            value: "10%",
+            gauge: "10"
         },
         {
-          id: 4,
-          name: t("dashboard:oep"),
-          value: "35%",
-          gauge: "35"
+            id: 4,
+            name: t("dashboard:oep"),
+            value: "35%",
+            gauge: "35"
         },
         {
-          id: 5,
-          name: t("dashboard:roy"),
-          value: "40%",
-          gauge: "40"
+            id: 5,
+            name: t("dashboard:roy"),
+            value: "40%",
+            gauge: "40"
         }
     ]);
 
@@ -397,8 +400,8 @@ export const useDashboard = () => {
 export const useDateRange = (goal?: boolean, setState?: any) => {
     const { t } = useTranslation();
     const router = useRouter();
-    
-    const staticRanges: StaticRange[] = [        
+
+    const staticRanges: StaticRange[] = [
         {
             label: t('common:dateRange:today'),
             range: () => ({
@@ -408,8 +411,8 @@ export const useDateRange = (goal?: boolean, setState?: any) => {
             isSelected(range) {
                 const definedRange = this.range();
                 return (
-                isSameDay(range.startDate as Date, definedRange.startDate as Date) &&
-                isSameDay(range.endDate as Date, definedRange.endDate as Date)
+                    isSameDay(range.startDate as Date, definedRange.startDate as Date) &&
+                    isSameDay(range.endDate as Date, definedRange.endDate as Date)
                 );
             }
         },
@@ -422,8 +425,8 @@ export const useDateRange = (goal?: boolean, setState?: any) => {
             isSelected(range) {
                 const definedRange = this.range();
                 return (
-                isSameDay(range.startDate as Date, definedRange.startDate as Date) &&
-                isSameDay(range.endDate as Date, definedRange.endDate as Date)
+                    isSameDay(range.startDate as Date, definedRange.startDate as Date) &&
+                    isSameDay(range.endDate as Date, definedRange.endDate as Date)
                 );
             }
         },
@@ -436,8 +439,8 @@ export const useDateRange = (goal?: boolean, setState?: any) => {
             isSelected(range) {
                 const definedRange = this.range();
                 return (
-                isSameDay(range.startDate as Date, definedRange.startDate as Date) &&
-                isSameDay(range.endDate as Date, definedRange.endDate as Date)
+                    isSameDay(range.startDate as Date, definedRange.startDate as Date) &&
+                    isSameDay(range.endDate as Date, definedRange.endDate as Date)
                 );
             }
         },
@@ -450,11 +453,11 @@ export const useDateRange = (goal?: boolean, setState?: any) => {
             isSelected(range) {
                 const definedRange = this.range();
                 return (
-                isSameDay(range.startDate as Date, definedRange.startDate as Date) &&
-                isSameDay(range.endDate as Date, definedRange.endDate as Date)
+                    isSameDay(range.startDate as Date, definedRange.startDate as Date) &&
+                    isSameDay(range.endDate as Date, definedRange.endDate as Date)
                 );
             }
-        },   
+        },
         {
             label: t('common:dateRange:month'),
             range: () => ({
@@ -464,11 +467,11 @@ export const useDateRange = (goal?: boolean, setState?: any) => {
             isSelected(range) {
                 const definedRange = this.range();
                 return (
-                isSameDay(range.startDate as Date, definedRange.startDate as Date) &&
-                isSameDay(range.endDate as Date, definedRange.endDate as Date)
+                    isSameDay(range.startDate as Date, definedRange.startDate as Date) &&
+                    isSameDay(range.endDate as Date, definedRange.endDate as Date)
                 );
             }
-        },  
+        },
         {
             label: t('common:dateRange:lastMonth'),
             range: () => ({
@@ -478,11 +481,11 @@ export const useDateRange = (goal?: boolean, setState?: any) => {
             isSelected(range) {
                 const definedRange = this.range();
                 return (
-                isSameDay(range.startDate as Date, definedRange.startDate as Date) &&
-                isSameDay(range.endDate as Date, definedRange.endDate as Date)
+                    isSameDay(range.startDate as Date, definedRange.startDate as Date) &&
+                    isSameDay(range.endDate as Date, definedRange.endDate as Date)
                 );
             }
-        }, 
+        },
         {
             label: t('common:dateRange:year'),
             range: () => ({
@@ -492,11 +495,11 @@ export const useDateRange = (goal?: boolean, setState?: any) => {
             isSelected(range) {
                 const definedRange = this.range();
                 return (
-                isSameDay(range.startDate as Date, definedRange.startDate as Date) &&
-                isSameDay(range.endDate as Date, definedRange.endDate as Date)
+                    isSameDay(range.startDate as Date, definedRange.startDate as Date) &&
+                    isSameDay(range.endDate as Date, definedRange.endDate as Date)
                 );
             }
-        }, 
+        },
         {
             label: t('common:dateRange:lastYear'),
             range: () => ({
@@ -506,17 +509,17 @@ export const useDateRange = (goal?: boolean, setState?: any) => {
             isSelected(range) {
                 const definedRange = this.range();
                 return (
-                isSameDay(range.startDate as Date, definedRange.startDate as Date) &&
-                isSameDay(range.endDate as Date, definedRange.endDate as Date)
+                    isSameDay(range.startDate as Date, definedRange.startDate as Date) &&
+                    isSameDay(range.endDate as Date, definedRange.endDate as Date)
                 );
             }
-        },     
+        },
     ];
 
     const handleRange = (ranges: any) => {
         setState(ranges.selection);
     };
-    
+
     return {
         // getDate,
         handleRange,
@@ -524,7 +527,7 @@ export const useDateRange = (goal?: boolean, setState?: any) => {
     }
 }
 
-export const useStatusAppointment = () => {   
+export const useStatusAppointment = () => {
     const { lists, getList } = useCommonContext();
     const [data, setData] = useState<SelectLists[]>([]);
 
@@ -538,20 +541,20 @@ export const useStatusAppointment = () => {
             }
         }
         if (!lists.statusAppointment.length) getStatusAll();
-    }, [ lists ])
+    }, [lists])
 
     useEffect(() => {
         if (!lists.statusAppointment.length && data) getList(GET_STATUS_APPOINTMENT, data);
     }, [data])
-    
-    let statusAppointment = data.length > 0 ? data : lists.statusAppointment;
+
+    let statusAppointment = data?.length > 0 ? data : lists.statusAppointment;
 
     return {
         statusAppointment
     }
 }
 
-export const useComboxBoxAutocompleteAsync = (onChange: any, queryKey: string, getData: any, selectedValue: number | undefined | string, defaultValue: any, customSelected: any, value?: string) => {    
+export const useComboxBoxAutocompleteAsync = (onChange: any, queryKey: string, getData: any, selectedValue: number | undefined | string, defaultValue: any, customSelected: any, value?: string) => {
     const [selected, setSelected] = useState(null);
     const [query, setQuery] = useState("");
 
@@ -567,9 +570,9 @@ export const useComboxBoxAutocompleteAsync = (onChange: any, queryKey: string, g
             staleTime: 5 * 60 * 1000
         }
     );
-    
+
     useEffect(() => {
-        if (selectedValue  && data && data?.length > 0){
+        if (selectedValue && data && data?.length > 0) {
             const optionSelect = data?.filter((opt) => opt?._id?.$oid == selectedValue);
             return setSelected(optionSelect[0]);
         }
@@ -578,7 +581,7 @@ export const useComboxBoxAutocompleteAsync = (onChange: any, queryKey: string, g
     useEffect(() => {
         if (value === "") setSelected(null);
     }, [value])
-    
+
 
     useEffect(() => {
         refetch();
@@ -592,10 +595,10 @@ export const useComboxBoxAutocompleteAsync = (onChange: any, queryKey: string, g
     }, [defaultValue]);
 
     const getOptionLabel = (option: any) => {
-        const label = customSelected ? customSelected(option) : option?.name ;
+        const label = customSelected ? customSelected(option) : option?.name;
         return label || "";
     };
-    
+
     const debounce = (func: any) => {
         let timerT: ReturnType<typeof setTimeout> | null;
         return function (this: any, ...args: any[]) {
@@ -606,7 +609,7 @@ export const useComboxBoxAutocompleteAsync = (onChange: any, queryKey: string, g
             }, 500);
         };
     };
-    
+
     const handleChange = (value: string) => {
         setQuery(value);
     };
@@ -627,8 +630,8 @@ export const useComboxBoxAutocompleteAsync = (onChange: any, queryKey: string, g
 }
 
 
-export const useTable = () => {   
-    const { t } = useTranslation(); 
+export const useTable = () => {
+    const { t } = useTranslation();
     const columns: Columns = {
         "roles": [
             {
@@ -790,9 +793,9 @@ export const useTable = () => {
 
     const getCurrentGoalColor = (goal: string) => {
         const goalNumber = parseInt(goal);
-        if (goalNumber > 30  && goalNumber < 50 ) return "bg-yellow-primary";
-        if (goalNumber >= 50 ) return "bg-primary";
-        if (goalNumber <= 30 ) return "bg-red-primary";
+        if (goalNumber > 30 && goalNumber < 50) return "bg-yellow-primary";
+        if (goalNumber >= 50) return "bg-primary";
+        if (goalNumber <= 30) return "bg-red-primary";
     }
 
     return {
@@ -802,7 +805,7 @@ export const useTable = () => {
 }
 
 
-export const useTooltip = () => {    
+export const useTooltip = () => {
     const [showTooltip, setShowTooltip] = useState(false);
     const tooltipRef = useRef<HTMLDivElement>(null);
 
@@ -838,18 +841,18 @@ export const useTooltip = () => {
                     left: 0,
                     transform: 'translate(0, 0)',
                 };
-            }
+        }
     };
 
     const handleMouseEnter = () => {
         setShowTooltip(true);
     };
-    
+
     const handleMouseLeave = () => {
         setShowTooltip(false);
     };
 
-    return{
+    return {
         showTooltip,
         handleMouseEnter,
         handleMouseLeave,
@@ -860,8 +863,8 @@ export const useTooltip = () => {
 }
 
 
-export const useResources = () => {   
-    const { lists, getList } = useCommonContext();    
+export const useResources = () => {
+    const { lists, getList } = useCommonContext();
     const [data, setData] = useState<SelectLists[]>([]);
 
     useEffect(() => {
@@ -874,7 +877,7 @@ export const useResources = () => {
             }
         }
         if (!lists.resources.length) getList();
-    }, [ lists ])
+    }, [lists])
 
     useEffect(() => {
         if (!lists.resources.length && data) getList(GET_RESOURCES, data);
@@ -886,9 +889,9 @@ export const useResources = () => {
     }
 }
 
-export const useStatusEvent = () => {   
-    const { data: session } : any = useSession();
-    const { lists, getList } = useCommonContext();    
+export const useStatusEvent = () => {
+    const { data: session }: any = useSession();
+    const { lists, getList } = useCommonContext();
     const [data, setData] = useState<SelectLists[]>([]);
 
     useEffect(() => {
@@ -901,7 +904,7 @@ export const useStatusEvent = () => {
             }
         }
         if (!lists.statusEvent.length && session?.user?.type_rol === Roles.coordinator) getList();
-    }, [ lists ])
+    }, [lists])
 
     useEffect(() => {
         if (!lists.statusEvent.length && data) getList(GET_STATUS_EVENT, data);
@@ -915,8 +918,8 @@ export const useStatusEvent = () => {
 }
 
 
-export const useEventType = (pagActual: number, takeCount: number) => {   
-    const { lists, getList } = useCommonContext();    
+export const useEventType = (pagActual: number, takeCount: number) => {
+    const { lists, getList } = useCommonContext();
     const [data, setData] = useState<ListsResponse>();
 
     useEffect(() => {
@@ -928,8 +931,8 @@ export const useEventType = (pagActual: number, takeCount: number) => {
                 getApiError(error)
             }
         }
-        if (!lists.eventType.length ) getList();
-    }, [ lists, pagActual ])
+        if (!lists.eventType.length) getList();
+    }, [lists, pagActual])
 
     useEffect(() => {
         if (!lists.eventType.length && data) getList(GET_EVENT_TYPES, data?.items);
@@ -941,8 +944,8 @@ export const useEventType = (pagActual: number, takeCount: number) => {
     }
 }
 
-export const useEntityType = () => {      
-    const { lists, getList } = useCommonContext();    
+export const useEntityType = () => {
+    const { lists, getList } = useCommonContext();
     const [data, setData] = useState<SelectLists[]>();
 
     useEffect(() => {
@@ -954,8 +957,8 @@ export const useEntityType = () => {
                 getApiError(error)
             }
         }
-        if (!lists.entityType.length ) getList();
-    }, [ lists ])
+        if (!lists.entityType.length) getList();
+    }, [lists])
 
 
     useEffect(() => {
@@ -965,5 +968,145 @@ export const useEntityType = () => {
 
     return {
         entityType
+    }
+}
+
+export const useHome = () => {
+    const { t } = useTranslation();
+    const [indicatorsGoals, setIndicatorsGoals] = useState([
+        {
+            id: 1,
+            name: t("dashboard:home:daily"),
+            icon: "CalendarIcon",
+        },
+        {
+            id: 2,
+            name: t("dashboard:home:monthly"),
+            icon: "MonthlyIcon",
+        },
+        {
+            id: 3,
+            name: t("dashboard:home:anual"),
+            icon: "AnualIcon",
+        },
+        {
+            id: 4,
+            name: t("dashboard:home:aep"),
+            icon: "ReportDataIcon",
+        },
+        {
+            id: 5,
+            name: t("dashboard:home:oep"),
+            icon: "ReportDataIcon",
+        },
+        {
+            id: 6,
+            name: t("dashboard:home:roy"),
+            icon: "ReportDataIcon",
+        }
+    ]);
+    const [indicatorsToday, setIndicatorsToday] = useState([
+        {
+            id: 1,
+            name: t("dashboard:home:pos"),
+            icon: "LocationIcon",
+            new: true
+        },
+        {
+            id: 2,
+            name: t("dashboard:home:event"),
+            icon: "TerraceIcon",
+        },
+        {
+            id: 3,
+            name: t("dashboard:home:calendar"),
+            icon: "CalendarIcon2",
+            new: true
+        },
+        {
+            id: 4,
+            name: t("dashboard:home:tracker"),
+            icon: "AppTrackerIcon",
+        },
+        {
+            id: 5,
+            name: t("dashboard:home:doctors"),
+            icon: "DoctorsIcon",
+        },
+        {
+            id: 6,
+            name: t("dashboard:home:homes"),
+            icon: "HomeIcon",
+        },
+        {
+            id: 7,
+            name: t("dashboard:home:companies"),
+            icon: "CompaniesIcon",
+        },
+        {
+            id: 8,
+            name: t("dashboard:home:maps"),
+            icon: "MapIcon",
+        }
+    ]);
+    return { indicatorsGoals, indicatorsToday }
+}
+
+
+export const useBarGraphic = () => {  
+    const { t } = useTranslation()
+    type EChartsOption = echarts.EChartsOption;
+    const { width } = useWindowSize();  
+  
+    useEffect(() => { 
+        var chartDom = document.getElementById('echart-bar')!;
+        var myChart = echarts.init(chartDom);
+        var option: EChartsOption;
+        
+        option = {
+            color: ["#88C946", "#fffff"],
+            grid: {
+                left: '1%',
+                right: '1%',
+                bottom: width > 767 ? '6%' : '2%',
+                top: '13%',
+                containLabel: true
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                  type: 'shadow'
+                },
+                formatter: function (params: any) {
+                  var tar = params[0];
+                  return tar.name + ' : ' + tar.value;
+                }
+            },
+            xAxis: {
+                type: 'category',
+                data: [t('dashboard:home:planned'), t('dashboard:home:executed')],
+                axisLabel: {
+                    fontSize: 14
+                }
+            },
+            yAxis: {
+                type: 'value',
+                axisLabel: {
+                    fontSize: 14
+                }
+            },
+            series: [
+                {
+                data: [3, 6],
+                type: 'bar'
+                }
+            ]
+        };
+        
+        option && myChart.setOption(option);
+        
+    }, [width,])
+    
+    return {
     }
 }

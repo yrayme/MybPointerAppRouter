@@ -1,10 +1,8 @@
-'use client'
-import React, { useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import clsx from "clsx";
 import { PaginationProps } from "@/interfaces";
 import AllIcons from "../Icons";
 import { useTranslation } from "next-i18next";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export const Pagination: React.FC<PaginationProps> = ({
     takeCount,
@@ -13,15 +11,10 @@ export const Pagination: React.FC<PaginationProps> = ({
     setPagActual,
 }) => {
     const [Pagination, setPagination] = useState<JSX.Element[]>([]);
-    const searchParams = useSearchParams();
-    const params = new URLSearchParams(searchParams);
-    const pathname = usePathname();
-    const { replace } = useRouter();
     const { t } = useTranslation();
-
     useEffect(() => {
         CreatePagination();
-    }, [total, params.get('page')]);
+    }, [total, pagActual]);
 
     const CreatePagination = () => {
         const pagination = [];
@@ -40,95 +33,65 @@ export const Pagination: React.FC<PaginationProps> = ({
                 key={i}
                 className={clsx(
                     "px-2 cursor-pointer font-medium text-base flex items-center justify-center",
-                    Number(params.get('page')) === i
+                    pagActual === i
                         ? "w-6 h-6 bg-primary rounded text-white "
                         : "text-black"
                 )}
-                onClick={() => handlePathnamePage(i)}
+                onClick={() => setPagActual(i)}
             >
                 {i + 1}
             </div>
         )
     }
 
-    const handlePathnamePage = (page: number) => {
-        params.set('page', (page).toString());
-        replace(`${pathname}?${params.toString()}`);
-    }
-
     const totalPag = Math.floor((Number(total) - 1) / Number(takeCount)) + 1;
 
     return (
-        <div>
+        <div className="mt-1">
             {totalPag >= 1 && (
                 <div className="mt-2 flex justify-between items-center">
-                    <div className="flex flex-row justify-start p-2 border-none rounded-md gap-x-2">
+                    <div className="flex flex-row justify-start p-2 border-none rounded-md gap-x-3 items-center">
                         <div
                             className={clsx(
                                 {
-                                    "cursor-pointer font-bold f-18 text-primary": Number(params.get('page')) > 0,
+                                    "cursor-pointer font-bold f-18 text-primary": pagActual > 0,
                                 },
                                 {
-                                    "cursor-default font-bold f-18 text-gray-4": Number(params.get('page')) == 0,
+                                    "cursor-default font-bold f-18 text-gray-1": pagActual == 0,
                                 },
-                                "flex items-center"
+                                "flex items-center h-8 w-8 bg-white justify-center rounded-md border bordee-gray-1"
                             )}
                             onClick={() => {
-                                if (Number(params.get('page')) > 0) {
-									handlePathnamePage(Number(params.get('page')) - 1);
+                                if (pagActual > 0) {
+                                    setPagActual((prev: number) => prev - 1);
                                 }
                             }}
                         >
-                            <div
-                                className={clsx(
-                                    "mr-3 h-5 w-5 ",
-                                    {
-                                        "cursor-pointer font-bold f-18 text-primary": Number(params.get('page')) > 0,
-                                    },
-                                    {
-                                        "cursor-default font-bold f-18 text-gray-4": Number(params.get('page')) == 1,
-                                    }
-                                )}
-                            >
-                                <AllIcons name="ArrowDownIcon" className="h-5 w-5 transform rotate-90" />
-                            </div>
+                            <AllIcons name="ArrowDownIcon" className="h-5 w-5 transform rotate-90 text-gray-4" />
+                        </div>                      
+                        <div className="flex flex-row justify-end">
+                            <p className="text-sm md:text-sm text-black">
+                                {t("common:pagination", { start: pagActual + 1, end: totalPag })}
+                            </p>
                         </div>
-                        <div className="flex gap-x-2">{Pagination.map((pag) => pag)}</div>
                         <div
                             className={clsx(
                                 {
-                                    "cursor-pointer font-bold f-18  text-primary": Number(params.get('page')) < totalPag - 1,
+                                    "cursor-pointer font-bold f-18  text-primary": pagActual < totalPag - 1,
                                 },
                                 {
-                                    "cursor-default font-bold f-18  text-gray-4": Number(params.get('page')) === totalPag - 1,
+                                    "cursor-default font-bold f-18  text-gray-1": pagActual === totalPag - 1,
                                 },
-                                "flex items-center"
+                                "flex items-center h-8 w-8 bg-white justify-center rounded-md border bordee-gray-1"
                             )}
                             onClick={() => {
-                                if (Number(params.get('page')) < totalPag - 1) {
-									handlePathnamePage(Number(params.get('page')) + 1);
+                                if (pagActual < totalPag - 1) {
+                                    setPagActual((prev: number) => prev + 1);
                                 }
                             }}
                         >
-                            <div
-                                className={clsx(
-                                    "ml-3 h-5 w-5 ",
-                                    {
-                                        " text-primary": Number(params.get('page')) < totalPag - 1,
-                                    },
-                                    {
-                                        " text-dark-60": Number(params.get('page')) == totalPag - 1,
-                                    }
-                                )}
-                            >
-                                <AllIcons name="ArrowDownIcon" className="h-5 w-5 transform -rotate-90" />
-                            </div>
+                            <AllIcons name="ArrowDownIcon" className="h-5 w-5 transform -rotate-90 text-gray-4" />
                         </div>
-                    </div>
-                    <div className="flex flex-row justify-end">
-                        <p className="text-sm md:text-base text-gray-4">
-                            {t("common:pagination", { start: Number(params.get('page')) + 1, end: totalPag })}
-                        </p>
                     </div>
                 </div>
             )}

@@ -13,7 +13,7 @@ export default function Error({
   useEffect(() => {
     // Log the error to an error reporting service
     console.error("errorComponent", error)
-    getApiError(error)
+    // getApiError(error)
   }, [error])
  
   return (

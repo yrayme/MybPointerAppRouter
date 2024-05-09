@@ -28,7 +28,7 @@ const Settings = () => {
   ])
   return (
     <div>
-      <div className='mt-16 w-full'>
+      <div className='mt-10 w-full'>
         <Tabs 
             tabsList={categories}
         />

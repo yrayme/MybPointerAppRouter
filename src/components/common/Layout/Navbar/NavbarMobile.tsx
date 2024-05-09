@@ -10,14 +10,21 @@ import { useTranslation } from 'react-i18next';
 import { useSession } from 'next-auth/react';
 import { NotificationIcon } from '../../Notification';
 import { capitalizeFirstLetter } from '@/utils/getCapitalizeFirstLetter';
+import { useParams, usePathname } from 'next/navigation';
+import { useLayoutContext } from '@/contexts/LayoutContext';
 
 interface NavbarMobileProps {
     pages: MenuItems[];
 
 }
 const NavbarMobile: React.FC<NavbarMobileProps> = ({ pages }) => {
+    const { optionName } = useLayoutContext();
     const { t } = useTranslation();
     const { data: session } = useSession();
+    const pathname = usePathname();
+    const { locale } = useParams();
+    const routes = ["/dashboard", "/home"];
+    const currentRoute = pathname.replace(`/${locale}`, "");
     return (
         <div className=''>
             <div className='flex justify-between items-center bg-white p-2'>
@@ -26,14 +33,18 @@ const NavbarMobile: React.FC<NavbarMobileProps> = ({ pages }) => {
                 </div>
                 <div className='flex gap-x-5 items-center'>
                     <div className='flex items-center gap-4'>
-                        <NotificationIcon/>
+                        <NotificationIcon />
                         <AllIcons name="ChatIcon" className='h-7 w-7 text-black' />
                         <ButtonSettings mobile />
                     </div>
                 </div>
             </div>
-            <div className='flex items-center justify-between mt-4 px-2'> 
-                <p className='text-xl font-semibold'>{`${t('common:welcome')}, ${capitalizeFirstLetter(session?.user?.name as string) ?? ''}`}</p>
+            <div className='flex items-center justify-between mt-4 px-2 gap-4'>
+                {!routes.includes(currentRoute) ? (
+                    <p className='text-xl font-semibold'>{optionName}</p>
+                ) : (
+                    <p className='text-xl font-semibold'>{`${t('common:welcome')}, ${capitalizeFirstLetter(session?.user?.name as string) ?? ''}`}</p>
+                )}
                 <div className='w-96'>
                     <InputText
                         name="seach"

@@ -58,7 +58,7 @@ export const ComboBoxAutocompleteAsync: FC<ComboBoxAutocompleteProps> = ({
             </Combobox.Button>
             <Combobox.Input
               autoComplete="off"
-              className="w-full border-none py-3 px-4 h-12 text-gray-900 focus:ring-0 focus-visible:outline-none"
+              className="w-full border-none py-3 px-4 h-10 text-gray-900 focus:ring-0 focus-visible:outline-none"
               displayValue={(option) => value !== "" ? getOptionLabel(option) : ""}
               onChange={(e) => {
                 optimizedFn(e.target.value);

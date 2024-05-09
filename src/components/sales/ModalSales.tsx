@@ -21,12 +21,13 @@ interface ModalSalesProps {
     open: boolean;
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
     edit?: SaleForm;
+    refetch: <TPageData>(options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined) => Promise<QueryObserverResult<any, unknown>>
 }
 
-const ModalSales: React.FC<ModalSalesProps> = ({ open, setOpen, edit }) => {
+const ModalSales: React.FC<ModalSalesProps> = ({ open, setOpen, refetch, edit }) => {
     const { data: session } : any  = useSession();
     const { t } = useTranslation();
-    const { register, handleSubmit, handleSubmitData, errors, isLoading, isValid, control, setValue, getValues, getProducts, setProductLabel, productLabel } = useAddSale(open, setOpen, edit);
+    const { register, handleSubmit, handleSubmitData, errors, isLoading, isValid, control, setValue, getValues, getProducts, setProductLabel, productLabel } = useAddSale(open, setOpen, refetch, edit);
     
     return (
         <Transition appear show={open} as={Fragment}>

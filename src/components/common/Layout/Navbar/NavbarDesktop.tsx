@@ -26,7 +26,7 @@ const NavbarDesktop = () => {
                 {!routes.includes(currentRoute) ? (
                     <p className='text-xl font-semibold'>{optionName}</p>
                 ) : (
-                    <p className='text-xl font-semibold'>{`${t('common:welcome')}, ${capitalizeFirstLetter(session?.user?.name as string)?? ''}`}</p>
+                    <p className='text-xl font-semibold'>{`${t('common:welcome')}, ${capitalizeFirstLetter(session?.user?.name as string) ?? ''}`}</p>
                 )}
             </div>
             <div className='flex gap-x-5 items-center flex-wrap justify-end'>
@@ -39,10 +39,7 @@ const NavbarDesktop = () => {
                     />
                 </div>
                 <div className='flex items-center gap-4'>
-                    <div className='flex gap-2 items-center'>
-                        <NotificationIcon />
-                        <p className='text-sm'>{t('common:notifications')}</p>
-                    </div>
+                    <NotificationIcon />
                     <div>
                         <p className='text-gray-4'>|</p>
                     </div>

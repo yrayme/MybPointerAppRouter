@@ -30,7 +30,7 @@ const InputTime: React.FC<
   const params = useParams();
   const { locale } = params;
   const StylesInput = clsx(
-    `px-4 py-3 w-full border border-gray-1 rounded-lg text-sm placeholder:text-sm h-12 bg-white flex justify-between items-center gap-4`,
+    `px-4 py-3 w-full border border-gray-1 rounded-lg text-sm placeholder:text-sm h-10 bg-white flex justify-between items-center gap-4`,
     !error ? "placeholder-gray-1" : "placeholder-red-primary", 
     !error
       ? "focus:outline-none focus:border-primary"

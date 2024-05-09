@@ -71,8 +71,8 @@ export const useCalendar = (session: any) => {
         async() =>
           await allCalendar(
             moment(date).format("YYYY-MM"), 
-            // session?.user?.type_rol === Roles.coordinator ? statusCoordinator !== "all" ? statusCoordinator : "" : "",
-            // session?.user?.type_rol === Roles.promotor ? seller !== "" ? seller : "" : "",
+            session?.user?.type_rol === Roles.coordinator ? statusCoordinator !== "all" ? statusCoordinator : "" : "",
+            session?.user?.type_rol === Roles.promotor ? seller !== "" ? seller : "" : "",
         ),
         {
             keepPreviousData: false,

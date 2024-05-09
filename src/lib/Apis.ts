@@ -5,6 +5,7 @@ import { auth, signIn, signOut } from '../../auth';
 import instance from './AxiosConfig';
 import { revalidatePath } from 'next/cache';
 import { User } from 'next-auth';
+import { redirect } from 'next/navigation';
 
 export const login = async (formdata: { email: string, password: string, redirectTo: string }) => {
   return await signIn("credentials", formdata)
@@ -15,6 +16,11 @@ export const logout = async () => {
 }
 
 export const isLoggedIn = async () => {
+  const session = await auth();
+  if (!session) redirect('/auth/login');
+}
+
+export const getSession = async() => {
   const session = await auth();
   return session;
 }
@@ -270,6 +276,7 @@ export const allAdminCompany = async(page: number, limit: number, showNonActive?
   const showNonActiveRequest = showNonActive ? `?show-non-active=true` : "";
   return instance().get(`/admin_company/all-admin-company/${page}/${limit}${showNonActiveRequest}`);
 }
+
 export const createAdminCompany = async(data: AddAdministratorForm): Promise<GeneralCreateResponse> => {
   return await instance().post("/admin_company/admin-company-create", data);
 }

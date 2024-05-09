@@ -26,7 +26,7 @@ export const Input: React.FC<
 }) => {
   const registerInput = register && register(name);
   const StylesInput = clsx(
-    `px-4 py-3 w-full border border-gray-1 rounded-lg text-sm placeholder:text-sm ${!textArea && "h-12"} resize-none placeholder:text-gray-4`,
+    `px-4 w-full border border-gray-1 rounded-lg text-sm placeholder:text-sm ${!textArea && "h-10"} resize-none placeholder:text-gray-4`,
     !error ? "placeholder-gray-1" : "placeholder-red-primary",
     !error
       ? "focus:outline-none focus:border-primary"

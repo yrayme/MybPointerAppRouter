@@ -19,18 +19,10 @@ interface Filterprops {
 const Filter: React.FC<Filterprops> = ({ label, optimizedFn, register, client, stateDate, setState }) => {
     const { t } = useTranslation();
     return (
-        <div className='flex justify-end items-center md:gap-6 gap-4 md:flex-row flex-col'>
-            <div className={`w-full ${!client && "md:w-3/4"} `}>
-                <InputText
-                    label={t("common:buttons:search")}
-                    name="search"
-                    onChangeCustom={(e) => optimizedFn(e.target.value)}
-                    register={register}
-                />
-            </div>
+        <div className='flex sm:justify-end items-start sm:items-center md:gap-6 gap-4 md:flex-row flex-col mt-2'>
             {!client && (
-                <div className='w-full md:w-1/4 flex justify-end'>
-                    <DateRangeComponent label={t("goals:filter:date")} goal stateDate={stateDate} setState={setState}/>
+                <div className='flex justify-end'>
+                    <DateRangeComponent stateDate={stateDate} setState={setState} />
                 </div>
             )}
         </div>

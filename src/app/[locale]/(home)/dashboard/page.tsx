@@ -1,6 +1,4 @@
-import React, { Suspense } from 'react'
-import Dashboard from './Dashboard'
-import LoaderSpinner from '@/components/common/Loader/LoaderSpinner'
+import React from 'react'
 
 export default async function page() {
   return (

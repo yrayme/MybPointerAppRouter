@@ -3,10 +3,10 @@ import React from 'react'
 export default function SkeletonTable() {
     return (
         <div className=''>
-            <div className={`drop-shadow-lg rounded-xl`}>
-                <div className='overflow-x-auto rounded-xl'>
+            <div className={``}>
+                <div className='overflow-x-auto '>
                     <table className='min-w-full divide-y border table-auto p-20'>
-                        <thead className='bg-primary-light border border-primary-light'>
+                        <thead className='bg-gray-4 border border-gray-light'>
                             <tr className='border'>
                                 {[...Array(4)].map((_, index) => (
                                     <th key={index} className='py-2 font-semibold border sm:text-base text-sm px-4'>

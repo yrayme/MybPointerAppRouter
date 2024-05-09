@@ -12,14 +12,14 @@ const Table: React.FC<TableProps> = ({ name, body, pagActual, setPagActual, getD
     
     return (
         <div className=''>
-            <div className={`drop-shadow-lg rounded-xl ${targetRef && "-mx-8 px-8 pt-8"}`} ref={targetRef}>
-                <div className='overflow-x-auto rounded-xl'>
-                    <table className='min-w-full divide-y border table-auto p-20'>
-                        <thead className='bg-primary-light border border-primary-light'>
+            <div className={`${targetRef && "-mx-8 px-8 pt-8"}`} ref={targetRef}>
+                <div className='overflow-x-auto'>
+                    <table className='min-w-full divide-y table-auto p-20'>
+                        <thead className='bg-gray-1 border border-gray-4'>
                             <tr className='border'>
                                 {columns[name].map((col: any, index: number) => {
                                     return (
-                                        <th key={index} className='py-2 font-semibold border sm:text-base text-sm px-4'>{col.name}</th>
+                                        <th key={index} className='py-3 font-normal border sm:text-base text-sm px-4 text-black'>{col.name}</th>
                                     )
                                 })}
                             </tr>
@@ -28,7 +28,7 @@ const Table: React.FC<TableProps> = ({ name, body, pagActual, setPagActual, getD
                             { body && body?.items?.length > 0 ? ( 
                                 body.items.map((row: any, rowIndex: number) => {
                                         return (
-                                            <tr key={rowIndex} className={`py-2 border ${!row.actions && "cursor-pointer"}`} onClick={() => !row.actions && !goal && getEdit(row)}>
+                                            <tr key={rowIndex} className={`py-2 border-b border-gray-1 ${!row.actions && "cursor-pointer"}`} onClick={() => !row.actions && !goal && getEdit(row)}>
                                                 {columns[name].map((column: any) => {
                                                     const value = row[column.id];
                                                     return (
@@ -43,7 +43,7 @@ const Table: React.FC<TableProps> = ({ name, body, pagActual, setPagActual, getD
                                                             </td>
                                                         ) : (
                                                             column.id === "full_name" && goal ? (
-                                                                <td key={column.id} className='text-start py-3 text-sm border px-4' onClick={() => goal && getEdit(row)}>
+                                                                <td key={column.id} className='text-start py-3 text-sm px-4' onClick={() => goal && getEdit(row)}>
                                                                     <div className='flex items-center justify-start'>
                                                                         {row.img && <img src={row.img} className='h-5 w-5 rounded-full'/>}
                                                                         <p>{value}</p>
@@ -51,7 +51,7 @@ const Table: React.FC<TableProps> = ({ name, body, pagActual, setPagActual, getD
                                                                 </td>
                                                             ) : (
                                                                 column.id === "goalPercentage" ? (
-                                                                    <td key={column.id} className='text-center py-3 text-sm border w-52'>
+                                                                    <td key={column.id} className='text-center py-3 text-sm w-52'>
                                                                         <div className='flex items-center justify-center gap-2'>
                                                                             <p className='text-xs font-semibold'>{value}%</p>                                                                        
                                                                             <div className="w-1/2 bg-gray-2 rounded-full h-2">
@@ -61,28 +61,28 @@ const Table: React.FC<TableProps> = ({ name, body, pagActual, setPagActual, getD
                                                                     </td>
                                                                 ) : (
                                                                     column.id === "input" ? (
-                                                                        <td key={column.id} className='py-3 text-sm border px-2 w-40'>
-                                                                            <div className='border border-gray-1 rounded-lg h-8 flex items-center px-2 w-40 md:w-64'>
-                                                                                <div className='flex w-full items-center'>
-                                                                                    <div className='w-[90%]'>
+                                                                        <td key={column.id} className='py-3 text-sm px-2 w-40'>
+                                                                            <div className='w-64'>
+                                                                                <div className='flex w-full items-center gap-2'>
+                                                                                    <div className='w-[80%]'>
                                                                                         <input
                                                                                             placeholder={t("goals:managers:placeholder")}
-                                                                                            className='w-full rounded-lg h-full placeholder-gray-1 placeholder:text-sm text-sm focus:outline-none focus:border-primary'
+                                                                                            className='w-full rounded-md h-8 placeholder-gray-4 placeholder:text-sm text-sm focus:outline-none focus:border-primary border border-gray-4 flex items-center px-2 '
                                                                                             onChange={(e) => onchangeInput &&  onchangeInput(e.target.value, row?._id?.$oid)}
                                                                                             value={valueGoal ? valueGoal[row?._id?.$oid] : ""}
                                                                                             disabled={row.disabled}
                                                                                         />
                                                                                     </div>
-                                                                                    <div className='w-[10%] flex justify-end' onClick={() => (handleSubmitGoal) && handleSubmitGoal(row)}>
-                                                                                        <Tooltip position='left' text={t("common:buttons:save")}>
-                                                                                            <AllIcons name='SaveIcon' className='h-4 w-4 text-blue-primary'/>
-                                                                                        </Tooltip>
+                                                                                    <div className='w-[15%] flex justify-center bg-gray-1 h-8 rounded-md items-center' onClick={() => (handleSubmitGoal) && handleSubmitGoal(row)}>
+                                                                                        {/* <Tooltip position='left' text={t("common:buttons:save")}> */}
+                                                                                            <AllIcons name='SaveIcon' className='h-4 w-4 text-gray-4'/>
+                                                                                        {/* </Tooltip> */}
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
                                                                         </td>
                                                                     ) : (
-                                                                        <td key={column.id} className={`text-start py-3 text-sm border px-4 ${column.id === "team_goal" && `${row.color} font-medium`}`} onClick={() => goal && getEdit(row)}>{value}</td>
+                                                                        <td key={column.id} className={`text-start py-4 text-sm px-4 ${column.id === "team_goal" && `${row.color} font-medium`}`} onClick={() => goal && getEdit(row)}>{value}</td>
                                                                     )
                                                                 )
                                                             )

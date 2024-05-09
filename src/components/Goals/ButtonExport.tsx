@@ -15,8 +15,8 @@ const ButtonExport: React.FC<ButtonProps> = ({ toPDF, exportExcel }) => {
         <div>
             <Menu as="div" className="relative inline-block text-left z-10">
                 <div>
-                    <Menu.Button className="flex gap-2">  
-                        <AllIcons name='DownloadIcon' className={`h-5 w-5 text-gray-4`}/>
+                    <Menu.Button className="flex gap-2 bg-primary px-3 py-2 rounded-md items-center">  
+                        <AllIcons name='DownloadIcon' className={`h-4 w-4 text-black`}/>
                         <p className='font-medium text-base'>{t("common:filter:export")}</p>
                     </Menu.Button>
                 </div>

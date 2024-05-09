@@ -35,7 +35,6 @@ export const useAllAdministrators = () => {
           allAdminCompany(
             pagActual,
             takeCount,
-            true
           ),
         {
           keepPreviousData: false,

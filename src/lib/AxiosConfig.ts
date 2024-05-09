@@ -10,7 +10,7 @@ const instance = (contentType = "application/json") => {
     baseURL: process.env.NEXT_PUBLIC_API,
     headers: {
       ...config.headers.common,
-      "Content-Type": contentType,
+      // ["Content-Type"]: contentType,
     },
   });
 
@@ -18,7 +18,7 @@ const instance = (contentType = "application/json") => {
     (config) =>
       auth()
         .then((res: any) => {
-          if (res?.user?.accessToken) return config.headers.Authorization = "Bearer " + decodeURIComponent(res?.user?.accessToken);
+          if (res?.user?.accessToken) return config.headers.Authorization = "Bearer " + res?.user?.accessToken;
         })
         .then(() => config),
     (error) => {
@@ -35,8 +35,8 @@ const instance = (contentType = "application/json") => {
       return response.data;
     },
     async (error) => {
-      // console.log("error.response.status", error.response)
-      if (error.response.status === 401) {
+      console.log("error.response.status", error.response.status)
+      if (error.response.status === 401 || error.response.status === 422) {
         await logout();
         redirect("/auth/login")
 

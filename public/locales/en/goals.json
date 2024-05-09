@@ -22,7 +22,7 @@
         "goal": "Monthly goal",
         "team": "Team goals",
         "input": "Input goal",
-        "placeholder": "Enter goal",
+        "placeholder": "Enter goal here",
         "phone": "Phone number"
     },
     "sellers": {        

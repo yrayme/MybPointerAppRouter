@@ -16,7 +16,7 @@ ButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>
     title,
     iconLeft,
     colorIcon,
-    fontColor = "text-white",
+    fontColor = "text-black",
     ...props
   }) => {
 

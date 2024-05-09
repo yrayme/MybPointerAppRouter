@@ -6,6 +6,8 @@ import UpcommingComponent from './components/UpcommingComponent';
 import SkeletonUpcomming from './components/SkeletonUpcomming';
 import IndicatorsToday from './components/IndicatorsToday';
 import SkeletonIcdicatorsToday from './components/SkeletonIcdicatorsToday';
+import { auth } from '../../../../../auth';
+import { isLoggedIn } from '@/lib/Apis';
 
 export default async function layout({ children, indicators }: Readonly<{
     children: React.ReactNode;
@@ -16,7 +18,6 @@ export default async function layout({ children, indicators }: Readonly<{
             <Suspense fallback={<SkeletonIndicators />}>
                 {indicators}
             </Suspense>
-            {/* <Dashboard /> */}
             <div className='flex sm:gap-6 gap-0 sm:flex-col flex-col-reverse'>
                 <Suspense fallback={<SkeletonUpcomming />}>
                     <UpcommingComponent />

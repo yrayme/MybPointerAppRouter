@@ -138,6 +138,7 @@ export const useGoalManagers = (searchName: string, stateDate: Range) => {
   useEffect(() => {
     if (data){
       if (data.items){
+        console.log("fata", data)
         const dataItems = data.items.map((res: ItemGoalManager) => {
           return {
             ...res,

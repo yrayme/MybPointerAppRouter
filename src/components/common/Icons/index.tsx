@@ -40,6 +40,14 @@ import CreatePosIcon from './CreatePosIcon';
 import EventIcon from './EventIcon';
 import MedicalIcon from './MedicalIcon';
 import CrossIcon from './CrossIcon';
+import MonthlyIcon from './MonthlyIcon';
+import AnualIcon from './AnualIcon';
+import ReportDataIcon from './ReportDataIcon';
+import TerraceIcon from './TerraceIcon';
+import AppTrackerIcon from './AppTrackerIcon';
+import DoctorsIcon from './DoctorsIcon';
+import CompaniesIcon from './CompaniesIcon';
+import MapIcon from './MapIcon';
 
 interface allIconsProps {
   name: string;
@@ -50,6 +58,8 @@ const AllIcons: React.FC<allIconsProps> = ({
   className
 }) => {
   const icons = {
+    AnualIcon,
+    AppTrackerIcon,
     AppointmentIcon,
     ArrowDownIcon,
     ArrowUpIcon,
@@ -64,10 +74,12 @@ const AllIcons: React.FC<allIconsProps> = ({
     CheckCircleOutlineIcon,
     CloseIcon,
     CloseCircleOutlineIcon,
+    CompaniesIcon,
     CreatePosIcon,
     CrossIcon,
     DashboardIcon,
     DeleteIcon,
+    DoctorsIcon,
     DownloadIcon,
     EarthIcon,
     EventIcon,
@@ -75,19 +87,23 @@ const AllIcons: React.FC<allIconsProps> = ({
     HomeIcon,
     KeyIcon,
     LocationIcon,
+    MapIcon,
     MedicalIcon,
     MenuIcon,
+    MonthlyIcon,
     NotificationIcon,
     LogoutIcon,
     PencilIcon,
     PeopleIcon,
     PersonIcon,
     PlusIcon,
+    ReportDataIcon,
     ReportIcon,
     SalesIcon,
     SaveIcon,
     SearchIcon,
     SettingsIcon,
+    TerraceIcon,
     TrophyIcon,
     UploadIcon,
     WorldIcon,
