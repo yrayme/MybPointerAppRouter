@@ -7,6 +7,7 @@ import ButtonExport from './ButtonExport';
 import Filter from './Filter';
 import AllIcons from '../common/Icons';
 import { InputText } from '../common/form/input-text';
+import ButtonFilters from '../common/ButtonFilters/ButtonFilters';
 
 const GoalsManagers = () => {
     const { t } = useTranslation(["common", "goals", "dashboard"]);
@@ -30,10 +31,8 @@ const GoalsManagers = () => {
                     </div>
                 </div>
                 <div className='flex justify-end gap-5'>
-                    <div className='flex gap-2 cursor-pointer border border-gray-1 rounded-md items-center px-3 bg-white' onClick={() => setShowFilter(!showFilter)}>
-                        <AllIcons name='EarthIcon' className={`h-5 w-5 ${showFilter ? "text-primary" : "text-gray-4"}`} />
-                        <p className={`font-medium text-base ${showFilter ? "text-primary" : "text-gray-4"}`}>{showFilter ? t("common:filter:hide") : t("common:filter:show")}</p>
-                        <AllIcons name='ArrowDownIcon' className='h-5 w-5 text-gray-4' />
+                    <div className='hidden md:flex'>
+                        <ButtonFilters showFilter={showFilter} setShowFilter={setShowFilter} />
                     </div>
                     <ButtonExport toPDF={toPDF} exportExcel={handleExportExcel} />
                 </div>

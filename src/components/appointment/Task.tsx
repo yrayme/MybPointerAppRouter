@@ -3,8 +3,10 @@ import { TaskProps } from '@/interfaces';
 import { useTranslation } from 'next-i18next';
 import React from 'react'
 import { Draggable } from 'react-beautiful-dnd';
+import AllIcons from '../common/Icons';
+import moment from 'moment';
 
-const Task: React.FC <TaskProps> = ({ task, index, color, setOpen, setDataEdit }) => {
+const Task: React.FC<TaskProps> = ({ task, index, color, setOpen, setDataEdit }) => {
     const { t } = useTranslation();
     return (
         <Draggable draggableId={task?._id?.$oid} index={index}>
@@ -13,20 +15,43 @@ const Task: React.FC <TaskProps> = ({ task, index, color, setOpen, setDataEdit }
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
-                    className={`border border-gray-1 rounded-lg shadow-lg ${snapshot.isDragging ? "bg-gray-2" : "bg-white"}`}
+                    className={`border border-gray-1 rounded-md ${snapshot.isDragging ? "bg-white" : "bg-gray-3"} p-1`}
                     draggable={snapshot.isDragging}
-                    onClick={() => {setOpen(true); setDataEdit({data: task, newEvent: false})}}
+                    onClick={() => { setOpen(true); setDataEdit({ data: task, newEvent: false }) }}
                 >
-                    <div 
-                        className='p-2 rounded-lg flex flex-col gap-2'
+                    <div
+                        className='p-2 flex flex-col gap-2'
                         style={{
-                            borderBottom: `4px solid ${color}`
+                            borderLeft: `4px solid ${color}`
                         }}
                     >
-                        <p className='font-medium text-sm'>{t('appointments:customer')}: <span className='font-normal'>{task.client_name}</span></p>
-                        <p className='font-medium text-sm'>{t('appointments:product')}: <span className='font-normal'>{task?.product?.name}</span></p>
-                        <div>
-                            <p className='font-medium text-xs text-right text-blue-primary'>{task?.date_init1?.$date}</p>
+                        <div className='flex justify-between items-center flex-wrap'>
+                            <div className='flex gap-1 items-center'>
+                                <AllIcons name='CustomerIcon' className='h-3 w-3 text-black'/>
+                                <p className='font-medium text-xs'>{t('appointments:customer')}</p>
+                            </div>
+                            <p className='font-medium text-xs'>{task.client_name}</p>
+                        </div>
+                        <div className='flex justify-between items-center flex-wrap'>
+                            <div className='flex gap-1 items-center'>
+                                <AllIcons name='BoxIcon' className='h-3 w-3 text-black'/>
+                                <p className='font-medium text-xs'>{t('appointments:product')}</p>
+                            </div>
+                            <p className='font-medium text-xs'>{task?.product?.name}</p>
+                        </div>
+                        <div className='flex justify-between items-center flex-wrap'>
+                            <div className='flex gap-1 items-center'>
+                                <AllIcons name='CalendarIcon' className='h-3 w-3 text-black'/>
+                                <p className='font-medium text-xs'>{t('appointments:day')}</p>
+                            </div>
+                            <p className='font-medium text-xs'>{task?.date_init1?.$date}</p>
+                        </div>
+                        <div className='flex justify-between items-center flex-wrap'>
+                            <div className='flex gap-1 items-center'>
+                                <AllIcons name='TimeIcon' className='h-3 w-3 text-black'/>
+                                <p className='font-medium text-xs'>{t('appointments:time')}</p>
+                            </div>
+                            <p className='font-medium text-xs'>{moment.utc(task?.date_init?.$date).format("HH:mm A")}</p>
                         </div>
                     </div>
                 </div>

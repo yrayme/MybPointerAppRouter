@@ -58,7 +58,7 @@ export const InputSelect: React.FC<
           }}
           disabled={disabled}
           className={clsx(
-            "block appearance-none w-full bg-white border border-gray-1 text-black py-3 px-4 focus:outline-none h-10 text-sm placeholder-gray-1",
+            "block appearance-none w-full bg-white border border-gray-1 text-black focus:outline-none h-10 text-sm placeholder-gray-1",
             IconLeft ? "pl-10 pr-4" : "px-4",
             isCustomRounded ? "" : "rounded-lg",
             className,

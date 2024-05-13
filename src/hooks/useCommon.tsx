@@ -1,9 +1,9 @@
 'use client'
 import { ImagesCommon } from "@/constants";
-import { Roles, colorsHome, typeMenu } from "@/constants/general";
+import { Roles, typeMenu } from "@/constants/general";
 import { useCommonContext } from "@/contexts/CommonContext";
 import { useLayoutContext } from "@/contexts/LayoutContext";
-import { Columns, IndicatorsProps, ListsResponse, MenuItems, SelectLists, SubmenuSidebarProps } from "@/interfaces";
+import { Columns, IndicatorsProps, ListsResponse, MenuItems, SelectLists, SubmenuSidebarProps, notificationCardProps } from "@/interfaces";
 import { allResources, getCities, getCountries, getEntityType, getStates, getStatusAppointment, getStatusEvent, getTypes } from "@/lib/Apis";
 import { GET_COUNTRIES, GET_ENTITY_TYPE, GET_EVENT_TYPES, GET_RESOURCES, GET_STATUS_APPOINTMENT, GET_STATUS_EVENT } from "@/lib/keys";
 import { getApiError } from "@/utils/getApiErrors";
@@ -28,6 +28,10 @@ import {
 } from 'date-fns';
 import { useQuery } from "react-query";
 import useWindowSize from "./useWindowSize";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup"
+import { CardEvent, CardNotification } from "@/components/common/Notification";
 
 export const useSidebar = () => {
     const router = useRouter();
@@ -53,7 +57,6 @@ export const useSidebar = () => {
                     ...menu,
                     name: t("common:menu:dashboard"),
                     icon: "DashboardIcon",
-                    color: colorsHome.pink,
                     routes: ["/dashboard", "/en/dashboard"]
                 }
             case typeMenu.calendar:
@@ -61,7 +64,6 @@ export const useSidebar = () => {
                     ...menu,
                     name: t("common:menu:calendar"),
                     icon: "CalendarIcon",
-                    color: colorsHome.yellow,
                     routes: ["/calendar", "/en/calendar"]
                 }
             case typeMenu.appointment_tracker:
@@ -69,7 +71,6 @@ export const useSidebar = () => {
                     ...menu,
                     name: t("common:menu:appointment"),
                     icon: "AppointmentIcon",
-                    color: colorsHome.orange,
                     routes: ["/appointment"]
                 }
             case typeMenu.goals:
@@ -77,7 +78,6 @@ export const useSidebar = () => {
                     ...menu,
                     name: t("common:menu:goals"),
                     icon: "TrophyIcon",
-                    color: colorsHome.green_light,
                     routes: ["/goals", "/goals/sellers/[id]", "/goals/clients/[id]", "/goals/client/[id]"]
                 }
             case typeMenu.locations:
@@ -85,7 +85,6 @@ export const useSidebar = () => {
                     ...menu,
                     name: t("common:menu:locations"),
                     icon: "LocationIcon",
-                    color: colorsHome.green,
                     routes: ["/locations"]
                 }
             case typeMenu.cross_sales:
@@ -93,7 +92,6 @@ export const useSidebar = () => {
                     ...menu,
                     name: t("common:menu:cross"),
                     icon: "CrossIcon",
-                    color: colorsHome.blue,
                     routes: ["/cross"]
                 }
             case typeMenu.sales:
@@ -101,7 +99,6 @@ export const useSidebar = () => {
                     ...menu,
                     name: t("common:menu:sales"),
                     icon: "SalesIcon",
-                    color: colorsHome.green,
                     routes: ["/sales"]
                 }
             case typeMenu.users:
@@ -111,7 +108,6 @@ export const useSidebar = () => {
                 return {
                     ...menu,
                     name: t("common:menu:users"),
-                    color: colorsHome.purple,
                     icon: "PeopleIcon",
                     submenu: newSubmenu
                 }
@@ -1053,16 +1049,16 @@ export const useHome = () => {
 }
 
 
-export const useBarGraphic = () => {  
+export const useBarGraphic = () => {
     const { t } = useTranslation()
     type EChartsOption = echarts.EChartsOption;
-    const { width } = useWindowSize();  
-  
-    useEffect(() => { 
+    const { width } = useWindowSize();
+
+    useEffect(() => {
         var chartDom = document.getElementById('echart-bar')!;
         var myChart = echarts.init(chartDom);
         var option: EChartsOption;
-        
+
         option = {
             color: ["#88C946", "#fffff"],
             grid: {
@@ -1075,11 +1071,11 @@ export const useBarGraphic = () => {
             tooltip: {
                 trigger: 'axis',
                 axisPointer: {
-                  type: 'shadow'
+                    type: 'shadow'
                 },
                 formatter: function (params: any) {
-                  var tar = params[0];
-                  return tar.name + ' : ' + tar.value;
+                    var tar = params[0];
+                    return tar.name + ' : ' + tar.value;
                 }
             },
             xAxis: {
@@ -1097,16 +1093,148 @@ export const useBarGraphic = () => {
             },
             series: [
                 {
-                data: [3, 6],
-                type: 'bar'
+                    data: [3, 6],
+                    type: 'bar'
                 }
             ]
         };
-        
+
         option && myChart.setOption(option);
-        
+
     }, [width,])
-    
+
     return {
+    }
+}
+
+
+export const useNotification = () => {
+    const { t } = useTranslation();
+    const [showFilter, setShowFilter] = useState<boolean>(false);
+    const [searchName, setSearchName] = useState<string>("");
+    const [options, setOptions] = useState([
+        {
+            id: 1,
+            name: t('common:notifications:all'),
+            selected: true
+        },
+        {
+            id: 2,
+            name: t('common:notifications:title'),
+            selected: false,
+            quantity: 3
+        },
+        {
+            id: 3,
+            name: t('common:notifications:alert'),
+            selected: false,
+            quantity: 2
+        },
+        {
+            id: 4,
+            name: t('common:notifications:announcement'),
+            selected: false
+        },
+        {
+            id: 5,
+            name: t('common:notifications:news'),
+            selected: false,
+            quantity: 5
+        },
+    ]);
+    const schema = Yup.object().shape({
+        search: Yup.string(),
+    });
+    const { register, setValue } = useForm({
+        mode: "onChange",
+        resolver: yupResolver(schema),
+    });
+
+    const handleOptions = (id: number) => {
+        let updateOptions = options.map(item => {
+            return item.id === id ? { ...item, selected: true } : { ...item, selected: false }
+        })
+        setOptions(updateOptions);
+    }
+
+    const debounce = (func: any) => {
+        let timerT: ReturnType<typeof setTimeout> | null;
+        return function (this: any, ...args: any[]) {
+            if (timerT) clearTimeout(timerT);
+            timerT = setTimeout(() => {
+                timerT = null;
+                func.apply(this, args);
+            }, 500);
+        };
+    };
+
+    const handleChange = (value: string) => {
+        setSearchName(value);
+    };
+
+    const optimizedFn = useCallback(debounce(handleChange), []);
+
+    const notifications: notificationCardProps[] = [
+        {
+            id: 1,
+            type: "POS",
+            name: "Victor Vivas",
+            date: "1 hours ago"
+        },
+        {
+            id: 2,
+            type: "Notification",
+            name: "Rosa Vivaldi",
+            role: "Manager",
+            message: "Remember that we will have our next Kick-off meeting in one week. All you need to know about this Kick-off will be found in your emails in the next few hours.",
+            date: "3 hours ago"
+        },
+        {
+            id: 3,
+            type: "Event",
+            name: "Victor Vivas",
+            date: "5 hours ago"
+        },
+        {
+            id: 4,
+            type: "Notification",
+            name: "Luis Bernando",
+            role: "Director",
+            message: "Congratulations to Hector for achieving his goals for the week. 🥳",
+            date: "6 hours ago"
+        },
+        {
+            id: 5,
+            type: "Notification",
+            name: "Hector Bertonati",
+            role: "Director",
+            message: "I want to announce that this week Mariana is joining us, our new coworker.",
+            date: "6 hours ago"
+        },
+    ]
+
+    const showCardbyType = (data: notificationCardProps) => {
+        switch (data.type) {
+            case "POS":
+                return <CardEvent data={data}/>
+            case "Event":
+                return <CardEvent data={data}/>
+            case "Notification":
+                return <CardNotification data={data}/>
+
+            default:
+                break;
+        }
+    }
+
+    return {
+        options,
+        handleOptions,
+        showFilter,
+        setShowFilter,
+        register,
+        optimizedFn,
+        notifications,
+        showCardbyType
     }
 }

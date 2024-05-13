@@ -1,3 +1,4 @@
+'use client'
 import SkeletonTable from '@/components/common/Table/SkeletonTable'
 import React from 'react'
 

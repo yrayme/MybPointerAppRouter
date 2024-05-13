@@ -12,6 +12,7 @@ import { Button } from '../Button';
 import moment from 'moment';
 import { useDateRange } from '@/hooks/useCommon';
 import { useParams } from 'next/navigation';
+import { isSameDay } from 'date-fns';
 
 interface DateRangeProps {
     label?: string;
@@ -32,16 +33,37 @@ const DateRangeComponent: React.FC<DateRangeProps> = ({ label, goal, setState, s
         const formatStart = startDate.format("ddd D MMM");
         const endDate = moment(stateDate.endDate);
         const formatEnd = endDate.format("ddd D MMM");
+        const label = getLabelForDateRange(stateDate?.startDate || new Date(), stateDate?.endDate || new Date());
 
         return (
-            <div className='flex gap-x-2 items-center'>
-                <p className='text-xs font-medium'>{formatStart}</p>
-                <AllIcons name="ArrowDownIcon" className='h-5 w-5 text-gray-4 transform -rotate-90' />
-                <p className='text-xs font-medium'>{formatEnd}</p>
-                <AllIcons name='ArrowDownIcon' className='h-4 w-4 text-gray-4' />
+            <div className=''>
+                {label !== "No matching" ? (
+                    <div className='flex gap-x-2 items-center'>
+                        <p className='text-xs font-medium'>{label}</p>
+                        <AllIcons name='ArrowDownIcon' className='h-4 w-4 text-gray-4' />
+                    </div>
+                ) : (
+                    <div className='flex gap-x-2 items-center'>
+                        <p className='text-xs font-medium'>{formatStart}</p>
+                        <AllIcons name="ArrowDownIcon" className='h-5 w-5 text-gray-4 transform -rotate-90' />
+                        <p className='text-xs font-medium'>{formatEnd}</p>
+                        <AllIcons name='ArrowDownIcon' className='h-4 w-4 text-gray-4' />
+                    </div>
+                )}
             </div>
         )
     }
+
+    const getLabelForDateRange = (startDate: Date, endDate: Date): string => {
+        for (const range of staticRanges) {
+            const { startDate: startRange, endDate: endRange } = range.range();
+            if (isSameDay(startDate, startRange || new Date()) && isSameDay(endDate, endRange || new Date())) {
+                return range.label || "";
+            }
+        }
+
+        return "No matching";
+    };
 
     return (
         <div className=''>
@@ -69,7 +91,7 @@ const DateRangeComponent: React.FC<DateRangeProps> = ({ label, goal, setState, s
                         leaveFrom="transform opacity-100 scale-100"
                         leaveTo="transform opacity-0 scale-95"
                     >
-                        <Menu.Items className="absolute right-0 mt-2 w-[500px] rounded-md bg-white shadow-lg focus:outline-none ">
+                        <Menu.Items className="absolute left-0 mt-2 w-[500px] rounded-md bg-white shadow-lg focus:outline-none ">
                             <div className="p-3">
                                 <div className='flex justify-between items-center'>
                                     <div className='flex gap-x-2'>

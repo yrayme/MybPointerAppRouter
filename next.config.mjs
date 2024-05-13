@@ -7,6 +7,18 @@ const nextConfig = {
         permanent: true,
       }, ]
     },
+    images: {
+      remotePatterns: [
+        {
+          protocol: "https",
+          hostname: "**",
+        },
+        // {
+        //   protocol: "http",
+        //   hostname: "res.cloudinary.com",
+        // },
+      ],
+    },
     // async rewrites() {
     //   return [
     //     {

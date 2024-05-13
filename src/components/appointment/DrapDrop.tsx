@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic';
 import { DrapDropProps } from '@/interfaces';
 
 const Column = dynamic(() => import("./Column"), { ssr: false });
+const ColumnMobile = dynamic(() => import("./ColumnMobile"), { ssr: false });
 
 const DrapDrop: React.FC<DrapDropProps> = ({ setOpen, setDataEdit, state, onDragEnd }) => {
   return (
@@ -12,11 +13,18 @@ const DrapDrop: React.FC<DrapDropProps> = ({ setOpen, setDataEdit, state, onDrag
       <DragDropContext
         onDragEnd={onDragEnd}
       >
-        <div className='flex gap-4 md:flex-row flex-col'>
+        <div className='hidden md:flex gap-4 flex-row'>
           {state.columnOrder.map((columnId) => {
             const column = state.columns[columnId];
             // const tasks = column.taskIds.map((taskId) => state.tasks[taskId]);
             return <Column key={column?.id} column={column} tasks={column.tasks} setOpen={setOpen} setDataEdit={setDataEdit}/>;
+          })}
+        </div>
+        <div className='flex gap-4 md:hidden flex-col'>
+          {state.columnOrder.map((columnId) => {
+            const column = state.columns[columnId];
+            // const tasks = column.taskIds.map((taskId) => state.tasks[taskId]);
+            return <ColumnMobile key={column?.id} column={column} tasks={column.tasks} setOpen={setOpen} setDataEdit={setDataEdit}/>;
           })}
         </div>
       </DragDropContext>

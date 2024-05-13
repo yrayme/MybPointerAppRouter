@@ -20,6 +20,7 @@ export default function CommonContextProvider({ children }: Readonly<{
     const [promotorId, setPromotorId] = useState<string>("");
     const [sellerId, setSellerId] = useState<string>("");
     const [dataStep1, setDataStep1] = useState<PosForm>();
+    const [showFilter, setShowFilter] = useState<boolean>(false);
     const [lists, setLists] = useState<ListProps>({
         countries: [],
         eventType: [],
@@ -67,14 +68,18 @@ export default function CommonContextProvider({ children }: Readonly<{
       setSellerId,
       sellerId,
       setDataStep1,
-      dataStep1
+      dataStep1,
+      setShowFilter,
+      showFilter,
     }),
     [
       lists,
       getList,
       promotorId,
       sellerId,
-      dataStep1
+      dataStep1,
+      setShowFilter,
+      showFilter
     ]
   );
 

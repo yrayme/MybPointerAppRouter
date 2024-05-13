@@ -12,22 +12,23 @@ import moment from "moment";
 import { useAlertContext } from "@/contexts/AlertContext";
 import { GET_LOCATIONS } from "@/lib/keys";
 import { allLocation, createLocation, deleteLocation, updateLocation } from "@/lib/Apis";
+import { useCommonContext } from "@/contexts/CommonContext";
 
 export const useModalLocation = () => {
     const [openModalLocation, setOpenModalLocation] = useState<boolean>(false);
     return {
-        openModalLocation, 
+        openModalLocation,
         setOpenModalLocation
     }
 }
 
-export const useLocations = () => {  
+export const useLocations = () => {
     const { t } = useTranslation();
-    const { data: session } : any  = useSession();
+    const { data: session }: any = useSession();
     const [pagActual, setPagActual] = useState<number>(0);
-    const [showFilter, setShowFilter] = useState<boolean>(false);
+    const { setShowFilter, showFilter } = useCommonContext();
     const [searchName, setSearchName] = useState("");
-    const {onCloseAlertDialog, onOpenAlertDialog } = useAlertContext();
+    const { onCloseAlertDialog, onOpenAlertDialog } = useAlertContext();
     const [dataLocation, setDataLocation] = useState<LocationState>();
 
     const schema = Yup.object().shape({
@@ -38,29 +39,29 @@ export const useLocations = () => {
         resolver: yupResolver(schema),
     });
 
-      
+
     const takeCount: number = 6;
-    
-    const { data, refetch  } = useQuery<AllLocationResponse>(
+
+    const { data, refetch } = useQuery<AllLocationResponse>(
         [
-          GET_LOCATIONS,
-          pagActual,
-          searchName,
+            GET_LOCATIONS,
+            pagActual,
+            searchName,
         ],
         () =>
             allLocation(
                 searchName ? 0 : pagActual,
                 takeCount,
                 searchName
-        ),
+            ),
         {
-          keepPreviousData: false,
+            keepPreviousData: false,
         }
-    ); 
+    );
 
     useEffect(() => {
-        if (data){
-            if (data.items){
+        if (data) {
+            if (data.items) {
                 const dataItems = data.items.map((res: ItemLocation) => {
                     return {
                         _id: { $oid: res?._id?.$oid },
@@ -84,16 +85,16 @@ export const useLocations = () => {
             }
         }
     }, [data])
-    
-    
+
+
     const debounce = (func: any) => {
         let timerT: ReturnType<typeof setTimeout> | null;
         return function (this: any, ...args: any[]) {
-          if (timerT) clearTimeout(timerT);
-          timerT = setTimeout(() => {
-            timerT = null;
-            func.apply(this, args);
-          }, 500);
+            if (timerT) clearTimeout(timerT);
+            timerT = setTimeout(() => {
+                timerT = null;
+                func.apply(this, args);
+            }, 500);
         };
     };
 
@@ -103,12 +104,12 @@ export const useLocations = () => {
 
     const optimizedFn = useCallback(debounce(handleChange), []);
 
-    const exportExcel = (data: string[][], mergedCells: XLSX.Range[] | undefined) =>{
+    const exportExcel = (data: string[][], mergedCells: XLSX.Range[] | undefined) => {
         const excelFile = XLSX.utils.book_new();
         const excelSheet = XLSX.utils.aoa_to_sheet(data);
         excelSheet["!merges"] = mergedCells;
-        XLSX.utils.book_append_sheet(excelFile,excelSheet,t('common:menu:locations'));
-        XLSX.writeFile(excelFile,`${t('common:menu:locations')} ${moment(new Date).format("MM-DD-YYYY")}.xlsx`);
+        XLSX.utils.book_append_sheet(excelFile, excelSheet, t('common:menu:locations'));
+        XLSX.writeFile(excelFile, `${t('common:menu:locations')} ${moment(new Date).format("MM-DD-YYYY")}.xlsx`);
     }
 
 
@@ -117,16 +118,16 @@ export const useLocations = () => {
         const formatedData: any[] = [];
         formatedData.push(
             [t('common:menu:locations')],
-            ["","","","","",""],
+            ["", "", "", "", "", ""],
             // [t('reports.startDate'),"","","",""],
             // [t('reports.endDate'),"","dueDate","",""],
-            [t('common:excel:user'),"",session?.name,"",""],  
+            [t('common:excel:user'), "", session?.name, "", ""],
             // [t('reports.status'),"",dataReport.status,"",""],
-            ["","","","","",""],
-            [t('locations:name'), t('locations:country'),t('locations:state'),t('locations:city'),t('locations:address')]
+            ["", "", "", "", "", ""],
+            [t('locations:name'), t('locations:country'), t('locations:state'), t('locations:city'), t('locations:address')]
         );
-        
-        dataReport?.map((data: any)=> {
+
+        dataReport?.map((data: any) => {
             formatedData.push(
                 [data.name, data.country, data.state, data.city, data.address]
             )
@@ -140,10 +141,10 @@ export const useLocations = () => {
     }
 
 
-    return { 
-        pagActual, 
+    return {
+        pagActual,
         setPagActual,
-        showFilter, 
+        showFilter,
         setShowFilter,
         dataLocation,
         optimizedFn,
@@ -151,12 +152,12 @@ export const useLocations = () => {
         register,
         handleExportExcel,
         refetch
-    }    
+    }
 }
 
 export const useAddLocation = (openModal?: any, setOpenModal?: any, refetch?: any, dataEdit?: Location) => {
-    const {onCloseAlertDialog, onOpenAlertDialog } = useAlertContext();
-    const { t } = useTranslation(); 
+    const { onCloseAlertDialog, onOpenAlertDialog } = useAlertContext();
+    const { t } = useTranslation();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [pagActual, setPagActual] = useState<number>(0);
     const schema = Yup.object().shape({
@@ -192,7 +193,7 @@ export const useAddLocation = (openModal?: any, setOpenModal?: any, refetch?: an
         mode: "onChange",
         resolver: yupResolver(schema),
     });
-    
+
     useEffect(() => {
         setValue("name", dataEdit?.name as string);
         setValue("id_state", dataEdit?.id_state as string);
@@ -200,72 +201,72 @@ export const useAddLocation = (openModal?: any, setOpenModal?: any, refetch?: an
         setValue("id_country", dataEdit?.id_country as string);
         setValue("address", dataEdit?.address as string);
     }, [dataEdit, openModal])
-    
+
     useEffect(() => {
-        if (watch("id_country") != dataEdit?.id_country){
+        if (watch("id_country") != dataEdit?.id_country) {
             setValue("id_city", "");
             setValue("id_state", "");
         }
     }, [watch("id_country")])
-    
-    
+
+
     useEffect(() => {
-        if (watch("id_state") != dataEdit?.id_state){
+        if (watch("id_state") != dataEdit?.id_state) {
             setValue("id_city", "");
         }
     }, [watch("id_state")])
 
-    const handleSubmitData = async(data: LocationForm) => {
+    const handleSubmitData = async (data: LocationForm) => {
         setIsLoading(true);
         if (dataEdit) {
             setIsLoading(false);
             setOpenModal(false);
             await updateLocation(data, dataEdit?._id?.$oid)
-            .then(() => {
-                refetch();
-                setIsLoading(false);
-                setOpenModal(false);
-                onOpenAlertDialog({
-                    isOpen: true,
-                    title: t("locations:add:update"),
-                    description: t("locations:add:msgUpdate"),
-                    titleStyles: "success",
-                    buttonAccept: false,
-                    buttonCancel: false,
+                .then(() => {
+                    refetch();
+                    setIsLoading(false);
+                    setOpenModal(false);
+                    onOpenAlertDialog({
+                        isOpen: true,
+                        title: t("locations:add:update"),
+                        description: t("locations:add:msgUpdate"),
+                        titleStyles: "success",
+                        buttonAccept: false,
+                        buttonCancel: false,
+                    })
                 })
-            })
-            .catch((error) => {
-                setIsLoading(false);
-                toast.error(error.message, {
-                    position: "top-right",
+                .catch((error) => {
+                    setIsLoading(false);
+                    toast.error(error.message, {
+                        position: "top-right",
+                    });
                 });
-            });
-        }else{
+        } else {
             await createLocation(data)
-            .then(() => {
-                refetch();
-                reset();
-                setIsLoading(false);
-                setOpenModal(false);
-                onOpenAlertDialog({
-                    isOpen: true,
-                    title: t("locations:add:title"),
-                    description: t("locations:add:msgCreate", {location: data.name}),
-                    titleStyles: "success",
-                    buttonAccept: false,
-                    buttonCancel: false,
+                .then(() => {
+                    refetch();
+                    reset();
+                    setIsLoading(false);
+                    setOpenModal(false);
+                    onOpenAlertDialog({
+                        isOpen: true,
+                        title: t("locations:add:title"),
+                        description: t("locations:add:msgCreate", { location: data.name }),
+                        titleStyles: "success",
+                        buttonAccept: false,
+                        buttonCancel: false,
+                    })
                 })
-            })
-            .catch((error) => {
-                setIsLoading(false);
-                toast.error(error.message, {
-                    position: "top-right",
+                .catch((error) => {
+                    setIsLoading(false);
+                    toast.error(error.message, {
+                        position: "top-right",
+                    });
                 });
-            });
         }
     }
-    
-    return{
+
+    return {
         watch,
         handleSubmitData,
         register,
@@ -275,7 +276,7 @@ export const useAddLocation = (openModal?: any, setOpenModal?: any, refetch?: an
         isValid,
         control,
         reset,
-        pagActual, 
+        pagActual,
         setPagActual,
     }
 }
@@ -296,42 +297,42 @@ export const useEditLocation = (setOpenModal?: any) => {
 }
 
 export const useDeleteLocation = (refetch: any) => {
-    const { t } = useTranslation(); 
-    const {onCloseAlertDialog, onOpenAlertDialog, onDisabled } = useAlertContext();
+    const { t } = useTranslation();
+    const { onCloseAlertDialog, onOpenAlertDialog, onDisabled } = useAlertContext();
 
-    const getDelete = async(data: Location) => {
+    const getDelete = async (data: Location) => {
         onOpenAlertDialog({
             isOpen: true,
             title: t("locations:add:delete"),
-            description: t("locations:add:msgDelete", {location: data.name}),
+            description: t("locations:add:msgDelete", { location: data.name }),
             titleStyles: "error",
             buttonAccept: true,
             buttonCancel: true,
             buttonAcceptLabel: t("common:buttons:accept"),
-            buttonCancelLabel: t("common:buttons:cancel"),   
-            onButtonAcceptClicked: async() => {    
-                onDisabled(true);              
+            buttonCancelLabel: t("common:buttons:cancel"),
+            onButtonAcceptClicked: async () => {
+                onDisabled(true);
                 await deleteLocation(data._id.$oid)
-                .then(() => {  
-                    refetch();
-                    onDisabled(false);    
-                    onOpenAlertDialog({
-                        isOpen: true,
-                        title: t("locations:add:delete"),
-                        description: t("locations:add:msgDelete1"),
-                        titleStyles: "success",
-                        buttonAccept: false,
-                        buttonCancel: false, 
+                    .then(() => {
+                        refetch();
+                        onDisabled(false);
+                        onOpenAlertDialog({
+                            isOpen: true,
+                            title: t("locations:add:delete"),
+                            description: t("locations:add:msgDelete1"),
+                            titleStyles: "success",
+                            buttonAccept: false,
+                            buttonCancel: false,
+                        })
                     })
-                })
-                .catch((error) => {
-                    onDisabled(false);         
-                    toast.error(error.message, {
-                        position: "top-right",
+                    .catch((error) => {
+                        onDisabled(false);
+                        toast.error(error.message, {
+                            position: "top-right",
+                        });
                     });
-                });
-            },         
-            onButtonCancelClicked: () => onCloseAlertDialog(),  
+            },
+            onButtonCancelClicked: () => onCloseAlertDialog(),
         })
 
     }

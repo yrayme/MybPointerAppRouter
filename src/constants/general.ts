@@ -9,16 +9,12 @@ export const Roles = {
 }
 
 
-export const colorsHome= {
-    green: "#88C946",
-    purple: "#9A25B4",
-    yellow: "#FFCC00",
-    orange: "#F58A07",
-    green_light: "#29B9B9",
-    pink: "#E1448B",
-    blue: "#00AAE4",
-    red: "#CE2D4F",
-    gray: "#DEDEDE"
+export const colorAppointmentsByStatus= {
+    scheduled: "#7C8DA6",
+    sold: "#4053FF",
+    "not-sold": "#7987FF",
+    "re-call": "#A9B2FF",
+    "not-interested": "#CCD1FF"
 }
 
 //------------------CALENDAR PERMISSIONS---------------//

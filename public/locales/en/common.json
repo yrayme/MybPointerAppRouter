@@ -1,5 +1,5 @@
 {
-  "language": "Language",  
+  "language": "Language",
   "pagination": "Page {{start}} of {{end}}",
   "notAdded": "You have not added any",
   "select": "Select",
@@ -8,7 +8,6 @@
   "inactivity": "Attention! Your session will expire in {{seg}} seconds.",
   "welcome": "Welcome",
   "search": "Search",
-  "notifications": "Notifications",
   "chat": "Chat",
   "formValidator": {
     "required": "The field is required",
@@ -41,7 +40,8 @@
     "reset": "Reset",
     "clear": "Clear",
     "active": "Active",
-    "inactive": "Inactive"
+    "inactive": "Inactive",
+    "deny": "Deny"
   },
   "languages": {
     "es": "Spanish",
@@ -82,12 +82,24 @@
     "hide": "Hide filters",
     "export": "Export",
     "pdf": "Pdf",
-    "excel": "Excel"
+    "excel": "Excel",
+    "title": "Filters"
   },
   "excel": {
     "user": "User"
   },
-  "users":{
+  "users": {
     "npn": "Npn"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "all": "All",
+    "alert": "Alerts",
+    "announcement": "Announcement",
+    "news": "News",
+    "search":"Search",
+    "filters": "Filters",
+    "created": "A <strong>{{name}}</strong> was created",
+    "description": "A new <strong>{{event}}</strong> has been created by <strong>{{name}}</strong> and needs your approval"
   }
 }

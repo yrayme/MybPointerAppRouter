@@ -43,9 +43,11 @@ const config: Config = {
         colors,
         primary: "var(--color-primary)",
         "primary-light": "var(--color-primary-light)",
+        "primary-light-1": "var(--color-primary-light-1)",
         "primary-dark": "var(--color-primary-dark)",
         white: "var(--color-white)",
         black: "var(--color-black)",
+        "black-1": "var(--color-black-1)",
         orange: {
           primary: "var(--color-orange)",
         },

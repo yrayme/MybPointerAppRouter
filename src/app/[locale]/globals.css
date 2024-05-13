@@ -7,6 +7,7 @@
 
 :root {
   --color-primary: #88C946;
+  --color-primary-light-1: #DEF6DA;
   --color-primary-dark: #69A297;
   --color-primary-light: #E8F5DA;
   --color-blue: #00AAE4;
@@ -17,13 +18,14 @@
   --color-red: #FF274E;
   --color-red-light: #F5CCC8;
   --color-dark-pink: #E1448B;
-  --color-black: #000000;
+  --color-black: #292929;
   --color-gray: #E0E6EF;
   --color-light-gray: #DEDEDE;
   --color-gray-1: #7C8DA6;
   --color-background-gray: #FAFAFF;
   --color-purple: #9A25B4;
   --color-green-light: #29B9B9;
+  --color-black-1: #565656;
 }
 
 .light {
@@ -162,5 +164,5 @@ body {
 
 ::-webkit-scrollbar-thumb {
 	border-radius: 10px;
-  background-color: var(--color-light-gray);
+  background-color: var(--color-gray-1);
 }

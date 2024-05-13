@@ -10,6 +10,7 @@ import Table from '@/components/common/Table/Table';
 import ModalSales from '@/components/sales/ModalSales';
 import ModalSalesSummary from '@/components/sales/ModalSalesSummary';
 import { useTranslation } from 'react-i18next';
+import ButtonFilters from '@/components/common/ButtonFilters/ButtonFilters';
 
 const Sales = () => {
   const { t } = useTranslation();
@@ -29,9 +30,9 @@ const Sales = () => {
             onClick={() => { setDataEdit(undefined); setOpenModalSales(true) }}
           />
         </div>
-        <div className={`flex ${showFilter ? "sm:justify-between" : "justify-end"} items-center flex-wrap-reverse`}>
+        <div className={`flex ${showFilter ? "sm:justify-between" : "justify-end"} items-center flex-wrap-reverse gap-2`}>
           {showFilter && (
-            <div className='mt-8 w-96'>
+            <div className='md:mt-8 mt-4 w-96'>
               <div>
                 <InputText
                   placeholder={t("common:buttons:search")}
@@ -43,11 +44,9 @@ const Sales = () => {
               </div>
             </div>
           )}
-          <div className={`flex justify-end gap-5 mt-8`}>
-            <div className='flex gap-2 cursor-pointer border border-gray-1 rounded-md items-center px-3 bg-white' onClick={() => setShowFilter(!showFilter)}>
-              <AllIcons name='EarthIcon' className={`h-5 w-5 ${showFilter ? "text-primary" : "text-gray-4"}`} />
-              <p className={`font-medium text-base ${showFilter ? "text-primary" : "text-gray-4"}`}>{showFilter ? t("common:filter:hide") : t("common:filter:show")}</p>
-              <AllIcons name='ArrowDownIcon' className='h-5 w-5 text-gray-4' />
+          <div className={`flex justify-end gap-5 md:mt-8 mt-4`}>
+            <div className='hidden md:flex'>
+              <ButtonFilters showFilter={showFilter} setShowFilter={setShowFilter} />
             </div>
             <ButtonExport toPDF={toPDF} exportExcel={handleExportExcel} />
           </div>

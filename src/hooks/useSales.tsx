@@ -18,6 +18,7 @@ import axios from "axios";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useQuery } from "react-query";
 import { GET_SALES } from "@/lib/keys";
+import { useCommonContext } from "@/contexts/CommonContext";
 
 export const useModalSales = () => {
     const [openModalSales, setOpenModalSales] = useState<boolean>(false);
@@ -30,17 +31,17 @@ export const useModalSales = () => {
     }
 }
 
-export const useSales = () => {  
+export const useSales = () => {
     const { t } = useTranslation();
-    const { data: session } : any  = useSession();
+    const { data: session }: any = useSession();
     const [pagActual, setPagActual] = useState<number>(0);
-    const [showFilter, setShowFilter] = useState<boolean>(false);
+    const { setShowFilter, showFilter } = useCommonContext();
     const [searchName, setSearchName] = useState<string>("");
-    const {onCloseAlertDialog, onOpenAlertDialog } = useAlertContext();
+    const { onCloseAlertDialog, onOpenAlertDialog } = useAlertContext();
     const [dataSale, setDataSale] = useState<StateSales>({
         items: [],
         total: 3
-      });
+    });
 
     const schema = Yup.object().shape({
         search: Yup.string(),
@@ -51,12 +52,12 @@ export const useSales = () => {
     });
 
     const takeCount: number = 6;
-    
-    const { data, refetch  } = useQuery<ResponseSales>(
+
+    const { data, refetch } = useQuery<ResponseSales>(
         [
-          GET_SALES,
-          pagActual,
-          searchName,
+            GET_SALES,
+            pagActual,
+            searchName,
         ],
         () =>
             getAllSales(
@@ -64,15 +65,15 @@ export const useSales = () => {
                 takeCount,
                 "",
                 searchName
-        ),
+            ),
         {
-          keepPreviousData: false,
+            keepPreviousData: false,
         }
-    ); 
+    );
 
     useEffect(() => {
-        if (data){
-            if (data.items){
+        if (data) {
+            if (data.items) {
                 const dataItems = data.items.map((res: SalesResponse) => {
                     return {
                         id: res._id?.$oid,
@@ -102,16 +103,16 @@ export const useSales = () => {
             }
         }
     }, [data])
-    
-    
+
+
     const debounce = (func: any) => {
         let timerT: ReturnType<typeof setTimeout> | null;
         return function (this: any, ...args: any[]) {
-          if (timerT) clearTimeout(timerT);
-          timerT = setTimeout(() => {
-            timerT = null;
-            func.apply(this, args);
-          }, 500);
+            if (timerT) clearTimeout(timerT);
+            timerT = setTimeout(() => {
+                timerT = null;
+                func.apply(this, args);
+            }, 500);
         };
     };
 
@@ -121,12 +122,12 @@ export const useSales = () => {
 
     const optimizedFn = useCallback(debounce(handleChange), []);
 
-    const exportExcel = (data: string[][], mergedCells: XLSX.Range[] | undefined) =>{
+    const exportExcel = (data: string[][], mergedCells: XLSX.Range[] | undefined) => {
         const excelFile = XLSX.utils.book_new();
         const excelSheet = XLSX.utils.aoa_to_sheet(data);
         excelSheet["!merges"] = mergedCells;
-        XLSX.utils.book_append_sheet(excelFile,excelSheet,t('common:menu:sales'));
-        XLSX.writeFile(excelFile,`${t('common:menu:sales')} ${moment(new Date).format("MM-DD-YYYY")}.xlsx`);
+        XLSX.utils.book_append_sheet(excelFile, excelSheet, t('common:menu:sales'));
+        XLSX.writeFile(excelFile, `${t('common:menu:sales')} ${moment(new Date).format("MM-DD-YYYY")}.xlsx`);
     }
 
 
@@ -135,13 +136,13 @@ export const useSales = () => {
         const formatedData: any[] = [];
         formatedData.push(
             [t('common:menu:sales')],
-            ["","","","","",""],
-            [t('common:excel:user'),"",session?.name,"",""],  
-            ["","","","","",""],
-            [t('sales:name'), t('sales:email'),t('locations:phone'),t('sales:mrbi'),t('sales:product-sold'),t('sales:prev-product')]
+            ["", "", "", "", "", ""],
+            [t('common:excel:user'), "", session?.name, "", ""],
+            ["", "", "", "", "", ""],
+            [t('sales:name'), t('sales:email'), t('locations:phone'), t('sales:mrbi'), t('sales:product-sold'), t('sales:prev-product')]
         );
-        
-        dataReport?.map((data: any)=> {
+
+        dataReport?.map((data: any) => {
             formatedData.push(
                 [data.client, data.email, data.phone, data.mrbi, data.product_sold, data.product_prev]
             )
@@ -155,10 +156,10 @@ export const useSales = () => {
     }
 
 
-    return { 
-        pagActual, 
+    return {
+        pagActual,
         setPagActual,
-        showFilter, 
+        showFilter,
         setShowFilter,
         dataSale,
         optimizedFn,
@@ -166,24 +167,24 @@ export const useSales = () => {
         register,
         handleExportExcel,
         refetch
-    }    
+    }
 }
 
 
 export const useAddSale = (openModal?: any, setOpenModal?: any, refetch?: any, dataEdit?: SaleForm) => {
-    const {onCloseAlertDialog, onOpenAlertDialog } = useAlertContext();
-    const { t } = useTranslation(); 
+    const { onCloseAlertDialog, onOpenAlertDialog } = useAlertContext();
+    const { t } = useTranslation();
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [pagActual, setPagActual] = useState<number>(0); 
+    const [pagActual, setPagActual] = useState<number>(0);
     const [productLabel, setProductLabel] = useState<SelectLists>();
     const takeCount: number = 10;
-    
+
     const getProducts = (search = "") => {
         return allProducts(
             pagActual,
             takeCount,
             search,
-        ).then((values) => {            
+        ).then((values) => {
             return values.items;
         });
     };
@@ -202,11 +203,11 @@ export const useAddSale = (openModal?: any, setOpenModal?: any, refetch?: any, d
         ),
         mrbi: Yup.string().required(
             t("common:formValidator:required") as string
-            ).typeError(t("common:formValidator:number") as string)
+        ).typeError(t("common:formValidator:number") as string)
             .matches(
-            ONLY_NUMBERS_REGEX,
-            t("common:formValidator:number") as string
-        ),
+                ONLY_NUMBERS_REGEX,
+                t("common:formValidator:number") as string
+            ),
         date_eligibility: Yup.date().transform((value) => new Date(value)).required(t("common:formValidator:required") as string),
         address: Yup.string().required(
             t("common:formValidator:required") as string
@@ -238,9 +239,9 @@ export const useAddSale = (openModal?: any, setOpenModal?: any, refetch?: any, d
         mode: "onChange",
         resolver: yupResolver(schema),
     });
-    
+
     useEffect(() => {
-        if (dataEdit){
+        if (dataEdit) {
             setValue("name", dataEdit?.name);
             setValue("phone", dataEdit?.phone);
             setValue("email", dataEdit?.email);
@@ -254,11 +255,11 @@ export const useAddSale = (openModal?: any, setOpenModal?: any, refetch?: any, d
         }
     }, [dataEdit, openModal])
 
-    const handleSubmitData = async(data: SaleForm) => {
+    const handleSubmitData = async (data: SaleForm) => {
         const body = {
             sale_address: data.from_where,
-            affiliated_name: data.name,   
-            phone_number: data.phone, 
+            affiliated_name: data.name,
+            phone_number: data.phone,
             email: data.email,
             mrbi: data.mrbi,
             affiliated_address: data.address,
@@ -268,29 +269,29 @@ export const useAddSale = (openModal?: any, setOpenModal?: any, refetch?: any, d
         }
         setIsLoading(true);
         await createSale(body)
-        .then(() => {
-            refetch();
-            reset();
-            setIsLoading(false);
-            setOpenModal(false);
-            onOpenAlertDialog({
-                isOpen: true,
-                title: t("sales:add"),
-                description: t("sales:msgAdd"),
-                titleStyles: "success",
-                buttonAccept: false,
-                buttonCancel: false,
+            .then(() => {
+                refetch();
+                reset();
+                setIsLoading(false);
+                setOpenModal(false);
+                onOpenAlertDialog({
+                    isOpen: true,
+                    title: t("sales:add"),
+                    description: t("sales:msgAdd"),
+                    titleStyles: "success",
+                    buttonAccept: false,
+                    buttonCancel: false,
+                })
             })
-        })
-        .catch((error) => {
-            setIsLoading(false);
-            toast.error(error.message, {
-                position: "top-right",
+            .catch((error) => {
+                setIsLoading(false);
+                toast.error(error.message, {
+                    position: "top-right",
+                });
             });
-        });
     }
-    
-    return{
+
+    return {
         watch,
         handleSubmitData,
         register,
@@ -300,7 +301,7 @@ export const useAddSale = (openModal?: any, setOpenModal?: any, refetch?: any, d
         isValid,
         control,
         reset,
-        pagActual, 
+        pagActual,
         setPagActual,
         getValues,
         setValue,

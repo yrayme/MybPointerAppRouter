@@ -49,7 +49,7 @@ export const ComboBoxAutocompleteAsync: FC<ComboBoxAutocompleteProps> = ({
           </Combobox.Label>
         )}
 
-        <div className="relative mt-2">
+        <div className={`relative ${label && "mt-2"}`}>
           <div className={StylesInput}>
             <Combobox.Button className="">
               {customIconLeft && (
@@ -58,7 +58,7 @@ export const ComboBoxAutocompleteAsync: FC<ComboBoxAutocompleteProps> = ({
             </Combobox.Button>
             <Combobox.Input
               autoComplete="off"
-              className="w-full border-none py-3 px-4 h-10 text-gray-900 focus:ring-0 focus-visible:outline-none"
+              className="w-full border-none py-3 px-4 h-10 text-gray-4 focus:ring-0 focus-visible:outline-none placeholder:text-gray-4 placeholder:text-sm"
               displayValue={(option) => value !== "" ? getOptionLabel(option) : ""}
               onChange={(e) => {
                 optimizedFn(e.target.value);
@@ -73,10 +73,16 @@ export const ComboBoxAutocompleteAsync: FC<ComboBoxAutocompleteProps> = ({
               {customIcon ? (
                 customIcon({ className: "h-5 w-5 text-gray-400" })
               ) : (
+                !selected ? (
                 <AllIcons 
                   name="ArrowDownIcon"
-                  className="h-4 w-4 text-gray-1"
+                  className="h-4 w-4 text-gray-4"
                 />
+                ) : (
+                  <div className='cursor-pointer' onClick={() => setSelected(null)}>
+                    <AllIcons name='CloseIcon' className='w-3 h-3 text-gray-4' />
+                  </div>
+                  )
               )}
             </Combobox.Button>
           </div>
@@ -98,7 +104,7 @@ export const ComboBoxAutocompleteAsync: FC<ComboBoxAutocompleteProps> = ({
                     key={index}
                     className={({ active }) =>
                       `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                        active ? "bg-primary text-white" : "text-gray-1"
+                        active ? "bg-primary text-white" : "text-gray-4"
                       }`
                     }
                     value={option}

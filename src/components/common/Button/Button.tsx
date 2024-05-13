@@ -4,21 +4,21 @@ import React from 'react'
 import AllIcons from '../Icons';
 
 export const Button: React.FC<
-ButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>
+  ButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>
 > = ({
-    href = "",
-    ButtonPaddingSize,
-    ButtonStyle,
-    type,
-    className,
-    full,
-    isCustomRounded,
-    title,
-    iconLeft,
-    colorIcon,
-    fontColor = "text-black",
-    ...props
-  }) => {
+  href = "",
+  ButtonPaddingSize,
+  ButtonStyle,
+  type,
+  className,
+  full,
+  isCustomRounded,
+  title,
+  iconLeft,
+  colorIcon,
+  fontColor = "text-black",
+  ...props
+}) => {
 
     const ButtonStyleFC = (ButtonStyle: ButtonStyleType) => {
       switch (ButtonStyle) {
@@ -36,37 +36,39 @@ ButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>
           return "text-white bg-red-primary";
         case "gray":
           return "text-white bg-gray-2 font-semibold";
+        case "outlined":
+          return "text-black border border-gray-4";
         default:
           break;
       }
-    };  
+    };
     const ButtonPaddingFC = (ButtonPaddingSize: ButtonPaddingSizeType) => {
-        switch (ButtonPaddingSize) {
-          case "small":
-            return "";
-          case "medium":
-            return "py-3 xl:py-4 px-7 text-xl";    
-          default:
-            break;
-        }
+      switch (ButtonPaddingSize) {
+        case "small":
+          return "";
+        case "medium":
+          return "py-3 xl:py-4 px-7 text-xl";
+        default:
+          break;
+      }
     };
     return (
-        // <div className={clsx({ "w-full": full })}>     
-            <button
-              type={type ? type : "button"}
-              className={clsx(
-                  "outline-none focus:outline-none rounded-md flex items-center gap-x-2 justify-center",
-                  ButtonStyle && ButtonStyleFC(ButtonStyle),
-                  ButtonPaddingSize && ButtonPaddingFC(ButtonPaddingSize),
-                  className,
-              )}
-              {...props}
-            >
-              {iconLeft && (
-                <AllIcons name={iconLeft} className={`h-4 w-4`}/>
-              )}
-              {title}
-            </button>
-        // </div>
+      // <div className={clsx({ "w-full": full })}>     
+      <button
+        type={type ? type : "button"}
+        className={clsx(
+          "outline-none focus:outline-none rounded-md flex items-center gap-x-2 justify-center",
+          ButtonStyle && ButtonStyleFC(ButtonStyle),
+          ButtonPaddingSize && ButtonPaddingFC(ButtonPaddingSize),
+          className,
+        )}
+        {...props}
+      >
+        {iconLeft && (
+          <AllIcons name={iconLeft} className={`h-4 w-4`} />
+        )}
+        {title}
+      </button>
+      // </div>
     )
-}
+  }

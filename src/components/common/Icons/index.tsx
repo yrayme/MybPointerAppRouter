@@ -48,6 +48,12 @@ import AppTrackerIcon from './AppTrackerIcon';
 import DoctorsIcon from './DoctorsIcon';
 import CompaniesIcon from './CompaniesIcon';
 import MapIcon from './MapIcon';
+import NotificationIcon2 from './NotificationIcon2';
+import FilterIcon from './FilterIcon';
+import CustomerIcon from './CustomerIcon';
+import BoxIcon from './BoxIcon';
+import TimeIcon from './TimeIcon';
+import DescriptionIcon from './DescriptionIcon';
 
 interface allIconsProps {
   name: string;
@@ -64,6 +70,7 @@ const AllIcons: React.FC<allIconsProps> = ({
     ArrowDownIcon,
     ArrowUpIcon,
     BackIcon,
+    BoxIcon,
     BuildingIcon,
     CalendarIcon,
     CalendarIcon2,
@@ -77,13 +84,16 @@ const AllIcons: React.FC<allIconsProps> = ({
     CompaniesIcon,
     CreatePosIcon,
     CrossIcon,
+    CustomerIcon,
     DashboardIcon,
     DeleteIcon,
+    DescriptionIcon,
     DoctorsIcon,
     DownloadIcon,
     EarthIcon,
     EventIcon,
     ExclamationErrorIcon,
+    FilterIcon,
     HomeIcon,
     KeyIcon,
     LocationIcon,
@@ -92,6 +102,7 @@ const AllIcons: React.FC<allIconsProps> = ({
     MenuIcon,
     MonthlyIcon,
     NotificationIcon,
+    NotificationIcon2,
     LogoutIcon,
     PencilIcon,
     PeopleIcon,
@@ -104,6 +115,7 @@ const AllIcons: React.FC<allIconsProps> = ({
     SearchIcon,
     SettingsIcon,
     TerraceIcon,
+    TimeIcon,
     TrophyIcon,
     UploadIcon,
     WorldIcon,

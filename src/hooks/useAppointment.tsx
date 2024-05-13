@@ -1,3 +1,4 @@
+'use client'
 import { useCallback, useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
@@ -5,23 +6,38 @@ import * as Yup from "yup"
 import { DropResult } from "react-beautiful-dnd";
 import { Appointment, AppointmentByStatusResponse, DataAppointment, TaskData } from "@/interfaces";
 import { useTranslation } from "next-i18next";
-import { colorsHome } from "@/constants/general";
 import { toast } from "react-toastify";
 import { getDateCalendar } from "@/utils/getHours";
 import { useStatusAppointment } from "./useCommon";
 import moment from "moment";
 import { useAlertContext } from "@/contexts/AlertContext";
-import { deleteAppointment, getAppointmentByStatus, updateAppointment } from "@/lib/Apis";
+import { allSellers, deleteAppointment, getAppointmentByStatus, updateAppointment } from "@/lib/Apis";
 import { getApiError } from "@/utils/getApiErrors";
 import { useSession } from 'next-auth/react';
+import { useQuery } from "react-query";
+import { GET_APPOINTMENTS } from "@/lib/keys";
+import { Range } from 'react-date-range';
+import { useCommonContext } from "@/contexts/CommonContext";
+import { colorAppointmentsByStatus } from "@/constants/general";
 
 export const  useAppointment = () => {
     const [searchName, setSearchName] = useState<string>(""); 
     const [openModal, setOpenModal] = useState<boolean>(false);
     const [dataEdit, setDataEdit] = useState<DataAppointment>({data: null, newEvent: false});
     const { statusAppointment } = useStatusAppointment();
-
-    const [data, setData] = useState<AppointmentByStatusResponse>();
+    const [pagActual, setPagActual] = useState<number>(0);   
+    const { setShowFilter, showFilter } = useCommonContext();
+    const [seller, setSeller] = useState<string>("");
+    const takeCount: number = 10;
+    const [stateDate, setStateDate] = useState<Range>(
+        {
+            startDate: new Date(),
+            endDate: new Date(),
+            color: "#88C946",
+            key: 'selection',
+            autoFocus: true,
+        }
+    );
     
     const { t } = useTranslation();
     const [state, setState] = useState<TaskData>({
@@ -31,7 +47,7 @@ export const  useAppointment = () => {
           id: 'column-1',
           name: "Scheduled",
           title: t('appointments:status:scheduled'),
-          color: colorsHome.gray,
+          color: colorAppointmentsByStatus.scheduled,
           total: 0,
           idStatus: "",
           tasks: []
@@ -39,8 +55,8 @@ export const  useAppointment = () => {
         'column-2': {
           id: 'column-2',
           name: "Recontact",
-          title: t('appointments:status:recontact'),
-          color: colorsHome.green,
+          title: t('appointments:status:sold'),
+          color: colorAppointmentsByStatus.sold,
           total: 0,
           idStatus: "",
           tasks: [],
@@ -48,24 +64,33 @@ export const  useAppointment = () => {
         'column-3': {
           id: 'column-3',
           name: "No Interest",
-          title: t('appointments:status:no-interest'),
-          color: colorsHome.yellow,
+          title: t('appointments:status:not-sold'),
+          color: colorAppointmentsByStatus["not-sold"],
           total: 0,
           idStatus: "",
           tasks: [],
         },
         'column-4': {
           id: 'column-4',
+          name: "Re call",
+          title: t('appointments:status:re-call'),
+          color: colorAppointmentsByStatus["re-call"],
+          total: 0,
+          idStatus: "",
+          tasks: [],
+        },
+        'column-5': {
+          id: 'column-5',
           name: "Not Interested",
           title: t('appointments:status:not-interested'),
-          color: colorsHome.red,
+          color: colorAppointmentsByStatus["not-interested"],
           total: 0,
           idStatus: "",
           tasks: [],
         },
       },
       // Facilitate reordering of the columns
-      columnOrder: ['column-1', 'column-2', 'column-3', 'column-4'],
+      columnOrder: ['column-1', 'column-2', 'column-3', 'column-4', 'column-5'],
     })
     
     
@@ -79,20 +104,18 @@ export const  useAppointment = () => {
     });
      
 
-    useEffect(() => {
-      const getAppointments = async() => {
-        console.log("entre")
-        try {
-          const data = await getAppointmentByStatus(searchName);
-          console.log("data", data)
-          setData(data);
-        } catch (error: any) {
-          getApiError(error);
-          
-        }
+    const { data, refetch } = useQuery<AppointmentByStatusResponse>(
+      [
+        GET_APPOINTMENTS,
+        searchName,
+      ],
+      () =>
+        getAppointmentByStatus(searchName),
+      {
+          keepPreviousData: false,
+          staleTime: 5 * 60 * 1000, // 5 minutos en milisegundos
       }
-       getAppointments();
-    }, [searchName])
+    );
     
     const debounce = (func: any) => {
         let timerT: ReturnType<typeof setTimeout> | null;
@@ -159,6 +182,12 @@ export const  useAppointment = () => {
               tasks: getDateformat(data?.["not-interested"]),
               total: data?.["not-interested"].length,
               idStatus: getStatusId(state.columns['column-4'].name)
+            },
+            'column-5':{
+              ...state.columns['column-5'],
+              tasks: getDateformat(data?.["not-interested"]),
+              total: data?.["not-interested"].length,
+              idStatus: getStatusId(state.columns['column-5'].name)
             }
           },
           columnOrder: state.columnOrder
@@ -234,6 +263,16 @@ export const  useAppointment = () => {
       });
     }
 
+    const getSellers = (search = "") => {
+      return allSellers(
+          pagActual,
+          takeCount,
+          search,
+      ).then((values) => {            
+          return values.items;
+      });
+  };
+
     return {
         optimizedFn,
         register,
@@ -241,10 +280,17 @@ export const  useAppointment = () => {
         setOpenModal,
         dataEdit,
         setDataEdit,
-        // refetch,
-        // data,
+        refetch,
+        data,
         onDragEnd,
-        state
+        state,
+        stateDate,
+        setStateDate,
+        getSellers,
+        seller,
+        setSeller,
+        showFilter,
+        setShowFilter
     }
 }
 

@@ -52,7 +52,7 @@ export type ButtonStyleType =
   | "outlined"
   | "gray"
   | "red"
-  | "error";
+  | "error"
 
 export type ButtonPaddingSizeType = "small" | "medium" | "large";
 
@@ -644,9 +644,9 @@ export interface Column {
   title: string;
   name: string;
   tasks: Appointment[];
-  color: string;
   total: number;
   idStatus: string; 
+  color: string;
 }
 
 
@@ -1259,3 +1259,12 @@ export interface SubmenuSidebarProps {
 //   id: number, 
 //   routes: string[],
 // }
+
+export interface notificationCardProps {
+  id: number;
+  type: string;
+  name: string;
+  role?: string;
+  message?: string;
+  date: string
+}

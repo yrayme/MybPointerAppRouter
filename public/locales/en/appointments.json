@@ -1,12 +1,17 @@
 {
-    "description": "Here’s an overview of your appointments",
-    "customer": "Customer name",
-    "product": "Product name",
+    "customer": "Customer Name",
+    "product": "Product Name",
+    "day": "Day",
+    "time": "Time",
     "appointment": "Appointment",
+    "search": "Search Appointment",
+    "search-seller": "Search Seller",
+    "description": "Description",
     "status": {
         "scheduled": "Scheduled",
-        "recontact": "Recontact",
-        "no-interest": "No Interest",
+        "sold": "Sold",
+        "not-sold": "Not sold",
+        "re-call": "Re-call",
         "not-interested": "Not Interested"
     }
 }

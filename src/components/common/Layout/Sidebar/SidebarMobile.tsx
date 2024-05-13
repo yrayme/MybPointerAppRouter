@@ -38,7 +38,7 @@ const SidebarMobile: React.FC<SidebarProps> = ({ pages }) => {
                                         <AllIcons name="CloseIcon" className='h-6 w-6 text-black' />
                                     </div>
                                     <div className='flex items-center gap-2 mt-2'>
-                                        <NotificationIcon/>
+                                        <NotificationIcon mobile/>
                                         <AllIcons name="ChatIcon" className='h-7 w-7 text-black' />
                                     </div>
                                 </div>
