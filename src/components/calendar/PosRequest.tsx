@@ -18,13 +18,13 @@ import { addDays } from 'date-fns';
 import {Roles, rolesApproveEvents, rolesAssignEvents, rolesAssignSellersEvents, rolesCreateAppointmentSeller, rolesDisabledEvent, rolesRequestEvents } from '@/constants/general';
 import { GET_LOCATIONS, GET_PROMOTORS, GET_SELLERS } from '@/lib/keys';
 
-const PosRequest: React.FC<ModalEventsProps> = ({data, setOpen, activity, onChangeStep, session, pos, refetch, refetchDay}) => {
+const PosRequest: React.FC<ModalEventsProps> = ({data, setOpen, activity, onChangeStep, session, pos, refetch}) => {
     const { t } = useTranslation();
-    const { handleSubmit, handleSubmitData, errors, register, control, isValid, isLoading, setValue, getPromotors, getLocations, getValues, getSeller } = useCalendarEvents(data, setOpen, activity, onChangeStep, refetch, refetchDay);
+    const { handleSubmit, handleSubmitData, errors, register, control, isValid, isLoading, setValue, getPromotors, getLocations, getValues, getSeller } = useCalendarEvents(data, setOpen, activity, onChangeStep, refetch);
     const [locationLabel, setLocation] = React.useState<ItemLocation>();
     const { dataStep1 } = useCommonContext();
-    // const disabled = (rolesAssignEvents.includes(session?.type_rol) || data?.data?.approve_or_reject_user || data?.data?.assigned_user || rolesAssignSellersEvents.includes(session?.type_rol)) && !data.newEvent;
-    const disabled = ((!rolesDisabledEvent.includes(session?.type_rol) && !data.newEvent) || (data?.data?.assigned_user || data?.data?.approve_or_reject_user));
+    // const disabled = (rolesAssignEvents.includes(session?.user?.type_rol) || data?.data?.approve_or_reject_user || data?.data?.assigned_user || rolesAssignSellersEvents.includes(session?.user?.type_rol)) && !data.newEvent;
+    const disabled = ((!rolesDisabledEvent.includes(session?.user?.type_rol) && !data.newEvent) || (data?.data?.assigned_user || data?.data?.approve_or_reject_user));
     return (
         <form onSubmit={handleSubmit(handleSubmitData)}>
             <div className="flex flex-col gap-y-3">  
@@ -81,7 +81,7 @@ const PosRequest: React.FC<ModalEventsProps> = ({data, setOpen, activity, onChan
                                 error={errors.date}
                                 defaultValue={field.value} 
                                 // disabled={disabled}                  
-                                minDate={rolesRequestEvents.includes(session?.type_rol) ? addDays(new Date(), pos ? 1 : 7) : undefined}  
+                                minDate={rolesRequestEvents.includes(session?.user?.type_rol) ? addDays(new Date(), pos ? 1 : 7) : undefined}  
                                 disabled={disabled}                                               
                             />
                         );
@@ -158,7 +158,7 @@ const PosRequest: React.FC<ModalEventsProps> = ({data, setOpen, activity, onChan
                     error={errors.numberPeople}
                     disabled={!data.newEvent}
                 /> 
-                {(session.type_rol === Roles.coordinator || !data.newEvent )&& (
+                {(session?.user?.type_rol === Roles.coordinator || !data.newEvent )&& (
                     <ComboBoxAutocompleteAsync
                         onChange={(value) => {
                             setValue("promotor", value?._id.$oid);
@@ -177,10 +177,10 @@ const PosRequest: React.FC<ModalEventsProps> = ({data, setOpen, activity, onChan
                         )}
                         error={errors.promotor}
                         selectedValue={dataStep1 ? dataStep1.promotor : getValues("promotor")}
-                        disabled={(session.type_rol === Roles.coordinator && (data?.data?.assigned_user || data?.data?.approve_or_reject_user)) ? true :  disabled}
+                        disabled={(session?.user?.type_rol === Roles.coordinator && (data?.data?.assigned_user || data?.data?.approve_or_reject_user)) ? true :  disabled}
                     />
                 )}
-                {(rolesAssignSellersEvents.includes(session?.type_rol) && !data?.data?.assigned_user && !data?.data?.requester_user) && (
+                {(rolesAssignSellersEvents.includes(session?.user?.type_rol) && !data?.data?.assigned_user && !data?.data?.requester_user) && (
                     <ComboBoxAutocompleteAsync
                         onChange={(value) => {
                             setValue("seller", value?._id.$oid);
@@ -207,8 +207,8 @@ const PosRequest: React.FC<ModalEventsProps> = ({data, setOpen, activity, onChan
                 && !data?.data?.approve_or_reject_user
                 && !data?.data?.requester_user)
                 // || data?.data?.type?.name !== eventsType.pos 
-                // && !rolesAssignSellersEvents.includes(session?.type_rol)
-                // && !rolesAssignEvents.includes(session?.type_rol)) 
+                // && !rolesAssignSellersEvents.includes(session?.user?.type_rol)
+                // && !rolesAssignEvents.includes(session?.user?.type_rol)) 
                 && !activity && data.newEvent && (
                 <div className={`pt-6 flex flex-col gap-y-3 sm:px-20`}>
                     <Button
@@ -226,9 +226,9 @@ const PosRequest: React.FC<ModalEventsProps> = ({data, setOpen, activity, onChan
                 && !data?.data?.approve_or_reject_user
                 && !data?.data?.requester_user
                 // || data?.data?.type?.name !== eventsType.pos 
-                && !rolesAssignSellersEvents.includes(session?.type_rol)
-                && !rolesAssignEvents.includes(session?.type_rol)
-                && !rolesCreateAppointmentSeller.includes(session?.type_rol)) 
+                && !rolesAssignSellersEvents.includes(session?.user?.type_rol)
+                && !rolesAssignEvents.includes(session?.user?.type_rol)
+                && !rolesCreateAppointmentSeller.includes(session?.user?.type_rol)) 
                 && !activity && !data.newEvent && (
                 <div className={`pt-6 flex flex-col gap-y-3 sm:px-20`}>
                     <Button

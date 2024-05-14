@@ -14,16 +14,16 @@ import { ComboBoxAutocompleteAsync } from '../common/form/ComboBoxAutocompleteAs
 import AllIcons from '../common/Icons';
 import { GET_PRODUCTS } from '@/lib/keys';
 
-const Appointment: React.FC<AppointmentProps> = ({data, setOpen, refetch, appointment, refetchDay, promotor}) => {
+const Appointment: React.FC<AppointmentProps> = ({data, setOpen, refetch, appointment, promotor}) => {
     const { t } = useTranslation();
     const { data: dataUser } : any = useSession();
-    const { register, handleSubmit, handleSubmitData, errors, control, isLoading, isValid, statusAppointment, setValue, getProducts, getValues, watch, dataAllEvent, setProductLabel, productLabel } = useCalendarAppointment(data, setOpen, refetch, dataUser, appointment, refetchDay, promotor); 
+    const { register, handleSubmit, handleSubmitData, errors, control, isLoading, isValid, statusAppointment, setValue, getProducts, getValues, watch, dataAllEvent, setProductLabel, productLabel } = useCalendarAppointment(data, setOpen, refetch, dataUser, appointment, promotor); 
     const { fields, append, remove } = useFieldArray({
         control, // control props comes from useForm (optional: if you are using FormContext)
         name: "dates", // unique name for your Field Array
     });
 
-    const disabled = appointment ? false : !rolesNotDisabledAppointment.includes(dataUser?.type_rol) && !data.newEvent;
+    const disabled = appointment ? false : !rolesNotDisabledAppointment.includes(dataUser?.user?.type_rol) && !data.newEvent;
     return (      
         <div>  
             {appointment && (
@@ -214,7 +214,7 @@ const Appointment: React.FC<AppointmentProps> = ({data, setOpen, refetch, appoin
                     /> 
                 </div>
                 <div className="pt-6 flex flex-col gap-y-3 sm:px-20">
-                    {rolesNotDisabledAppointment.includes(dataUser?.type_rol) && (
+                    {rolesNotDisabledAppointment.includes(dataUser?.user?.type_rol) && (
                         <Button
                             type="submit"
                             ButtonStyle={!isValid || isLoading ? "gray" : "primary"}
@@ -223,7 +223,7 @@ const Appointment: React.FC<AppointmentProps> = ({data, setOpen, refetch, appoin
                             title={!data.newEvent ? t("common:buttons:update") : t("common:buttons:save")}
                         />
                     )}
-                    {rolesCreateAppointmentSeller.includes(dataUser?.type_rol) && data.newEvent && (
+                    {rolesCreateAppointmentSeller.includes(dataUser?.user?.type_rol) && data.newEvent && (
                         <Button
                             type="submit"
                             ButtonStyle={!isValid || isLoading ? "gray" : "primary"}

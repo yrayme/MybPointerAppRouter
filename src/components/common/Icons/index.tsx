@@ -54,6 +54,7 @@ import CustomerIcon from './CustomerIcon';
 import BoxIcon from './BoxIcon';
 import TimeIcon from './TimeIcon';
 import DescriptionIcon from './DescriptionIcon';
+import TeamIcon from './TeamIcon';
 
 interface allIconsProps {
   name: string;
@@ -114,6 +115,7 @@ const AllIcons: React.FC<allIconsProps> = ({
     SaveIcon,
     SearchIcon,
     SettingsIcon,
+    TeamIcon,
     TerraceIcon,
     TimeIcon,
     TrophyIcon,

@@ -145,7 +145,9 @@ body {
   border-radius: 5px !important;
   border: 1px solid #DEDEDE !important;
 }
-
+.rbc-time-header-content {
+  padding-bottom: 15px !important;
+}
 .rbc-day-slot.rbc-time-column.rbc-now.rbc-today{
   background-color: transparent !important;
 }
@@ -159,7 +161,7 @@ body {
   font-weight: 500 !important;
 }
 .rbc-time-header-content .rbc-allday-cell{
-  height: 10px !important;
+  display: none !important;
 }
 .rbc-month-view {
   border: none !important;
@@ -168,7 +170,7 @@ body {
   height: 40px !important;
 }
 .rbc-month-row .rbc-day-bg.rbc-today{
-  background-color: #E8F5DA !important;
+  background-color: #88C946 !important;
 }
 .rbc-date-cell button{
   font-weight: 500 !important;
@@ -182,6 +184,13 @@ body {
 .rbc-time-header.rbc-overflowing{
   border: none !important;
   margin-right: 0px !important;
+}
+.rbc-overlay{
+  background-color: #FAFAFF !important;
+}
+
+.rbc-event-label{
+  display: none !important;
 }
 @media (max-width: 600px) {
   .rbc-time-header-content .rbc-header button{
@@ -202,6 +211,10 @@ body {
     width: 50px !important;
     min-width: 50px !important;
   }
+  /* .rbc-row-bg .rbc-day-bg{
+    display: flex !important;
+    position: absolute !important;
+  } */
 
 }
 /* .rbc-month-header{
@@ -242,9 +255,9 @@ body {
   font-size: 14px !important;
 } */
 
-.rbc-date-cell .rbc-button-link{
+/* .rbc-date-cell .rbc-button-link{
   pointer-events: none;
-}
+} */
 
 ::-webkit-scrollbar {
   width: 8px;

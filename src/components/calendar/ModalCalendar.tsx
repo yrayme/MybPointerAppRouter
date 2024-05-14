@@ -14,11 +14,11 @@ import { useSession } from 'next-auth/react';
 import { eventsType, rolesApproveEvents, rolesAssignEvents, rolesAssignSellersEvents, rolesCreateDeleteAppointment, rolesEditAndDeleteEvents, statusRequestEvent } from '@/constants/general';
 import { useCommonContext } from '@/contexts/CommonContext';
 
-const ModalCalendar: React.FC<ModalCalendarProps> = ({ open, setOpen, data, refetch, refetchDay, events, promotor }) => {
+const ModalCalendar: React.FC<ModalCalendarProps> = ({ open, setOpen, data, refetch, events, promotor }) => {
     const { t } = useTranslation();
     const { data: session } : any  = useSession();
     const {  watch: watchEvent, } = useCalendarEvents(data); 
-    const { registerType, watchType, resetType, options, onChangeStep, setStepActivity, stepActivity, steps, getActionsEvents, getDeclineEvent, error} = useCalendarType(open, data, refetch, setOpen, refetchDay);
+    const { registerType, watchType, resetType, options, onChangeStep, setStepActivity, stepActivity, steps, getActionsEvents, getDeclineEvent, error} = useCalendarType(open, data, refetch, setOpen);
     const {  watch } = useCalendarAppointment(data); 
     const { setDataStep1 } = useCommonContext();
     
@@ -92,7 +92,7 @@ const ModalCalendar: React.FC<ModalCalendarProps> = ({ open, setOpen, data, refe
                                                     )} */}
                                                     <div className={`${(data?.data?.assigned_user || data?.data?.requester_user) ? "w-1/2" : "w-full"} flex justify-end gap-3 flex-col`}>
                                                         <div className='flex flex-row gap-3 justify-end'>
-                                                            {(data.data?.type?.name === eventsType.appointment && rolesCreateDeleteAppointment.includes(session?.type_rol)) && (
+                                                            {(data.data?.type?.name === eventsType.appointment && rolesCreateDeleteAppointment.includes(session?.user?.type_rol)) && (
                                                                 <Button
                                                                     onClick={() => getActionsEvents(session, data, "delete-appointment")}
                                                                     title={t("common:buttons:delete")}
@@ -103,7 +103,7 @@ const ModalCalendar: React.FC<ModalCalendarProps> = ({ open, setOpen, data, refe
                                                                 />
                                                             )}
                                                             {(data.data?.type?.name !== eventsType.appointment 
-                                                                && (rolesAssignEvents.includes(session?.type_rol) || rolesAssignSellersEvents.includes(session?.type_rol))
+                                                                && (rolesAssignEvents.includes(session?.user?.type_rol) || rolesAssignSellersEvents.includes(session?.user?.type_rol))
                                                                 && !data.data?.assigned_user && !data?.data?.requester_user ) && (
                                                                 <Button
                                                                     onClick={() => getActionsEvents(session, data, "assign-event")}
@@ -115,7 +115,7 @@ const ModalCalendar: React.FC<ModalCalendarProps> = ({ open, setOpen, data, refe
                                                                 />
                                                             )}
                                                             {(data.data?.type?.name !== eventsType.appointment 
-                                                                && rolesEditAndDeleteEvents.includes(session?.type_rol)
+                                                                && rolesEditAndDeleteEvents.includes(session?.user?.type_rol)
                                                                 && !data.data?.assigned_user && !data?.data?.requester_user) && (
                                                                     <Button
                                                                         onClick={() => getActionsEvents(session, data, "delete-event")}
@@ -128,7 +128,7 @@ const ModalCalendar: React.FC<ModalCalendarProps> = ({ open, setOpen, data, refe
                                                             )}
 
                                                             {(data.data?.type?.name !== eventsType.appointment 
-                                                                && rolesApproveEvents.includes(session?.type_rol)
+                                                                && rolesApproveEvents.includes(session?.user?.type_rol)
                                                                 && !data.data?.assigned_user 
                                                                 && data?.data?.requester_user
                                                                 && !data?.data?.approve_or_reject_user) && (
@@ -142,7 +142,7 @@ const ModalCalendar: React.FC<ModalCalendarProps> = ({ open, setOpen, data, refe
                                                                     />
                                                             )}
                                                             {(data.data?.type?.name !== eventsType.appointment 
-                                                                && rolesApproveEvents.includes(session?.type_rol)) 
+                                                                && rolesApproveEvents.includes(session?.user?.type_rol)) 
                                                                 && !data.data?.assigned_user 
                                                                 && data?.data?.requester_user
                                                                 && !data?.data?.approve_or_reject_user && (
@@ -173,10 +173,10 @@ const ModalCalendar: React.FC<ModalCalendarProps> = ({ open, setOpen, data, refe
                                                 />
                                             </div>
                                             {watchType("typeName") === eventsType.appointment ? 
-                                                <Appointment setOpen={setOpen} data={data} refetch={refetch} refetchDay={refetchDay} events={events} promotor={promotor}/>
+                                                <Appointment setOpen={setOpen} data={data} refetch={refetch} events={events} promotor={promotor}/>
                                                 : watchType("typeName") === eventsType.pos ?
-                                                <PosRequest setOpen={setOpen} data={data} onChangeStep={onChangeStep} session={session} pos refetch={refetch} refetchDay={refetchDay}/> 
-                                                : <PosActivity open={open} setOpen={setOpen} data={data} stepActivity={stepActivity} onChangeStep={onChangeStep} steps={steps} session={session} refetch={refetch} refetchDay={refetchDay}/>
+                                                <PosRequest setOpen={setOpen} data={data} onChangeStep={onChangeStep} session={session} pos refetch={refetch}/> 
+                                                : <PosActivity open={open} setOpen={setOpen} data={data} stepActivity={stepActivity} onChangeStep={onChangeStep} steps={steps} session={session} refetch={refetch}/>
                                             }
                                         </div>
                                     </div>

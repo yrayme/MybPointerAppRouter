@@ -28,7 +28,7 @@ const CalendarView = () => {
         setOpenModal,
         refetch,
         dataDayEvents,
-        refetchDay,
+        // refetchDay,
         date,
         getSellers,
         setSeller,
@@ -63,7 +63,7 @@ const CalendarView = () => {
     return (
         <div className=''>
             <div className='w-full flex md:flex-row flex-col gap-4 md:justify-between items-center'>
-                {Roles.coordinator === session?.type_rol && (
+                {Roles.coordinator === session?.user?.type_rol && (
                     <div className='flex gap-2 items-center'>
                         {statusEvent.map((method: any) => (
                             <InputRadio
@@ -85,7 +85,7 @@ const CalendarView = () => {
                         />
                     </div>
                 )}
-                {rolesCreateAppointmentSeller.includes(session?.type_rol) && (
+                {rolesCreateAppointmentSeller.includes(session?.user?.type_rol) && (
                     <div className='flex sm:flex-row flex-col gap-4 items-end'>
                         <ComboBoxAutocompleteAsync
                             onChange={(value) => {
@@ -113,8 +113,8 @@ const CalendarView = () => {
                     </div>
                 )}
             </div>
-            <div className={`flex gap-4 md:flex-row flex-col ${Roles.promotor === session?.type_rol ? "md:h-[76vh]" : "md:h-[80vh]"}`}>
-                <div className={`w-full md:w-4/5 h-[60vh] ${Roles.promotor === session?.type_rol ? "md:h-[76vh]" : "md:h-[80vh]"}`}>
+            <div className={`flex gap-4 md:flex-row flex-col ${Roles.promotor === session?.user?.type_rol ? "md:h-[76vh]" : "md:h-[80vh]"}`}>
+                <div className={`w-full md:w-4/5 h-[60vh] ${Roles.promotor === session?.user?.type_rol ? "md:h-[76vh]" : "md:h-[80vh]"}`}>
                     <CalendarComponent
                         defaultDate={defaultDate}
                         localizer={localizer}
@@ -124,7 +124,7 @@ const CalendarView = () => {
                         setOpenModal={setOpenModal}
                         data={data}
                         refetch={refetch}
-                        refetchDay={refetchDay}
+                        // refetchDay={refetchDay}
                         dataEvents={dataEvents}
                         promotor={seller}
                         handleNavigate={handleNavigate}

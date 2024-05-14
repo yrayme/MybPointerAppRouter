@@ -1,6 +1,6 @@
 'use client'
-import React, { useCallback, useState } from 'react'
-import { Calendar, Navigate, ToolbarProps, View, momentLocalizer, NavigateAction } from 'react-big-calendar';
+import React, { useCallback, useEffect, useState } from 'react'
+import { Calendar, Navigate, ToolbarProps, View, momentLocalizer, NavigateAction, Views } from 'react-big-calendar';
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import AllIcons from '../common/Icons';
 import InputDate from '../common/form/input-date/InputDate';
@@ -24,7 +24,7 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
     setOpenModal,
     data,
     refetch,
-    refetchDay,
+    // refetchDay,
     dataEvents,
     handleNavigate,
     promotor,
@@ -42,14 +42,18 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
     const onView = useCallback((newView: string) => setSelectView(newView), [setSelectView]);
     const [options, setOptions] = useState(optionsView);
 
-    const handleOptions = (value: string) => {
-        setSelectView(value);
+    const handleOptions = (value: string, onPress?: boolean) => {
+        !onPress && setSelectView(value);
         const updateOptions = optionsView.map(opt => {
-            return opt.value === value ? {...opt, selected: true} : {...opt, selected: false}
+            return opt.value === value ? { ...opt, selected: true } : { ...opt, selected: false }
         })
         setOptions(updateOptions);
     }
 
+    useEffect(() => {
+        handleOptions(selectView, true)
+    }, [selectView])
+    
     const CustomToolbar = (props: ToolbarProps) => {
         const { date, onNavigate, label } = props;
         return (
@@ -97,7 +101,7 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
                             <div className='cursor-pointer px-1 h-8  border border-gray-1 rounded-lg bg-white justify-center flex items-center' onClick={() => onNavigate(Navigate.PREVIOUS)}>
                                 <AllIcons name='ArrowDownIcon' className='h-5 w-5 text-black transform rotate-90' />
                             </div>
-                            <div className='relative z-50'>
+                            <div className='relative z-10'>
                                 <InputDate
                                     name="date"
                                     onChange={(date: Date) => onNavigate(Navigate.DATE, date)}
@@ -120,19 +124,26 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
         )
     }
 
+
     const CustomEvent = ({ event }: { event: AllCalendarEvents }) => {
+        const mobile = [Views.WEEK as string, Views.MONTH as string]
         return (
-            <div className={`flex gap-1 border-l-2 ${event?.type?.name === eventsType.appointment ? "border-blue-500" : event?.type?.name === eventsType.pos ? "border-red-500" : "border-red-500"}`}>
+            <div className={`${selectView === Views.MONTH ? "bg-gray-3 md:bg-white md:border md:border-gray-1 md:p-1 md:rounded-md" : selectView === Views.WEEK ? "" : "bg-white border border-gray-1 p-1 rounded-md"}`}>
+                <div className={`${mobile.includes(selectView) && "hidden md:flex "} flex gap-1 border-l-2 ${event?.type?.name === eventsType.appointment ? "border-blue-500" : event?.type?.name === eventsType.pos ? "border-red-500" : "border-primary"}`}>
                     <div className="ml-1 flex gap-1 items-center">
                         {event.request_event_status?.name === statusRequestEvent.approved
                             ? <AllIcons name='CheckCircleOutlineIcon' className='w-4 h-4 text-primary' />
                             : event.request_event_status?.name === statusRequestEvent.declined
                             && <AllIcons name='CloseCircleOutlineIcon' className='w-4 h-4 text-red-primary' />}
-                            <div className="flex flex-col gap-1">
-                                <p className="text-xs">{event.title}</p>
-                                <p className="text-xs">{event.title}</p>
-                            </div>
+                        <div className="flex flex-col gap-1">
+                            <p className="text-[10px] text-black font-medium">{event.title}</p>
+                            <p className="text-[10px] text-black font-medium">{`${moment.utc(event?.date_init?.$date).format("HH:mm A")} - ${moment.utc(event?.date_end?.$date).format("HH:mm A")}`}</p>
+                        </div>
                     </div>
+                </div>
+                {selectView !== Views.DAY && (
+                    <div className={`flex md:hidden h-2 w-2 rounded-full ${event?.type?.name === eventsType.appointment ? "bg-blue-500" : event?.type?.name === eventsType.pos ? "bg-red-500" : "bg-primary"}`}></div>
+                )}
             </div>
         );
     };
@@ -149,36 +160,25 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
                 date={date}
                 onView={onView}
                 view={selectView as View}
-                // timeslots={1}
-                max={new Date("2023-01-31T22:59:00.000Z")}
-                min={new Date("2023-01-30T10:00:00.000Z")}
+                // max={new Date("2023-01-31T22:59:00.000Z")}
+                // min={new Date("2023-01-30T10:00:00.000Z")}  //Activa si quieres colocar horas de 6 am a 6pm
                 style={{
-                    // height: "79vh", 
-                    // backgroundColor: "white",
-                    // borderRadius: 20,
-
-                    // boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
-                    border: "none"
+                    border: "none",
+                    position: "relative"
                 }}
                 onNavigate={handleNavigate}
                 startAccessor="start"
                 endAccessor="end"
-                popup={true} // Establece popup en false para inhabilitar la lista
+                popup // Establece popup en false para inhabilitar la lista
+                popupOffset={10}
                 eventPropGetter={(event: AllCalendarEvents) => {
-                    const background = "#FFFFFF";
                     return {
                         style: {
-                            background,
-                            border: "1px solid #DEDEDE",
-                            color: "black",
-                            fontSize: "12px",
-                            fontWeight: 500,
-                            borderRadius: "5px",
-                            padding: "5px 5px",
-                            // borderLeft: event?.type?.name === eventsType.appointment ? "5px solid #88C946" : event?.type?.name === eventsType.pos ? "5px solid #FFCC00" : "5px solid #CE2D4F",
+                            border: "none",
+                            padding: "0px",
                             outline: "none",
-                            margin: "1px 0px",
-                            
+                            borderRadius: "8px",
+                            background: "#FAFAFF"
                         },
                     };
                 }}
@@ -187,7 +187,7 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
                     event: CustomEvent
                 }}
                 onSelectEvent={(event) => getDates(event, false)}
-                onSelectSlot={(event) => (!rolesNotEvents.includes(session.type_rol) && promotor !== "") && getDates(event, true)}
+                onSelectSlot={(event) => (!rolesNotEvents.includes(session?.user?.type_rol) && promotor !== "") && getDates(event, true)}
                 selectable
             />
             {selectView === "week" && (
@@ -200,7 +200,7 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
                 setOpen={setOpenModal}
                 data={data}
                 refetch={refetch}
-                refetchDay={refetchDay}
+                // refetchDay={refetchDay}
                 events={dataEvents}
                 promotor={promotor}
             />

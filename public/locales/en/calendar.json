@@ -10,10 +10,17 @@
     "npn": "NPN number",
     "all": "All",
     "request": "Request",
+    "details": "Details",
     "views": {
         "month": "Month",
         "week": "Week",
         "day": "Day"
+    },
+    "card": {
+        "time": "Time",
+        "guest": "Guest",
+        "location": "Location",
+        "view": "View Location"
     },
     "appointment": {
         "appointment": "Appointments",

@@ -10,10 +10,10 @@ import InputDate from '../common/form/input-date/InputDate';
 import { InputText } from '../common/form/input-text';
 import { rolesApproveEvents, rolesCreateAppointmentSeller, rolesDisabledEvent, rolesNotEvents, rolesRequestEvents } from '@/constants/general';
 
-const PosStep2: React.FC<ModalEventsProps> = ({data, setOpen, activity, onChangeStep, refetch, session, refetchDay}) => {
+const PosStep2: React.FC<ModalEventsProps> = ({data, setOpen, activity, onChangeStep, refetch, session}) => {
     const { t } = useTranslation();
-    const { isValidActivity, isLoading, handleSubmitActivity, handleSubmitDataActivity, errorsActivity, controlActivity, registerActivity, setValueActivity, resources, checkboxValues, setCheckboxValues,} = useCalendarEvents(data, setOpen, activity, onChangeStep, refetch, refetchDay);
-    // const disabled = (rolesAssignEvents.includes(session?.type_rol) || data?.data?.approve_or_reject_user || data?.data?.assigned_user || rolesAssignSellersEvents.includes(session?.type_rol)) && !data.newEvent;
+    const { isValidActivity, isLoading, handleSubmitActivity, handleSubmitDataActivity, errorsActivity, controlActivity, registerActivity, setValueActivity, resources, checkboxValues, setCheckboxValues,} = useCalendarEvents(data, setOpen, activity, onChangeStep, refetch);
+    // const disabled = (rolesAssignEvents.includes(session?.user?.type_rol) || data?.data?.approve_or_reject_user || data?.data?.assigned_user || rolesAssignSellersEvents.includes(session?.user?.type_rol)) && !data.newEvent;
     const disabled = ((!rolesDisabledEvent.includes(session?.user?.type_rol) && data.newEvent) || (data?.data?.approve_or_reject_user || data?.data?.assigned_user)) ? true : false;
   
     return (

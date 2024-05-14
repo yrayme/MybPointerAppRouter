@@ -105,25 +105,25 @@ export const useCalendar = (session: any) => {
     );
 
 
-    const { data: dataDayEvents, refetch: refetchDay } = useQuery<AllCalendarResponse>(
-        [
-            GET_DAY_CALENDAR,
-            date,
-            statusCoordinator,
-            seller
-        ],
-        () =>
-            allDayCalendar(
-                moment(date).format("YYYY-MM-DD"),
-                session?.user?.type_rol === Roles.coordinator ? statusCoordinator !== "all" ? statusCoordinator : "" : "",
-                session?.user?.type_rol === Roles.promotor ? seller !== "" ? seller : "" : "",
-            ),
-        {
-            keepPreviousData: false,
-            staleTime: 5 * 60 * 1000, // 5 minutos en milisegundos
-            enabled: !!date
-        }
-    );
+    // const { data: dataDayEvents, refetch: refetchDay } = useQuery<AllCalendarResponse>(
+    //     [
+    //         GET_DAY_CALENDAR,
+    //         date,
+    //         statusCoordinator,
+    //         seller
+    //     ],
+    //     () =>
+    //         allDayCalendar(
+    //             moment(date).format("YYYY-MM-DD"),
+    //             session?.user?.type_rol === Roles.coordinator ? statusCoordinator !== "all" ? statusCoordinator : "" : "",
+    //             session?.user?.type_rol === Roles.promotor ? seller !== "" ? seller : "" : "",
+    //         ),
+    //     {
+    //         keepPreviousData: false,
+    //         staleTime: 5 * 60 * 1000, // 5 minutos en milisegundos
+    //         enabled: !!date
+    //     }
+    // );
 
 
     useEffect(() => {
@@ -163,12 +163,11 @@ export const useCalendar = (session: any) => {
     }
 
     const getDates = (props: AllCalendarEvents | SlotInfo, newEvent?: boolean) => {
-        setOpenModal(true);
+        // setOpenModal(true);
         setData({ data: props, newEvent: newEvent });
     }
 
     const handleNavigate = (date: Date, view: View, action: NavigateAction) => {
-        console.log("handleNavigate", date, action, view)
         setDate(date);
     };
 
@@ -183,8 +182,8 @@ export const useCalendar = (session: any) => {
         setOpenModal,
         setData,
         refetch,
-        dataDayEvents,
-        refetchDay,
+        dataDayEvents: data,
+        // refetchDay,
         date,
         setSeller,
         seller,
@@ -199,7 +198,7 @@ export const useCalendar = (session: any) => {
     }
 }
 
-export const useCalendarType = (open: boolean, data: any, refetch?: any, setOpen?: any, refetchDay?: any) => {
+export const useCalendarType = (open: boolean, data: any, refetch?: any, setOpen?: any) => {
     const { t } = useTranslation();
     const { data: session }: any = useSession();
     const { onCloseAlertDialog, onOpenAlertDialog, onDisabled } = useAlertContext();
@@ -357,7 +356,6 @@ export const useCalendarType = (open: boolean, data: any, refetch?: any, setOpen
                 await deleteEvent(data?.data?._id.$oid)
                     .then(() => {
                         refetch();
-                        refetchDay();
                         onChangeStep(0, false);
                         setOpen(false);
                         onDisabled(false);
@@ -537,7 +535,6 @@ export const useCalendarType = (open: boolean, data: any, refetch?: any, setOpen
                 await deleteAppointment(data?.data?._id.$oid)
                     .then(() => {
                         refetch();
-                        refetchDay();
                         onChangeStep(0, false);
                         setOpen(false);
                         onDisabled(false);
@@ -576,7 +573,7 @@ export const useCalendarType = (open: boolean, data: any, refetch?: any, setOpen
     }
 }
 
-export const useCalendarAppointment = (dataEdit?: any, setOpenModal?: any, refetch?: any, session?: any, appointment?: boolean, refetchDay?: any, seller?: string) => {
+export const useCalendarAppointment = (dataEdit?: any, setOpenModal?: any, refetch?: any, session?: any, appointment?: boolean, seller?: string) => {
     const router = useRouter();
     const { onCloseAlertDialog, onOpenAlertDialog } = useAlertContext();
     const { t } = useTranslation(["common", "calendar"]);
@@ -605,10 +602,10 @@ export const useCalendarAppointment = (dataEdit?: any, setOpenModal?: any, refet
         {
             keepPreviousData: false,
             staleTime: 5 * 60 * 1000, // 5 minutos en milisegundos
-            enabled: !!session
+            enabled: !!session && !dataEdit?.newEvent
         }
     );
-
+    
     const schemaAppointment = Yup.object().shape({
         name: Yup.string().required(
             t("common:formValidator:required") as string
@@ -720,7 +717,6 @@ export const useCalendarAppointment = (dataEdit?: any, setOpenModal?: any, refet
             await createAppointment(body)
                 .then(() => {
                     refetch();
-                    refetchDay();
                     reset();
                     setIsLoading(false);
                     setOpenModal(false);
@@ -743,7 +739,6 @@ export const useCalendarAppointment = (dataEdit?: any, setOpenModal?: any, refet
             await updateAppointment(bodyUpdate, dataEdit?.data?._id?.$oid)
                 .then(() => {
                     refetch();
-                    !appointment && refetchDay();
                     reset();
                     setIsLoading(false);
                     setOpenModal(false);
@@ -785,7 +780,7 @@ export const useCalendarAppointment = (dataEdit?: any, setOpenModal?: any, refet
     }
 }
 
-export const useCalendarEvents = (dataEdit?: any, setOpenModal?: any, activity?: boolean, onChangeStep?: any, refetch?: any, refetchDay?: any) => {
+export const useCalendarEvents = (dataEdit?: any, setOpenModal?: any, activity?: boolean, onChangeStep?: any, refetch?: any) => {
     const router = useRouter();
     const { data: session }: any = useSession();
     const { onCloseAlertDialog, onOpenAlertDialog } = useAlertContext();
@@ -1018,7 +1013,6 @@ export const useCalendarEvents = (dataEdit?: any, setOpenModal?: any, activity?:
             await createPos(body, rolesRequestEvents.includes(session?.user?.type_rol) ? 0 : 1)
                 .then(() => {
                     refetch();
-                    refetchDay();
                     reset();
                     setIsLoading(false);
                     setOpenModal(false);
@@ -1041,7 +1035,6 @@ export const useCalendarEvents = (dataEdit?: any, setOpenModal?: any, activity?:
             await updateEvent(bodyUpdate, dataEdit?.data?._id?.$oid)
                 .then(() => {
                     refetch();
-                    refetchDay();
                     reset();
                     setIsLoading(false);
                     setOpenModal(false);
@@ -1102,7 +1095,6 @@ export const useCalendarEvents = (dataEdit?: any, setOpenModal?: any, activity?:
             await createPosActivity(body, rolesRequestEvents.includes(session?.user?.type_rol) ? 0 : 1)
                 .then(() => {
                     refetch();
-                    refetchDay();
                     reset();
                     setIsLoading(false);
                     setOpenModal(false);
@@ -1127,7 +1119,6 @@ export const useCalendarEvents = (dataEdit?: any, setOpenModal?: any, activity?:
             await updateEvent(bodyUpdate, dataEdit?.data?._id?.$oid)
                 .then(() => {
                     refetch();
-                    refetchDay();
                     reset();
                     setIsLoading(false);
                     setOpenModal(false);

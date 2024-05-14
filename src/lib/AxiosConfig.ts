@@ -35,8 +35,8 @@ const instance = (contentType = "application/json") => {
       return response.data;
     },
     async (error) => {
-      console.log("error.response.status", error.response.status)
       if (error.response.status === 401 || error.response.status === 422) {
+        console.log("error.response.status", error.response.status)
         await logout();
         redirect("/auth/login")
 

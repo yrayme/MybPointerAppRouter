@@ -3,7 +3,7 @@ import React from 'react'
 import PosStep2 from './PosStep2';
 import PosRequest from './PosRequest';
 
-const PosActivity: React.FC<ModalEventsProps> = ({open, data, setOpen, stepActivity, steps, onChangeStep, session, refetch, refetchDay}) => {
+const PosActivity: React.FC<ModalEventsProps> = ({open, data, setOpen, stepActivity, steps, onChangeStep, session, refetch}) => {
 
     return (
         <div>
@@ -24,7 +24,7 @@ const PosActivity: React.FC<ModalEventsProps> = ({open, data, setOpen, stepActiv
             </div>
             <div>
                 {stepActivity ? (
-                    <PosStep2 setOpen={setOpen} data={data} activity={true} onChangeStep={onChangeStep} refetch={refetch} session={session} refetchDay={refetchDay}/>
+                    <PosStep2 setOpen={setOpen} data={data} activity={true} onChangeStep={onChangeStep} refetch={refetch} session={session}/>
                 ) : (
                     <PosRequest setOpen={setOpen} data={data} activity={true} onChangeStep={onChangeStep} session={session}/>
                 )}

@@ -1048,7 +1048,7 @@ export interface CalendarComponentProps {
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
   data: DataEvents,
   refetch: <TPageData>(options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined) => Promise<QueryObserverResult<any, unknown>>;
-  refetchDay: <TPageData>(options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined) => Promise<QueryObserverResult<any, unknown>>;
+  refetchDay?: <TPageData>(options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined) => Promise<QueryObserverResult<any, unknown>>;
   dataEvents: AllCalendarResponse | undefined;
   promotor?: string;
   handleNavigate?: ((newDate: Date, view: View, action: NavigateAction) => void) | undefined;
@@ -1060,7 +1060,8 @@ export interface CalendarComponentProps {
 
 export interface CardTodayProps {
   date: Date;
-  data: AllCalendarResponse | undefined,
+  // data: AllCalendarResponse | undefined,
+  data: any,
 }
 
 export interface ResponseSales {
