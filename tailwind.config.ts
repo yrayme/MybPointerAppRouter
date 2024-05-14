@@ -57,6 +57,7 @@ const config: Config = {
           2: "var(--color-light-gray)",
           3: "var(--color-background-gray)",
           4: "var(--color-gray-1)",
+          5: "var(--color-gray-2)",
         },
         red: {
           ...colors.red,

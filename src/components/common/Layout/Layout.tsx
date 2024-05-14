@@ -29,7 +29,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 <div className='block md:hidden'><NavbarMobile pages={menuItems} /></div>
                 <div className="block md:hidden">
                 </div>
-                <div className='mt-6 md:mt-10 h-[80vh] p-4 md:px-8 md:py-4'>
+                <div className='h-[80vh] p-4 md:px-8'>
                     {children}
                     {/* <div className="absolute bottom-0 w-full left-0">
                         <div className="h-[4vh] bg-gray-2 flex justify-end items-center">

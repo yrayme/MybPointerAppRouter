@@ -10,6 +10,11 @@
     "npn": "NPN number",
     "all": "All",
     "request": "Request",
+    "views": {
+        "month": "Month",
+        "week": "Week",
+        "day": "Day"
+    },
     "appointment": {
         "appointment": "Appointments",
         "edit":  "Edit Appointment",

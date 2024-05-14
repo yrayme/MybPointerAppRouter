@@ -9,6 +9,7 @@
   "welcome": "Welcome",
   "search": "Search",
   "chat": "Chat",
+  "search-seller": "Search Seller",
   "formValidator": {
     "required": "The field is required",
     "email": "Invalid email",

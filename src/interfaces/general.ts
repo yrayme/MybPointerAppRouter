@@ -1,6 +1,6 @@
 import { FC, ReactNode } from "react";
 import { DropResult } from "react-beautiful-dnd";
-import { DateLocalizer, SlotInfo, ToolbarProps } from "react-big-calendar";
+import { DateLocalizer, NavigateAction, SlotInfo, ToolbarProps, View } from "react-big-calendar";
 import { UseFormRegister } from "react-hook-form";
 import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from "react-query";
 
@@ -35,13 +35,13 @@ export interface InputProps {
 export interface SelectProps {
   name: string;
   label?: string;
-  values: { title?: string | number; value?: string | number; name?: string; last_name?: string; _id?: { $oid : string} }[] | undefined;
+  values: { title?: string | number; value?: string | number; name?: string; last_name?: string; _id?: { $oid: string } }[] | undefined;
   register?: UseFormRegister<any>;
   IconLeft?: string;
   placeholder?: any;
   value?: string;
   onChangeCustom?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  isCustomRounded?: boolean;  
+  isCustomRounded?: boolean;
 }
 
 export type ButtonStyleType =
@@ -80,12 +80,12 @@ export interface IconProps {
 }
 
 export interface CheckBoxProps {
-    checkboxValues: boolean[] | [];
-    setCheckboxValues: React.Dispatch<React.SetStateAction<[] | boolean[]>>;
-    multiple?: boolean;
-    bold?: boolean;
-    nameId?: string;
-    setValue?: any;
+  checkboxValues: boolean[] | [];
+  setCheckboxValues: React.Dispatch<React.SetStateAction<[] | boolean[]>>;
+  multiple?: boolean;
+  bold?: boolean;
+  nameId?: string;
+  setValue?: any;
 }
 
 export type ModalTitleStyles =
@@ -93,18 +93,18 @@ export type ModalTitleStyles =
   | "error";
 
 export interface ModalProps {
-    isOpen: boolean;
-    titleStyles: ModalTitleStyles;
-    title: string,
-    description: string;
-    routeBack: string;
-    buttonAccept: boolean;
-    buttonCancel: boolean;
-    buttonAcceptLabel?: string;
-    buttonCancelLabel?: string;
-    onButtonAcceptClicked?: () => void;
-    onButtonCancelClicked?: () => void;
-    function?: () => void;
+  isOpen: boolean;
+  titleStyles: ModalTitleStyles;
+  title: string,
+  description: string;
+  routeBack: string;
+  buttonAccept: boolean;
+  buttonCancel: boolean;
+  buttonAcceptLabel?: string;
+  buttonCancelLabel?: string;
+  onButtonAcceptClicked?: () => void;
+  onButtonCancelClicked?: () => void;
+  function?: () => void;
 }
 
 export interface SidebarProps {
@@ -137,7 +137,7 @@ export interface PosDataProps {
 
 export interface OpenSubmenu {
   [key: string]: boolean;
-}  
+}
 
 export type PaginationProps = {
   pagActual: number;
@@ -228,23 +228,23 @@ export interface CompanyRequest {
   fax: string;
 }
 export interface CompanyUpdateRequest {
-  secondary_phone:           string;
-  fax:                       string;
-  street:                    string;
-  po_box:                    string;
-  country:                   string;
-  state:                     string;
-  city:                      string;
-  zip:                       string;
-  street_shippimg:           string | undefined;
-  po_box_shippimg:           string | undefined;
-  country_shippimg:          string | undefined;
-  state_shippimg:            string | undefined;
-  city_shippimg:             string | undefined;
-  zip_shippimg:              string | undefined;
-  email:                     string;
+  secondary_phone: string;
+  fax: string;
+  street: string;
+  po_box: string;
+  country: string;
+  state: string;
+  city: string;
+  zip: string;
+  street_shippimg: string | undefined;
+  po_box_shippimg: string | undefined;
+  country_shippimg: string | undefined;
+  state_shippimg: string | undefined;
+  city_shippimg: string | undefined;
+  zip_shippimg: string | undefined;
+  email: string;
   is_agency_used_other_name: boolean;
-  has_agency_website:        boolean | undefined;
+  has_agency_website: boolean | undefined;
   agency_name: string;
   agency_name_shippimg: string | undefined;
 }
@@ -254,7 +254,7 @@ export interface LayoutUsersProps {
   users: ResponseUsers | undefined;
   pagActual: number;
   setPagActual: any;
-  getDelete: (id: string, name:string) => void;
+  getDelete: (id: string, name: string) => void;
   getEdit?: any;
   text?: string;
   onClickEdit?: () => void;
@@ -284,29 +284,29 @@ export interface User {
   npm_number?: string;
   san_number: string;
   manager?: string;
-  superior_role_id: string;  
-  federal_tax_id?:       string;
-  agency_full_legal?:    string;
-  primary_phone?:        string;
-  secondary_phone?:      string;
-  agency_name?:          string;
-  street?:               string;
-  po_box?:               string;
-  country?:              CityItem | undefined;
-  state?:                CityItem;
-  city?:                 CityItem;
-  zip?:                  string;
+  superior_role_id: string;
+  federal_tax_id?: string;
+  agency_full_legal?: string;
+  primary_phone?: string;
+  secondary_phone?: string;
+  agency_name?: string;
+  street?: string;
+  po_box?: string;
+  country?: CityItem | undefined;
+  state?: CityItem;
+  city?: CityItem;
+  zip?: string;
   agency_name_shippimg?: string;
-  street_shippimg?:      string;
-  po_box_shippimg?:      string;
-  country_shippimg?:     CityItem;
-  state_shippimg?:       CityItem;
-  city_shippimg?:        CityItem;
-  zip_shippimg?:         string;
-  entity_type?:          CityItem;
-  agency_npn?:           string;
-  agency_san?:           string;
-  contact_name?:         string;
+  street_shippimg?: string;
+  po_box_shippimg?: string;
+  country_shippimg?: CityItem;
+  state_shippimg?: CityItem;
+  city_shippimg?: CityItem;
+  zip_shippimg?: string;
+  entity_type?: CityItem;
+  agency_npn?: string;
+  agency_san?: string;
+  contact_name?: string;
   is_agency_used_other_name: boolean;
   has_agency_website: boolean;
   fax?: string;
@@ -328,7 +328,7 @@ export interface UserWithoutCompany {
   npm_number: string;
   san_number: string;
   manager?: string;
-  superior_role_id: string;  
+  superior_role_id: string;
 }
 export interface ResponseTypes {
   items: Types[] | undefined;
@@ -356,7 +356,7 @@ export interface TableProps {
   getDelete: (data: any) => void;
   getEdit: (data: any) => void;
   goal?: boolean;
-  valueGoal?: {[key: string]: string};
+  valueGoal?: { [key: string]: string };
   onchangeInput?: (value: string, id: string) => void | undefined;
   takeCount: number;
   targetRef?: any;
@@ -497,10 +497,10 @@ export interface PosForm {
   dateLabel?: string;
 }
 
-export interface ItemsActivityForm { 
-  id?: string | undefined; 
-  quantity?: string | undefined; 
-  check?: boolean; 
+export interface ItemsActivityForm {
+  id?: string | undefined;
+  quantity?: string | undefined;
+  check?: boolean;
 }
 export interface PosActivityForm {
   assemblyDate: Date;
@@ -519,35 +519,35 @@ interface ArrayDates {
   time: string;
 }
 
-export interface ModalEventsProps {    
+export interface ModalEventsProps {
   open?: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   data: any;
   activity?: boolean;
   stepActivity?: boolean;
   steps?: any[];
-  onChangeStep: (index: number, active: boolean) => void; 
+  onChangeStep: (index: number, active: boolean) => void;
   session?: any;
   pos?: boolean;
   refetch?: <TPageData>(options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined) => Promise<QueryObserverResult<any, unknown>>;
   refetchDay?: <TPageData>(options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined) => Promise<QueryObserverResult<any, unknown>>;
 }
 
-export interface ModalPromotorProps {    
+export interface ModalPromotorProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   edit?: User | null;
   setDataEdit?: React.Dispatch<React.SetStateAction<User | null | undefined>>;
   refetch?: <TPageData>(options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined) => Promise<QueryObserverResult<any, unknown>>;
 }
-export interface ModalCoordinatorProps {    
+export interface ModalCoordinatorProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   edit?: any;
   refetch?: <TPageData>(options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined) => Promise<QueryObserverResult<any, unknown>>;
 }
 
-export interface ModalCalendarProps {    
+export interface ModalCalendarProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   data: any;
@@ -617,16 +617,16 @@ export interface UpdateAppointmentRequest {
   date_init?: string;
   date_end?: string;
 }
-export interface AppointmentProps {    
-    open?: boolean;
-    setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    data: any;
-    type?: string;
-    refetch?: <TPageData>(options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined) => Promise<QueryObserverResult<any, unknown>>;
-    refetchDay?: <TPageData>(options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined) => Promise<QueryObserverResult<any, unknown>>;
-    appointment?: boolean;
-    events?: AllCalendarResponse | undefined;
-    promotor?: string;
+export interface AppointmentProps {
+  open?: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  data: any;
+  type?: string;
+  refetch?: <TPageData>(options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined) => Promise<QueryObserverResult<any, unknown>>;
+  refetchDay?: <TPageData>(options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined) => Promise<QueryObserverResult<any, unknown>>;
+  appointment?: boolean;
+  events?: AllCalendarResponse | undefined;
+  promotor?: string;
 }
 
 export interface DeclineEventRequest {
@@ -645,7 +645,7 @@ export interface Column {
   name: string;
   tasks: Appointment[];
   total: number;
-  idStatus: string; 
+  idStatus: string;
   color: string;
 }
 
@@ -671,133 +671,133 @@ export interface ColumnProps {
   setDataEdit: React.Dispatch<React.SetStateAction<DataAppointment>>;
 }
 
-export interface AllCalendarEvents {    
-  _id?:                   ID;
-  type?:                  Product;
-  client_name?:           string;
-  name?:                  string;
-  email?:                 string;
-  address?:               string;
-  status?:                Product;
-  note?:                  string;
-  product?:               Product;
-  date_init?:             DateJoinedClass;
-  date_end?:              DateJoinedClass;
-  assigned_user?:         EdUser | User;
-  created_user?:          EdUser | User;
+export interface AllCalendarEvents {
+  _id?: ID;
+  type?: Product;
+  client_name?: string;
+  name?: string;
+  email?: string;
+  address?: string;
+  status?: Product;
+  note?: string;
+  product?: Product;
+  date_init?: DateJoinedClass;
+  date_end?: DateJoinedClass;
+  assigned_user?: EdUser | User;
+  created_user?: EdUser | User;
   is_approved_by_client?: boolean;
-  title?:                 string;
-  start?:                 Date | number | undefined;
-  end?:                   Date | number | undefined;
+  title?: string;
+  start?: Date | number | undefined;
+  end?: Date | number | undefined;
 
-  event_status?:            Product;
-  location?:                LocationCalendar;
-  contact_name?:            string;
-  phone_number?:            string;
-  expect_number_people?:    number;
-  promotor?:               ApproveOrRejectUser;
+  event_status?: Product;
+  location?: LocationCalendar;
+  contact_name?: string;
+  phone_number?: string;
+  expect_number_people?: number;
+  promotor?: ApproveOrRejectUser;
   // created_user?:            User;
-  resources?:               Resource[];
+  resources?: Resource[];
   // assigned_user?:          User;
-  assembly_date?:          DateEnd;
-  disassembly_date?:       DateEnd;
-  request_event_status?:   Product;
-  requester_user?:         User;
+  assembly_date?: DateEnd;
+  disassembly_date?: DateEnd;
+  request_event_status?: Product;
+  requester_user?: User;
   approve_or_reject_user?: ApproveOrRejectUser;
-} 
+}
 export interface AllCalendarResponse {
-  events?:    MyEventCalendarProps[];
+  events?: MyEventCalendarProps[];
   appoimets?: Appointment[];
 }
 export interface Appointment {
-  _id:                   ID;
-  type:                  Product;
-  name?:                  string;
-  client_name:           string;
-  email:                 string;
-  address:               string;
-  status:                Product;
-  note:                  string;
-  product:               Product;
-  date_init:             DateJoinedClass;
-  date_end:              DateJoinedClass;
-  date_init1?:           DateAppointment;
-  date_end1?:            DateAppointment;
-  assigned_user:         EdUser;
-  created_user:          EdUser;
+  _id: ID;
+  type: Product;
+  name?: string;
+  client_name: string;
+  email: string;
+  address: string;
+  status: Product;
+  note: string;
+  product: Product;
+  date_init: DateJoinedClass;
+  date_end: DateJoinedClass;
+  date_init1?: DateAppointment;
+  date_end1?: DateAppointment;
+  assigned_user: EdUser;
+  created_user: EdUser;
   is_approved_by_client: boolean;
-  title?:                string;
-  start?:                Date;
-  end?:                  Date;
+  title?: string;
+  start?: Date;
+  end?: Date;
 }
 
 export interface DateAppointment {
-  $date:     string;
+  $date: string;
 }
 export interface EdUser {
-  _id:              ID;
-  email:            string;
-  type_rol:         string;
-  name:             string;
-  last_name:        string;
-  phone_number:     string;
+  _id: ID;
+  email: string;
+  type_rol: string;
+  name: string;
+  last_name: string;
+  phone_number: string;
   superior_role_id: string;
-  san_number:       string;
-  npm_number:       string;
+  san_number: string;
+  npm_number: string;
 }
 
 export interface DateEnd {
   $date: Date | number;
 }
 export interface Product {
-  _id:  ID;
+  _id: ID;
   name: string;
 }
 
 export interface MyEventCalendarProps {
-  _id:                     ID;
-  type:                    Product;
-  event_status:            Product;
-  name:                    string;
-  client_name:             string;
-  location:                LocationCalendar;
-  contact_name:            string;
-  phone_number:            string;
-  expect_number_people:    number;
-  date_init:               DateEnd;
-  date_end:                DateEnd;
-  promotor?:               ApproveOrRejectUser;
-  created_user:            User;
-  resources:               Resource[];
-  assigned_user?:          User;
-  assembly_date?:          DateEnd;
-  disassembly_date?:       DateEnd;
-  request_event_status?:   Product;
-  requester_user?:         User;
+  _id: ID;
+  type: Product;
+  event_status: Product;
+  name: string;
+  client_name: string;
+  location: LocationCalendar;
+  contact_name: string;
+  phone_number: string;
+  expect_number_people: number;
+  date_init: DateEnd;
+  date_end: DateEnd;
+  promotor?: ApproveOrRejectUser;
+  created_user: User;
+  resources: Resource[];
+  assigned_user?: User;
+  assembly_date?: DateEnd;
+  disassembly_date?: DateEnd;
+  request_event_status?: Product;
+  requester_user?: User;
   approve_or_reject_user?: ApproveOrRejectUser;
   title?: string;
   start?: Date;
   end?: Date;
 }
 export interface ApproveOrRejectUser {
-  _id:          ID;
-  email:        string;
-  type_rol:     string;
-  name:         string;
-  last_name:    string;
+  _id: ID;
+  email: string;
+  type_rol: string;
+  name: string;
+  last_name: string;
   phone_number: string;
 }
 export interface Resource {
-  id:        string;
+  id: string;
   quantity?: string;
 }
 export interface LocationCalendar {
-  _id:      ID;
-  name:     string;
-  address:  string;
+  _id: ID;
+  name: string;
+  address: string;
   country?: Product;
-  state?:   Product;
-  city?:    Product;
+  state?: Product;
+  city?: Product;
 }
 export interface FieldProps {
   onChange: (value: any) => void;
@@ -810,7 +810,7 @@ export interface FieldProps {
 
 export interface SelectLists {
   _id: {
-      $oid: string | any;
+    $oid: string | any;
   };
   name: string;
   quantity?: boolean;
@@ -908,18 +908,18 @@ export interface GeneralUpdateResponse {
 }
 
 export interface DirectorByIDResponse {
-  _id:          ID;
-  email:        string;
-  password:     string;
-  date_joined:  DateJoined;
-  type_rol:     string;
-  active:       boolean;
-  name:         string;
-  last_name:    string;
+  _id: ID;
+  email: string;
+  password: string;
+  date_joined: DateJoined;
+  type_rol: string;
+  active: boolean;
+  name: string;
+  last_name: string;
   phone_number: string;
-  country_id:   string;
-  state_id:     string;
-  city_id:      string;
+  country_id: string;
+  state_id: string;
+  city_id: string;
   secret_token: string;
 }
 
@@ -933,19 +933,19 @@ export interface AllCompaniesResponse {
 }
 
 export interface ItemCompany {
-  _id:             ID;
-  federaltaxid:    string;
+  _id: ID;
+  federaltaxid: string;
   agencyfulllegal: string;
-  primaryPhone:    string;
-  secondaryPhone:  string;
-  agencyname:      string;
-  street:          string;
-  pobox:           string;
-  country:         string;
-  state:           string;
-  city:            string;
-  zip:             string;
-  email:           string;
+  primaryPhone: string;
+  secondaryPhone: string;
+  agencyname: string;
+  street: string;
+  pobox: string;
+  country: string;
+  state: string;
+  city: string;
+  zip: string;
+  email: string;
 }
 
 export interface LocationState {
@@ -958,32 +958,32 @@ export interface AllLocationResponse {
 }
 
 export interface ItemLocation {
-  _id:         ID;
-  name:        string;
-  address:     string;
+  _id: ID;
+  name: string;
+  address: string;
   date_joined: DateJoinedClass;
-  state?:      CityItem;
-  country?:    CityItem;
-  city?:       CityItem;
+  state?: CityItem;
+  country?: CityItem;
+  city?: CityItem;
 }
 export interface CityItem {
-  _id:  ID;
+  _id: ID;
   name: string;
 }
 
 export interface DateJoinedClass {
-  $date: number | Date ;
+  $date: number | Date;
 }
 
 export interface StatesResponse {
-  _id:        ID;
-  name:       string;
+  _id: ID;
+  name: string;
   country_id: ID;
 }
 
 export interface CitiesResponse {
-  _id:      ID;
-  name:     string;
+  _id: ID;
+  name: string;
   state_id: ID;
 }
 
@@ -1008,9 +1008,9 @@ export interface DataAppointment {
 }
 
 export interface AppointmentByStatusResponse {
-  scheduled:        Appointment[];
-  recontact:        Appointment[];
-  "no-interest":    Appointment[];
+  scheduled: Appointment[];
+  recontact: Appointment[];
+  "no-interest": Appointment[];
   "not-interested": Appointment[];
 }
 
@@ -1040,9 +1040,6 @@ export interface SaleForm {
 }
 
 export interface CalendarComponentProps {
-  handlePrevious: (props: ToolbarProps) => void;
-  handleNext: (props: ToolbarProps) => void;
-  handleDate: (date: Date, props: ToolbarProps) => void;
   defaultDate: Date;
   localizer: DateLocalizer;
   events: AllCalendarEvents[];
@@ -1054,6 +1051,11 @@ export interface CalendarComponentProps {
   refetchDay: <TPageData>(options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined) => Promise<QueryObserverResult<any, unknown>>;
   dataEvents: AllCalendarResponse | undefined;
   promotor?: string;
+  handleNavigate?: ((newDate: Date, view: View, action: NavigateAction) => void) | undefined;
+  date: Date;
+  selectView: string;
+  setSelectView: any;
+  optionsView: { id: string; name: string, value: string, selected?: boolean }[];
 }
 
 export interface CardTodayProps {
@@ -1068,31 +1070,31 @@ export interface ResponseSales {
 }
 
 export interface SalesRequest {
-  sale_address:       string;
-  affiliated_name:    string;
-  phone_number:       string;
-  email:              string;
-  mrbi:               string;
+  sale_address: string;
+  affiliated_name: string;
+  phone_number: string;
+  email: string;
+  mrbi: string;
   affiliated_address: string;
-  selled_product:     string;
-  previous_product:   string;
-  eligibility_date:   string;
+  selled_product: string;
+  previous_product: string;
+  eligibility_date: string;
 }
 
 export interface SalesResponse {
-  _id:                ID;
-  date_sale:          DateSale;
-  seller:             Seller;
-  sale_address:       string;
-  affiliated_name:    string;
-  phone_number:       string;
-  email:              string;
-  mrbi:               string;
+  _id: ID;
+  date_sale: DateSale;
+  seller: Seller;
+  sale_address: string;
+  affiliated_name: string;
+  phone_number: string;
+  email: string;
+  mrbi: string;
   affiliated_address: string;
-  selled_product:     SaleStatus;
-  previous_product:   string;
-  eligibility_date:   DateSale;
-  sale_status:        SaleStatus;
+  selled_product: SaleStatus;
+  previous_product: string;
+  eligibility_date: DateSale;
+  sale_status: SaleStatus;
   id?: string;
   name?: string;
   client?: string;
@@ -1112,19 +1114,19 @@ export interface DateSale {
 }
 
 export interface SaleStatus {
-  _id:  ID;
+  _id: ID;
   name: string;
 }
 export interface Seller {
-  _id:              ID;
-  email:            string;
-  type_rol:         string;
-  name:             string;
-  last_name:        string;
-  phone_number:     string;
+  _id: ID;
+  email: string;
+  type_rol: string;
+  name: string;
+  last_name: string;
+  phone_number: string;
   superior_role_id: string;
-  san_number:       string;
-  npm_number:       string;
+  san_number: string;
+  npm_number: string;
 }
 
 export interface StateSales {
@@ -1140,13 +1142,13 @@ export interface TooltipProps {
 }
 
 export interface CreateGoalsRequest {
-  quantity:      number;
+  quantity: number;
   assigned_user: string;
-  date:          string;
+  date: string;
 }
 
 export interface UpdateGoalsRequest {
-  quantity:      number;
+  quantity: number;
 }
 
 export interface GoalManagerResponse {
@@ -1155,65 +1157,65 @@ export interface GoalManagerResponse {
 }
 
 export interface ItemGoalManager {
-  _id:          ID;
-  email:        string;
-  type_rol:     string;
-  name:         string;
-  last_name:    string;
+  _id: ID;
+  email: string;
+  type_rol: string;
+  name: string;
+  last_name: string;
   phone_number: string;
-  team_goal:    number;
-  goal?:        ItemGoal;
-  phone?:       string;
-  full_name?:   string;
+  team_goal: number;
+  goal?: ItemGoal;
+  phone?: string;
+  full_name?: string;
   goal_number?: number;
   color?: string;
   disabled?: boolean;
 }
 export interface ItemGoal {
-  _id:           ID;
-  quantity:      number;
-  created_user:  EdUser;
+  _id: ID;
+  quantity: number;
+  created_user: EdUser;
   assigned_user: EdUser;
-  date:          DateClass;
+  date: DateClass;
 }
 export interface DateClass {
   $date: Date;
 }
 
 export interface GoalSellerResponse {
-  total:                      number;
-  items:                      ItemGoalSeller[];
+  total: number;
+  items: ItemGoalSeller[];
   monthly_goal_sales_manager: number;
   sales_manager: ItemDataManager;
 }
 export interface ItemDataManager {
-  _id:          ID;
-  email:        string;
-  type_rol:     string;
-  name:         string;
-  last_name:    string;
+  _id: ID;
+  email: string;
+  type_rol: string;
+  name: string;
+  last_name: string;
   phone_number: string;
 }
 export interface ItemGoalSeller {
-  _id:              ID;
-  email:            string;
-  type_rol:         string;
-  name:             string;
-  last_name:        string;
-  phone_number:     string;
+  _id: ID;
+  email: string;
+  type_rol: string;
+  name: string;
+  last_name: string;
+  phone_number: string;
   superior_role_id: string;
-  san_number:       string;
-  npm_number:       string;
-  goal?:            ItemGoal;
-  phone?:           string;
-  full_name?:       string;
-  goal_number?:     number;
+  san_number: string;
+  npm_number: string;
+  goal?: ItemGoal;
+  phone?: string;
+  full_name?: string;
+  goal_number?: number;
   disabled?: boolean;
 }
 
 export interface ValueGol {
   [key: string]: string;
-}  
+}
 
 export interface RangeDate {
   selection: Selection;
@@ -1221,28 +1223,28 @@ export interface RangeDate {
 
 export interface Selection {
   startDate: Date;
-  endDate:   Date;
-  color:     string;
-  key:       string;
+  endDate: Date;
+  color: string;
+  key: string;
   autoFocus: boolean;
 }
 
 export interface MenuItems {
-  _id:       ID;
-  name:      string;
-  icon:     string;
-  color:     string;
-  routes?:   string[];
+  _id: ID;
+  name: string;
+  icon: string;
+  color: string;
+  routes?: string[];
   type_menu: string;
-  subitems?: SubmenuSidebarProps[]; 
+  subitems?: SubmenuSidebarProps[];
   submenu?: SubmenuSidebarProps[];
 }
 
 
 export interface SubmenuSidebarProps {
-  _id:       ID;
+  _id: ID;
   type_menu: string;
-  name: string, 
+  name: string,
   routes: string[],
 }
 

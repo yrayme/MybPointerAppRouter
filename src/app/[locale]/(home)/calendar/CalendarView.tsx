@@ -19,9 +19,6 @@ const CalendarView = () => {
     const { t } = useTranslation();
     const { data: session }: any = useSession();
     const {
-        handleDate,
-        handleNext,
-        handlePrevious,
         localizer,
         defaultDate,
         events,
@@ -38,7 +35,11 @@ const CalendarView = () => {
         statusEvent,
         setStatusCoordinator,
         dataEvents,
-        seller
+        seller,
+        handleNavigate,
+        selectView,
+        setSelectView,
+        optionsView
     } = useCalendar(session);
 
     const types = [
@@ -60,8 +61,8 @@ const CalendarView = () => {
     ]
 
     return (
-        <div>
-            <div className='mt-2 w-full flex md:flex-row flex-col gap-4 md:justify-between items-center'>
+        <div className=''>
+            <div className='w-full flex md:flex-row flex-col gap-4 md:justify-between items-center'>
                 {Roles.coordinator === session?.type_rol && (
                     <div className='flex gap-2 items-center'>
                         {statusEvent.map((method: any) => (
@@ -90,19 +91,16 @@ const CalendarView = () => {
                             onChange={(value) => {
                                 value && setSeller(value?._id.$oid);
                             }}
-                            name="promotor"
-                            label={
-                                t("calendar:seller") as string
-                            }
+                            name="seller"
                             placeHolder={
-                                t("common:select") as string
+                                t("common:search-seller") as string
                             }
                             getData={getSellers}
                             queryKey={GET_SELLERS}
                             customIconLeft={() => (
                                 <AllIcons name='PeopleIcon' className='h-5 w-5 text-primary ml-3' />
                             )}
-                            filter
+                            // filter
                             value={seller}
                         />
                         <div>
@@ -114,25 +112,10 @@ const CalendarView = () => {
                         </div>
                     </div>
                 )}
-                <div className='flex gap-4 flex-wrap'>
-                    {types.map((type, index) => {
-                        return (
-                            <div key={index}>
-                                <div className='flex gap-1'>
-                                    <div className={`h-5 w-5 border ${type.border} ${type.color} rounded-full`}></div>
-                                    <p className='text-sm'>{type.name}</p>
-                                </div>
-                            </div>
-                        )
-                    })}
-                </div>
             </div>
-            <div className={`flex gap-4 mt-6 md:flex-row flex-col ${Roles.promotor === session?.type_rol ? "md:h-[76vh]" : "md:h-[80vh]"}`}>
+            <div className={`flex gap-4 md:flex-row flex-col ${Roles.promotor === session?.type_rol ? "md:h-[76vh]" : "md:h-[80vh]"}`}>
                 <div className={`w-full md:w-4/5 h-[60vh] ${Roles.promotor === session?.type_rol ? "md:h-[76vh]" : "md:h-[80vh]"}`}>
                     <CalendarComponent
-                        handlePrevious={handlePrevious}
-                        handleNext={handleNext}
-                        handleDate={handleDate}
                         defaultDate={defaultDate}
                         localizer={localizer}
                         events={events}
@@ -144,6 +127,11 @@ const CalendarView = () => {
                         refetchDay={refetchDay}
                         dataEvents={dataEvents}
                         promotor={seller}
+                        handleNavigate={handleNavigate}
+                        date={date}
+                        selectView={selectView}
+                        setSelectView={setSelectView}
+                        optionsView={optionsView}
                     />
                 </div>
                 <div className='w-full md:w-1/5'>

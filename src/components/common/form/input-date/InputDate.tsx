@@ -32,9 +32,9 @@ const InputDate: React.FC<
   label,
   defaultValue,
   field,
-  className,
+  className = "bg-white",
   helperText,
-  icon = "CalendarIcon",
+  icon,
   colorIcon = "text-gray-1",
   fontSize = "text-sm",
   labelDate,
@@ -47,7 +47,7 @@ const InputDate: React.FC<
   const params = useParams();
   const { locale } = params;
   const StylesInput = clsx(
-    `px-4 py-3 w-full border border-gray-1 rounded-lg text-sm placeholder:text-sm h-10 bg-white flex justify-between items-center gap-4`,
+    `px-4 py-3 w-full border border-gray-1 rounded-lg text-sm placeholder:text-sm h-10 flex justify-between items-center gap-4`,
     !error ? "placeholder-gray-1" : "placeholder-red-primary", 
     !error
       ? "focus:outline-none focus:border-primary"
@@ -56,10 +56,10 @@ const InputDate: React.FC<
 
   const CustomInput: React.FC<CustomInputProps> = forwardRef(({ value, onClick }, ref)  => {
     return (
-      <div className={clsx(StylesInput, className)}>
+      <div className={clsx(StylesInput, className)} onClick={onClick}>
         <p className={fontSize}>{labelDate ? labelDate : showYearPicker ? value && new Date(value).getFullYear() : value}</p>
-        <div onClick={onClick} className="cursor-pointer">
-          <AllIcons name={icon} className={`h-5 w-5 ${colorIcon}`}/>
+        <div  className="cursor-pointer">
+          {icon && <AllIcons name={icon || "CalendarIcon"} className={`h-5 w-5 ${colorIcon}`}/>}
         </div>
       </div>
     )
@@ -86,10 +86,10 @@ const InputDate: React.FC<
         selected={field ? field.value : value}
         locale={locale as string}
         customInput={<CustomInput />}
-        calendarClassName="bg-primary"
+        calendarClassName="bg-primary fixed z-50"
         minDate={minDate}
         disabled={disabled}
-        showYearPicker={showYearPicker}       
+        showYearPicker={showYearPicker}    
       />
       {((error && error.message) || helperText) && (
         <div

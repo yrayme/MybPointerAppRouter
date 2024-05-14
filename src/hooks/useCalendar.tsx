@@ -1,7 +1,7 @@
 'use client'
 import moment from "moment";
-import { useContext, useEffect, useState } from "react";
-import { SlotInfo, ToolbarProps, momentLocalizer } from "react-big-calendar";
+import { useCallback, useContext, useEffect, useState } from "react";
+import { Navigate, NavigateAction, SlotInfo, ToolbarProps, View, Views, momentLocalizer } from "react-big-calendar";
 import { useTranslation } from 'next-i18next';
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
@@ -33,47 +33,70 @@ interface dataEvents {
 }
 
 export const useCalendar = (session: any) => {
+    const { t } = useTranslation();
     const [defaultDate, setDefaultDate] = useState(new Date());
     const [openModal, setOpenModal] = useState<boolean>(false);
-    const [data, setData] = useState<DataEvents>({data: null, newEvent: false});
+    const [data, setData] = useState<DataEvents>({ data: null, newEvent: false });
     const localizer = momentLocalizer(moment);
     const [events, setEvents] = useState<AllCalendarEvents[]>([]);
     const [date, setDate] = useState<Date>(new Date());
     const [seller, setSeller] = useState<string>("");
-    const [pagActual, setPagActual] = useState<number>(0);   
+    const [pagActual, setPagActual] = useState<number>(0);
     const takeCount: number = 10;
     const { statusEvent } = useStatusEvent();
     const [statusCoordinator, setStatusCoordinator] = useState<string>("");
+    const [selectView, setSelectView] = useState(Views.MONTH);
+
+    const optionsView = [
+        {
+            id: "1",
+            name: t('calendar:views:month'),
+            value: "month",
+            selected: true,
+        },
+        {
+            id: "2",
+            name: t('calendar:views:week'),
+            value: "week",
+            selected: false,
+        },
+        {
+            id: "3",
+            name: t('calendar:views:day'),
+            value: "day",
+            selected: false,
+        }
+    ]
 
     useEffect(() => {
         if (session && !rolesCreateAppointmentSeller.includes(session?.user?.type_rol)) setSeller("null");
     }, [session])
-    
+
 
     const getSellers = (search = "") => {
         return allSellers(
             pagActual,
             takeCount,
             search,
-        ).then((values) => {            
+        ).then((values) => {
             // if (search) return "";
             return values.items;
         });
     };
 
-    const { data: dataEvents , refetch } = useQuery<AllCalendarResponse>(
+    const { data: dataEvents, refetch } = useQuery<AllCalendarResponse>(
         [
-          GET_CALENDAR,
-          date,
-          statusCoordinator,
-          seller
+            GET_CALENDAR,
+            date,
+            statusCoordinator,
+            seller
         ],
-        async() =>
-          await allCalendar(
-            moment(date).format("YYYY-MM"), 
-            session?.user?.type_rol === Roles.coordinator ? statusCoordinator !== "all" ? statusCoordinator : "" : "",
-            session?.user?.type_rol === Roles.promotor ? seller !== "" ? seller : "" : "",
-        ),
+        async () =>
+            await allCalendar(
+                moment(date).format("YYYY-MM"),
+                session?.user?.type_rol === Roles.coordinator ? statusCoordinator !== "all" ? statusCoordinator : "" : "",
+                session?.user?.type_rol === Roles.promotor ? seller !== "" ? seller : "" : "",
+            ),
         {
             keepPreviousData: false,
             staleTime: 5 * 60 * 1000, // 5 minutos en milisegundos
@@ -81,20 +104,20 @@ export const useCalendar = (session: any) => {
         }
     );
 
-    
-    const { data: dataDayEvents , refetch: refetchDay } = useQuery<AllCalendarResponse>(
+
+    const { data: dataDayEvents, refetch: refetchDay } = useQuery<AllCalendarResponse>(
         [
-          GET_DAY_CALENDAR,
-          date,
-          statusCoordinator,
-          seller
+            GET_DAY_CALENDAR,
+            date,
+            statusCoordinator,
+            seller
         ],
         () =>
-          allDayCalendar(
-            moment(date).format("YYYY-MM-DD"),
-            session?.user?.type_rol === Roles.coordinator ? statusCoordinator !== "all" ? statusCoordinator : "" : "",
-            session?.user?.type_rol === Roles.promotor ? seller !== "" ? seller : "" : "",
-        ),
+            allDayCalendar(
+                moment(date).format("YYYY-MM-DD"),
+                session?.user?.type_rol === Roles.coordinator ? statusCoordinator !== "all" ? statusCoordinator : "" : "",
+                session?.user?.type_rol === Roles.promotor ? seller !== "" ? seller : "" : "",
+            ),
         {
             keepPreviousData: false,
             staleTime: 5 * 60 * 1000, // 5 minutos en milisegundos
@@ -104,7 +127,7 @@ export const useCalendar = (session: any) => {
 
 
     useEffect(() => {
-        if (dataEvents){
+        if (dataEvents) {
             const { appoimets, events } = dataEvents;
             if (appoimets && events) {
                 let data = {
@@ -127,43 +150,30 @@ export const useCalendar = (session: any) => {
         }
     }, [dataEvents])
 
-    const orderEvents = (data: dataEvents) => {        
+    const orderEvents = (data: dataEvents) => {
         const res = data?.data?.map((event: AllCalendarEvents) => {
             return {
                 ...event,
                 title: event.client_name ? event.client_name : event.name,
                 start: event?.date_init?.$date && getDateCalendar(event?.date_init?.$date),
-                end: event?.date_end?.$date && getDateCalendar(event?.date_end?.$date),                        
+                end: event?.date_end?.$date && getDateCalendar(event?.date_end?.$date),
             }
         })
         setEvents(res);
     }
 
-    
-    const handleDate = (date: Date, props: ToolbarProps) => {
-        setDate(date);
-        props.onNavigate('DATE', date)        
-    }
-
-    const handlePrevious = (props: ToolbarProps) => {
-        setDate(addMonths(new Date(props.date), -1));
-        props.onNavigate('PREV')
-    }
-
-    const handleNext = (props: ToolbarProps) => {
-        setDate(addMonths(new Date(props.date), 1));
-        props.onNavigate('NEXT')
-    }
-
     const getDates = (props: AllCalendarEvents | SlotInfo, newEvent?: boolean) => {
         setOpenModal(true);
-        setData({data: props, newEvent: newEvent});
+        setData({ data: props, newEvent: newEvent });
     }
 
+    const handleNavigate = (date: Date, view: View, action: NavigateAction) => {
+        console.log("handleNavigate", date, action, view)
+        setDate(date);
+    };
+
+
     return {
-        handleDate,
-        handleNext,
-        handlePrevious,
         events,
         defaultDate,
         localizer,
@@ -181,17 +191,21 @@ export const useCalendar = (session: any) => {
         getSellers,
         statusEvent,
         setStatusCoordinator,
-        dataEvents
+        dataEvents,
+        handleNavigate,
+        selectView,
+        setSelectView, 
+        optionsView
     }
 }
 
-export const useCalendarType = (open: boolean, data: any, refetch?:any, setOpen?: any, refetchDay?: any) => {
+export const useCalendarType = (open: boolean, data: any, refetch?: any, setOpen?: any, refetchDay?: any) => {
     const { t } = useTranslation();
-    const { data: session } : any  = useSession();
-    const {onCloseAlertDialog, onOpenAlertDialog, onDisabled } = useAlertContext();
+    const { data: session }: any = useSession();
+    const { onCloseAlertDialog, onOpenAlertDialog, onDisabled } = useAlertContext();
     const { promotorId, sellerId } = useCommonContext();
-    const [stepActivity, setStepActivity] = useState<boolean>(false);   
-    const [pagActual, setPagActual] = useState<number>(0);   
+    const [stepActivity, setStepActivity] = useState<boolean>(false);
+    const [pagActual, setPagActual] = useState<number>(0);
     const [error, setError] = useState<ErrorProps>({
         message: "",
         error: false
@@ -214,7 +228,7 @@ export const useCalendarType = (open: boolean, data: any, refetch?:any, setOpen?
     const [eventType, setEventType] = useState([
         {
             name: "",
-            _id: { $oid: ""}
+            _id: { $oid: "" }
         }
     ]);
 
@@ -224,19 +238,19 @@ export const useCalendarType = (open: boolean, data: any, refetch?:any, setOpen?
             error: false
         });
     }, [open])
-    
+
     useEffect(() => {
-        if (types && types.length > 0 && data){
-            if (!rolesCreateDeleteAppointment.includes(session?.user?.type_rol)){
-                if ( Roles.promotor === session?.user?.type_rol ){                    
-                    const items =  data.newEvent ? types.filter((type: Types) => type?.name === eventsType.appointment) : types.filter((type: Types) => type?.name === data?.data?.type?.name);
+        if (types && types.length > 0 && data) {
+            if (!rolesCreateDeleteAppointment.includes(session?.user?.type_rol)) {
+                if (Roles.promotor === session?.user?.type_rol) {
+                    const items = data.newEvent ? types.filter((type: Types) => type?.name === eventsType.appointment) : types.filter((type: Types) => type?.name === data?.data?.type?.name);
                     setValueType("type", items[0]?._id.$oid)
                     return setEventType(items)
                 }
                 const items = data.newEvent ? types.filter((type: Types) => type?.name !== eventsType.appointment) : types.filter((type: Types) => type?.name === data?.data?.type?.name);
                 setValueType("type", items[0]?._id.$oid)
                 return setEventType(rolesViewsAppointment.includes(session?.user?.type_rol) ? types : items)
-            }else {
+            } else {
                 // if ( Roles.promotor === session?.user?.type_rol && data.newEvent ){
                 //     const items = types.filter((type: Types) => type?.name === eventsType.appointment);
                 //     setValueType("type", items[0]?._id.$oid)
@@ -246,7 +260,7 @@ export const useCalendarType = (open: boolean, data: any, refetch?:any, setOpen?
                 setEventType(types)
             }
         }
-    }, [types, data , refetch])
+    }, [types, data, refetch])
 
     const schemaType = Yup.object().shape({
         type: Yup.string(),
@@ -266,38 +280,38 @@ export const useCalendarType = (open: boolean, data: any, refetch?:any, setOpen?
             type: "1",
         },
     });
-    
+
     const onChangeStep = (index: number, active: boolean) => {
         setStepActivity(active);
         const newData = steps.map((item, idx) => {
             if (idx <= index) {
-              return { ...item, active: true };
+                return { ...item, active: true };
             }
             return { ...item, active: false };
-          });
+        });
         setSteps(newData);
     }
 
 
     useEffect(() => {
-        if (eventType && eventType?.length > 0 ) setValueType("type", eventType[0]?._id.$oid);
+        if (eventType && eventType?.length > 0) setValueType("type", eventType[0]?._id.$oid);
     }, [eventType])
 
     useEffect(() => {
-        if (watchType("type") && open && eventType.length > 0){
+        if (watchType("type") && open && eventType.length > 0) {
             const name = eventType?.filter((item: Types) => item._id.$oid === watchType("type"))[0];
             setValueType("typeName", name?.name);
         }
     }, [watchType("type"), open, eventType])
 
     useEffect(() => {
-        if (!data.newEvent){
+        if (!data.newEvent) {
             setValueType("typeName", data?.data?.type?.name);
             setValueType("type", data?.data?.type?._id?.$oid);
         }
     }, [data])
-    
-    
+
+
     useEffect(() => {
         setSteps([
             {
@@ -322,7 +336,7 @@ export const useCalendarType = (open: boolean, data: any, refetch?:any, setOpen?
             case "assign-event":
                 return getAssignEvent(data, session);
             case "approve-event":
-                return getApproveEvent(data);        
+                return getApproveEvent(data);
             default:
                 break;
         }
@@ -332,42 +346,42 @@ export const useCalendarType = (open: boolean, data: any, refetch?:any, setOpen?
         onOpenAlertDialog({
             isOpen: true,
             title: t("calendar:pos:delete"),
-            description: t("calendar:pos:msgDelete", {pos: data?.data?.name}),
+            description: t("calendar:pos:msgDelete", { pos: data?.data?.name }),
             titleStyles: "error",
             buttonAccept: true,
             buttonCancel: true,
             buttonAcceptLabel: t("common:buttons:accept"),
-            buttonCancelLabel: t("common:buttons:cancel"),   
-            onButtonAcceptClicked: async() => {    
-                onDisabled(true);              
+            buttonCancelLabel: t("common:buttons:cancel"),
+            onButtonAcceptClicked: async () => {
+                onDisabled(true);
                 await deleteEvent(data?.data?._id.$oid)
-                .then(() => {  
-                    refetch();
-                    refetchDay();
-                    onChangeStep(0, false);
-                    setOpen(false);
-                    onDisabled(false);    
-                    onOpenAlertDialog({
-                        isOpen: true,
-                        title: t("calendar:pos:delete"),
-                        description: t("calendar:pos:msgDelete1"),
-                        titleStyles: "success",
-                        buttonAccept: false,
-                        buttonCancel: false, 
+                    .then(() => {
+                        refetch();
+                        refetchDay();
+                        onChangeStep(0, false);
+                        setOpen(false);
+                        onDisabled(false);
+                        onOpenAlertDialog({
+                            isOpen: true,
+                            title: t("calendar:pos:delete"),
+                            description: t("calendar:pos:msgDelete1"),
+                            titleStyles: "success",
+                            buttonAccept: false,
+                            buttonCancel: false,
+                        })
                     })
-                })
-                .catch((error) => {
-                    onDisabled(false);         
-                    toast.error(error.message, {
-                        position: "top-right",
+                    .catch((error) => {
+                        onDisabled(false);
+                        toast.error(error.message, {
+                            position: "top-right",
+                        });
                     });
-                });
-            },         
-            onButtonCancelClicked: () => onCloseAlertDialog(),  
+            },
+            onButtonCancelClicked: () => onCloseAlertDialog(),
         })
     }
 
-    const getAssignEvent = (data: ActionsEvents, session: any) => {        
+    const getAssignEvent = (data: ActionsEvents, session: any) => {
         if (!sellerId && rolesAssignSellersEvents.includes(session?.user?.type_rol)) return setError({
             message: t("calendar:pos:error-seller"),
             error: true
@@ -383,39 +397,39 @@ export const useCalendarType = (open: boolean, data: any, refetch?:any, setOpen?
         onOpenAlertDialog({
             isOpen: true,
             title: t("calendar:pos:assign"),
-            description: t("calendar:pos:msgAssign", {pos: data?.data?.name}),
+            description: t("calendar:pos:msgAssign", { pos: data?.data?.name }),
             titleStyles: "success",
 
             buttonAccept: true,
             buttonCancel: true,
             buttonAcceptLabel: t("common:buttons:accept"),
-            buttonCancelLabel: t("common:buttons:cancel"),   
-            onButtonAcceptClicked: async() => {    
-                onDisabled(true);              
+            buttonCancelLabel: t("common:buttons:cancel"),
+            onButtonAcceptClicked: async () => {
+                onDisabled(true);
                 await assignEvent(body)
-                .then(() => {  
-                    refetch();
-                    setOpen(false);
-                    onDisabled(false);    
-                    onOpenAlertDialog({
-                        isOpen: true,
-                        title: t("calendar:pos:assign"),
-                        description: t("calendar:pos:msgAssign1"),
-                        titleStyles: "success",
-                        buttonAccept: false,
-                        buttonCancel: false, 
+                    .then(() => {
+                        refetch();
+                        setOpen(false);
+                        onDisabled(false);
+                        onOpenAlertDialog({
+                            isOpen: true,
+                            title: t("calendar:pos:assign"),
+                            description: t("calendar:pos:msgAssign1"),
+                            titleStyles: "success",
+                            buttonAccept: false,
+                            buttonCancel: false,
+                        })
                     })
-                })
-                .catch((error) => {
-                    onDisabled(false);         
-                    toast.error(error.message, {
-                        position: "top-right",
+                    .catch((error) => {
+                        onDisabled(false);
+                        toast.error(error.message, {
+                            position: "top-right",
+                        });
                     });
-                });
-            },         
-            onButtonCancelClicked: () => onCloseAlertDialog(),  
+            },
+            onButtonCancelClicked: () => onCloseAlertDialog(),
         })
-    }    
+    }
 
     const getDeclineEvent = (data: ActionsEvents) => {
         const body = {
@@ -424,40 +438,40 @@ export const useCalendarType = (open: boolean, data: any, refetch?:any, setOpen?
         onOpenAlertDialog({
             isOpen: true,
             title: t("calendar:pos:decline"),
-            description: t("calendar:pos:msgDecline", {pos: data?.data?.name}),
+            description: t("calendar:pos:msgDecline", { pos: data?.data?.name }),
             titleStyles: "error",
             buttonAccept: true,
             buttonCancel: true,
             buttonAcceptLabel: t("common:buttons:accept"),
-            buttonCancelLabel: t("common:buttons:cancel"),   
-            onButtonAcceptClicked: async() => {    
-                onDisabled(true);              
+            buttonCancelLabel: t("common:buttons:cancel"),
+            onButtonAcceptClicked: async () => {
+                onDisabled(true);
                 await declineRequestEvent(body)
-                .then(() => {  
-                    onChangeStep(0, false);
-                    refetch();
-                    setOpen(false);
-                    onDisabled(false);    
-                    onOpenAlertDialog({
-                        isOpen: true,
-                        title: t("calendar:pos:decline"),
-                        description: t("calendar:pos:msgDecline1"),
-                        titleStyles: "success",
-                        buttonAccept: false,
-                        buttonCancel: false, 
+                    .then(() => {
+                        onChangeStep(0, false);
+                        refetch();
+                        setOpen(false);
+                        onDisabled(false);
+                        onOpenAlertDialog({
+                            isOpen: true,
+                            title: t("calendar:pos:decline"),
+                            description: t("calendar:pos:msgDecline1"),
+                            titleStyles: "success",
+                            buttonAccept: false,
+                            buttonCancel: false,
+                        })
                     })
-                })
-                .catch((error) => {
-                    onDisabled(false);         
-                    toast.error(error.message, {
-                        position: "top-right",
+                    .catch((error) => {
+                        onDisabled(false);
+                        toast.error(error.message, {
+                            position: "top-right",
+                        });
                     });
-                });
-            },         
-            onButtonCancelClicked: () => onCloseAlertDialog(),  
+            },
+            onButtonCancelClicked: () => onCloseAlertDialog(),
         })
     }
-    
+
     const getApproveEvent = (data: ActionsEvents) => {
         const body = {
             event_id: data?.data?._id?.$oid,
@@ -474,76 +488,76 @@ export const useCalendarType = (open: boolean, data: any, refetch?:any, setOpen?
         onOpenAlertDialog({
             isOpen: true,
             title: t("calendar:pos:approve"),
-            description: t("calendar:pos:msgApprove", {pos: data?.data?.name}),
+            description: t("calendar:pos:msgApprove", { pos: data?.data?.name }),
             titleStyles: "success",
             buttonAccept: true,
             buttonCancel: true,
             buttonAcceptLabel: t("common:buttons:accept"),
-            buttonCancelLabel: t("common:buttons:cancel"),   
-            onButtonAcceptClicked: async() => {    
-                onDisabled(true);              
+            buttonCancelLabel: t("common:buttons:cancel"),
+            onButtonAcceptClicked: async () => {
+                onDisabled(true);
                 await approveEvent(body)
-                .then(() => {  
-                    refetch();
-                    onChangeStep(0, false);
-                    setOpen(false);
-                    onDisabled(false);    
-                    onOpenAlertDialog({
-                        isOpen: true,
-                        title: t("calendar:pos:approve"),
-                        description: t("calendar:pos:msgApprove1"),
-                        titleStyles: "success",
-                        buttonAccept: false,
-                        buttonCancel: false, 
+                    .then(() => {
+                        refetch();
+                        onChangeStep(0, false);
+                        setOpen(false);
+                        onDisabled(false);
+                        onOpenAlertDialog({
+                            isOpen: true,
+                            title: t("calendar:pos:approve"),
+                            description: t("calendar:pos:msgApprove1"),
+                            titleStyles: "success",
+                            buttonAccept: false,
+                            buttonCancel: false,
+                        })
                     })
-                })
-                .catch((error) => {
-                    onDisabled(false);         
-                    toast.error(error.message, {
-                        position: "top-right",
+                    .catch((error) => {
+                        onDisabled(false);
+                        toast.error(error.message, {
+                            position: "top-right",
+                        });
                     });
-                });
-            },         
-            onButtonCancelClicked: () => onCloseAlertDialog(),  
+            },
+            onButtonCancelClicked: () => onCloseAlertDialog(),
         })
-    }    
+    }
 
     const getDeleteAppointment = (data: ActionsEvents) => {
         onOpenAlertDialog({
             isOpen: true,
             title: t("calendar:appointment:delete"),
-            description: t("calendar:appointment:msgDelete", {appointment: data?.data?.name}),
+            description: t("calendar:appointment:msgDelete", { appointment: data?.data?.name }),
             titleStyles: "error",
             buttonAccept: true,
             buttonCancel: true,
             buttonAcceptLabel: t("common:buttons:accept"),
-            buttonCancelLabel: t("common:buttons:cancel"),   
-            onButtonAcceptClicked: async() => {    
-                onDisabled(true);              
+            buttonCancelLabel: t("common:buttons:cancel"),
+            onButtonAcceptClicked: async () => {
+                onDisabled(true);
                 await deleteAppointment(data?.data?._id.$oid)
-                .then(() => {  
-                    refetch();
-                    refetchDay();
-                    onChangeStep(0, false);
-                    setOpen(false);
-                    onDisabled(false);    
-                    onOpenAlertDialog({
-                        isOpen: true,
-                        title: t("calendar:appointment:delete"),
-                        description: t("calendar:appointment:msgDelete1"),
-                        titleStyles: "success",
-                        buttonAccept: false,
-                        buttonCancel: false, 
+                    .then(() => {
+                        refetch();
+                        refetchDay();
+                        onChangeStep(0, false);
+                        setOpen(false);
+                        onDisabled(false);
+                        onOpenAlertDialog({
+                            isOpen: true,
+                            title: t("calendar:appointment:delete"),
+                            description: t("calendar:appointment:msgDelete1"),
+                            titleStyles: "success",
+                            buttonAccept: false,
+                            buttonCancel: false,
+                        })
                     })
-                })
-                .catch((error) => {
-                    onDisabled(false);         
-                    toast.error(error.message, {
-                        position: "top-right",
+                    .catch((error) => {
+                        onDisabled(false);
+                        toast.error(error.message, {
+                            position: "top-right",
+                        });
                     });
-                });
-            },         
-            onButtonCancelClicked: () => onCloseAlertDialog(),  
+            },
+            onButtonCancelClicked: () => onCloseAlertDialog(),
         })
     }
 
@@ -564,30 +578,30 @@ export const useCalendarType = (open: boolean, data: any, refetch?:any, setOpen?
 
 export const useCalendarAppointment = (dataEdit?: any, setOpenModal?: any, refetch?: any, session?: any, appointment?: boolean, refetchDay?: any, seller?: string) => {
     const router = useRouter();
-    const {onCloseAlertDialog, onOpenAlertDialog } = useAlertContext();
-    const { t } = useTranslation(["common", "calendar"]); 
+    const { onCloseAlertDialog, onOpenAlertDialog } = useAlertContext();
+    const { t } = useTranslation(["common", "calendar"]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [pagActual, setPagActual] = useState<number>(0);   
+    const [pagActual, setPagActual] = useState<number>(0);
     const takeCount: number = 10;
     const { statusAppointment } = useStatusAppointment();
     const [productLabel, setProductLabel] = useState<SelectLists>();
-    
+
     const getProducts = (search = "") => {
         return allProducts(
             pagActual,
             takeCount,
             search,
-        ).then((values) => {            
+        ).then((values) => {
             return values.items;
         });
     };
 
-    const { data: dataAllEvent , refetch: refetchEvents } = useQuery<SelectLists[]>(
+    const { data: dataAllEvent, refetch: refetchEvents } = useQuery<SelectLists[]>(
         [
             GET_ALL_EVENT_ASSIGNED_USER,
         ],
         () =>
-          getAllEventAssignedUser(session?.user?.id),
+            getAllEventAssignedUser(session?.user?.id),
         {
             keepPreviousData: false,
             staleTime: 5 * 60 * 1000, // 5 minutos en milisegundos
@@ -632,21 +646,21 @@ export const useCalendarAppointment = (dataEdit?: any, setOpenModal?: any, refet
         date: Yup.string(),
         timeStart: Yup.string().required(t("common:formValidator:required") as string),
         timeEnd: Yup.string()
-          .required(t("common:formValidator:required") as string)
-          .test('is-later', t("common:formValidator:endTime"), function(value) {
-            const { timeStart } = this.parent;
-            if (timeStart && value) {
-              return new Date(value) > new Date(timeStart);
-            }
-            return true;
-        })
+            .required(t("common:formValidator:required") as string)
+            .test('is-later', t("common:formValidator:endTime"), function (value) {
+                const { timeStart } = this.parent;
+                if (timeStart && value) {
+                    return new Date(value) > new Date(timeStart);
+                }
+                return true;
+            })
     });
 
     // Define the second Yup schema role Promotor
     // const schemaPromotor = Yup.object().shape({
     //     event: Yup.string().required(t("common:formValidator:required") as string),
     // });
-  
+
     const {
         register,
         handleSubmit,
@@ -662,11 +676,11 @@ export const useCalendarAppointment = (dataEdit?: any, setOpenModal?: any, refet
         resolver: yupResolver(schemaAppointment),
         defaultValues: {
         },
-    });   
-   
+    });
+
     useEffect(() => {
-        if ( dataEdit.data ) {
-            if (!dataEdit?.newEvent){                
+        if (dataEdit.data) {
+            if (!dataEdit?.newEvent) {
                 setValue("date", moment(dataEdit?.data?.start).format("MM-DD-YYYY"));
                 setValue("name", dataEdit?.data?.client_name);
                 setValue("timeStart", moment(getDateCalendar(dataEdit.data?.date_init.$date)));
@@ -683,9 +697,9 @@ export const useCalendarAppointment = (dataEdit?: any, setOpenModal?: any, refet
             }
         }
     }, [dataEdit])
-    
-    const handleSubmitData = async(data: AppointmentForm) => {
-        const body = {          
+
+    const handleSubmitData = async (data: AppointmentForm) => {
+        const body = {
             client_name: data.name,
             email: data.email,
             address: data.address,
@@ -695,8 +709,8 @@ export const useCalendarAppointment = (dataEdit?: any, setOpenModal?: any, refet
             date_init: getHourFormatRequest(data.date, data.timeStart),
             date_end: getHourFormatRequest(data.date, data.timeEnd),
             assigned_user: rolesCreateAppointmentSeller.includes(session?.user?.type_rol) ? seller : session?.user?.id,
-        }  
-        const bodyUpdate = {          
+        }
+        const bodyUpdate = {
             status: data.status,
             date_init: getHourFormatRequest(data.date, data.timeStart),
             date_end: getHourFormatRequest(data.date, data.timeEnd),
@@ -704,54 +718,54 @@ export const useCalendarAppointment = (dataEdit?: any, setOpenModal?: any, refet
         setIsLoading(true);
         if (dataEdit.newEvent) {
             await createAppointment(body)
-            .then(() => {
-                refetch();
-                refetchDay();
-                reset();
-                setIsLoading(false);
-                setOpenModal(false);
-                onOpenAlertDialog({
-                    isOpen: true,
-                    title: t("calendar:appointment:add"),
-                    description: t("calendar:appointment:msgAdd"),
-                    titleStyles: "success",
-                    buttonAccept: false,
-                    buttonCancel: false,
+                .then(() => {
+                    refetch();
+                    refetchDay();
+                    reset();
+                    setIsLoading(false);
+                    setOpenModal(false);
+                    onOpenAlertDialog({
+                        isOpen: true,
+                        title: t("calendar:appointment:add"),
+                        description: t("calendar:appointment:msgAdd"),
+                        titleStyles: "success",
+                        buttonAccept: false,
+                        buttonCancel: false,
+                    })
                 })
-            })
-            .catch((error) => {
-                setIsLoading(false);
-                toast.error(error.message, {
-                    position: "top-right",
+                .catch((error) => {
+                    setIsLoading(false);
+                    toast.error(error.message, {
+                        position: "top-right",
+                    });
                 });
-            });
-        }else{
+        } else {
             await updateAppointment(bodyUpdate, dataEdit?.data?._id?.$oid)
-            .then(() => {
-                refetch();
-                !appointment && refetchDay();
-                reset();
-                setIsLoading(false);
-                setOpenModal(false);
-                onOpenAlertDialog({
-                    isOpen: true,
-                    title: t("calendar:appointment:update"),
-                    description: t("calendar:appointment:msgUpdate"),
-                    titleStyles: "success",
-                    buttonAccept: false,
-                    buttonCancel: false,
+                .then(() => {
+                    refetch();
+                    !appointment && refetchDay();
+                    reset();
+                    setIsLoading(false);
+                    setOpenModal(false);
+                    onOpenAlertDialog({
+                        isOpen: true,
+                        title: t("calendar:appointment:update"),
+                        description: t("calendar:appointment:msgUpdate"),
+                        titleStyles: "success",
+                        buttonAccept: false,
+                        buttonCancel: false,
+                    })
                 })
-            })
-            .catch((error) => {
-                setIsLoading(false);
-                toast.error(error.message, {
-                    position: "top-right",
+                .catch((error) => {
+                    setIsLoading(false);
+                    toast.error(error.message, {
+                        position: "top-right",
+                    });
                 });
-            });
         }
     }
-    
-    return{
+
+    return {
         handleSubmitData,
         register,
         handleSubmit,
@@ -773,12 +787,12 @@ export const useCalendarAppointment = (dataEdit?: any, setOpenModal?: any, refet
 
 export const useCalendarEvents = (dataEdit?: any, setOpenModal?: any, activity?: boolean, onChangeStep?: any, refetch?: any, refetchDay?: any) => {
     const router = useRouter();
-    const { data: session } : any  = useSession();
-    const {onCloseAlertDialog, onOpenAlertDialog } = useAlertContext();
-    const { t } = useTranslation(["common", "calendar"]); 
+    const { data: session }: any = useSession();
+    const { onCloseAlertDialog, onOpenAlertDialog } = useAlertContext();
+    const { t } = useTranslation(["common", "calendar"]);
     const { setDataStep1, dataStep1, setPromotorId, setSellerId } = useCommonContext();
-    const [isLoading, setIsLoading] = useState<boolean>(false); 
-    const [pagActual, setPagActual] = useState<number>(0);   
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [pagActual, setPagActual] = useState<number>(0);
     const takeCount: number = 10;
     const [checkboxValues, setCheckboxValues] = useState<[] | any[]>([]);
     const { resources } = useResources();
@@ -788,7 +802,7 @@ export const useCalendarEvents = (dataEdit?: any, setOpenModal?: any, activity?:
             pagActual,
             takeCount,
             search,
-        ).then((values) => {            
+        ).then((values) => {
             // if (search) return "";
             return values.items;
         });
@@ -799,7 +813,7 @@ export const useCalendarEvents = (dataEdit?: any, setOpenModal?: any, activity?:
             pagActual,
             takeCount,
             search,
-        ).then((values) => {            
+        ).then((values) => {
             // if (search) return "";
             return values.items;
         });
@@ -810,7 +824,7 @@ export const useCalendarEvents = (dataEdit?: any, setOpenModal?: any, activity?:
             pagActual,
             takeCount,
             // search,
-        ).then((values) => {            
+        ).then((values) => {
             // if (search) return "";
             return values.items;
         });
@@ -827,25 +841,25 @@ export const useCalendarEvents = (dataEdit?: any, setOpenModal?: any, activity?:
         ),
         numberPeople: Yup.string().required(
             t("common:formValidator:required") as string
-            ).typeError(t("common:formValidator:number") as string)
+        ).typeError(t("common:formValidator:number") as string)
             .matches(
-            ONLY_NUMBERS_REGEX,
-            t("common:formValidator:number") as string
-        ),
+                ONLY_NUMBERS_REGEX,
+                t("common:formValidator:number") as string
+            ),
         phoneNumber: Yup.string().required(
             t("common:formValidator:required") as string
         ),
         date: Yup.date().transform((value) => new Date(value)).required(t("common:formValidator:required") as string),
         timeStart: Yup.string().required(t("common:formValidator:required") as string),
         timeEnd: Yup.string()
-          .required(t("common:formValidator:required") as string)
-          .test('is-later', t("common:formValidator:endTime"), function(value) {
-            const { timeStart } = this.parent;
-            if (timeStart && value) {
-              return new Date(value) > new Date(timeStart);
-            }
-            return true;
-        }),
+            .required(t("common:formValidator:required") as string)
+            .test('is-later', t("common:formValidator:endTime"), function (value) {
+                const { timeStart } = this.parent;
+                if (timeStart && value) {
+                    return new Date(value) > new Date(timeStart);
+                }
+                return true;
+            }),
         dateLabel: Yup.string(),
     });
 
@@ -865,11 +879,11 @@ export const useCalendarEvents = (dataEdit?: any, setOpenModal?: any, activity?:
 
     // Define the second Yup schema role seller
     const schemaPromotor = Yup.object().shape({
-      promotor: Yup.string().required(t("common:formValidator:required") as string),
+        promotor: Yup.string().required(t("common:formValidator:required") as string),
     });
 
-     // Define the third Yup schema role manager, director and admin company
-     const schemaSeller = Yup.object().shape({
+    // Define the third Yup schema role manager, director and admin company
+    const schemaSeller = Yup.object().shape({
         seller: Yup.string().required(t("common:formValidator:required") as string),
     });
     const otherRoles = rolesAssignSellersEvents.includes(session?.user?.type_rol) && !dataEdit?.data?.assigned_user && !dataEdit?.data?.requester_user;
@@ -887,7 +901,7 @@ export const useCalendarEvents = (dataEdit?: any, setOpenModal?: any, activity?:
         resolver: yupResolver(session?.user?.type_rol === Roles.coordinator ? schemaPos.concat(schemaPromotor) : otherRoles ? schemaPos.concat(schemaSeller) : schemaPos),
         defaultValues: {},
     });
-   
+
     useEffect(() => {
         if (watch("promotor")) setPromotorId(watch("promotor"));
     }, [watch("promotor")])
@@ -895,7 +909,7 @@ export const useCalendarEvents = (dataEdit?: any, setOpenModal?: any, activity?:
     useEffect(() => {
         if (watch("seller") && rolesAssignSellersEvents.includes(session?.user?.type_rol)) setSellerId(watch("seller"));
     }, [watch("seller")])
-    
+
     const {
         register: registerActivity,
         handleSubmit: handleSubmitActivity,
@@ -911,14 +925,14 @@ export const useCalendarEvents = (dataEdit?: any, setOpenModal?: any, activity?:
         resolver: yupResolver(schemaActivity),
         defaultValues: {},
     });
-   
+
     useEffect(() => {
         setPromotorId(undefined);
         setSellerId(undefined);
     }, [])
 
     useEffect(() => {
-        if (dataStep1){
+        if (dataStep1) {
             setValue("name", dataStep1.name);
             setValue("date", dataStep1.date);
             setValue("location", dataStep1.location);
@@ -933,9 +947,9 @@ export const useCalendarEvents = (dataEdit?: any, setOpenModal?: any, activity?:
     }, [dataStep1])
 
     useEffect(() => {
-        if (dataEdit && !dataEdit.newEvent && dataEdit.data?.type?.name !== eventsType.appointment){  
+        if (dataEdit && !dataEdit.newEvent && dataEdit.data?.type?.name !== eventsType.appointment) {
             // dataEdit.data?.date_init?.$date && setValue("dateLabel", dataEdit.data?.date_init?.$date?.split("T")[0]);  
-            setValue("dateLabel", moment(dataEdit?.data?.start).format("MM-DD-YYYY"));        
+            setValue("dateLabel", moment(dataEdit?.data?.start).format("MM-DD-YYYY"));
             setValue("name", dataEdit?.data?.name);
             setValue("date", dataEdit?.data?.start);
             setValue("location", dataEdit?.data?.location?.$oid || dataEdit?.data?.location?._id?.$oid);
@@ -950,8 +964,8 @@ export const useCalendarEvents = (dataEdit?: any, setOpenModal?: any, activity?:
             setValueActivity("timeAssembly", getDateCalendar(dataEdit?.data?.assembly_date?.$date));
             setValueActivity("disassemblyDate", getDateCalendar(dataEdit?.data?.disassembly_date?.$date));
             setValueActivity("timeDisassembly", getDateCalendar(dataEdit?.data?.disassembly_date?.$date));
-            
-            if (JSON.stringify(dataEdit?.data?.resources) !== '{}'){
+
+            if (JSON.stringify(dataEdit?.data?.resources) !== '{}') {
                 const items = dataEdit?.data?.resources.map((res: ResponseResources) => {
                     return {
                         id: res.id,
@@ -959,30 +973,30 @@ export const useCalendarEvents = (dataEdit?: any, setOpenModal?: any, activity?:
                         quantity: res.quantity,
                     }
                 })
-                if (getValuesActivity("items")){
-                    const baseArray = getValuesActivity("items") || [{id: null, check: false, quantity: ""}];
+                if (getValuesActivity("items")) {
+                    const baseArray = getValuesActivity("items") || [{ id: null, check: false, quantity: "" }];
                     const updatedArray = baseArray.map((item) => {
                         const existingItem = items.find((existing: ItemsActivityForm) => existing?.id === item.id);
                         if (existingItem) {
                             existingItem.check = true;
                             return existingItem;
-                        }else return item
+                        } else return item
                     }, []);
                     setValueActivity("items", updatedArray);
                 }
             }
-        }else if(dataEdit.newEvent){
+        } else if (dataEdit.newEvent) {
             setValue("dateLabel", moment(dataEdit?.data?.start).format("MM-DD-YYYY"));
         }
     }, [dataEdit, activity])
-    
-    
-    const handleSubmitData = async(data: PosForm) => {
+
+
+    const handleSubmitData = async (data: PosForm) => {
         if (activity) {
             setDataStep1(data);
             return onChangeStep(1, true);
         }
-        const body = {            
+        const body = {
             name: data.name,
             location: data.location,
             contact_name: data.contactName,
@@ -993,7 +1007,7 @@ export const useCalendarEvents = (dataEdit?: any, setOpenModal?: any, activity?:
             promotor: Roles.coordinator === session?.user?.type_rol ? data.promotor : undefined,
             id_user: session?.user?.id,
         }
-        const bodyUpdate = {   
+        const bodyUpdate = {
             location: data.location,
             date_init: getHourFormatRequest(data.date, data.timeStart),
             date_end: getHourFormatRequest(data.date, data.timeEnd),
@@ -1002,56 +1016,56 @@ export const useCalendarEvents = (dataEdit?: any, setOpenModal?: any, activity?:
         setIsLoading(true);
         if (dataEdit.newEvent) {
             await createPos(body, rolesRequestEvents.includes(session?.user?.type_rol) ? 0 : 1)
-            .then(() => {
-                refetch();
-                refetchDay();
-                reset();
-                setIsLoading(false);
-                setOpenModal(false);
-                onOpenAlertDialog({
-                    isOpen: true,
-                    title: t("calendar:pos:add"),
-                    description: t("calendar:pos:msgAdd"),
-                    titleStyles: "success",
-                    buttonAccept: false,
-                    buttonCancel: false,
+                .then(() => {
+                    refetch();
+                    refetchDay();
+                    reset();
+                    setIsLoading(false);
+                    setOpenModal(false);
+                    onOpenAlertDialog({
+                        isOpen: true,
+                        title: t("calendar:pos:add"),
+                        description: t("calendar:pos:msgAdd"),
+                        titleStyles: "success",
+                        buttonAccept: false,
+                        buttonCancel: false,
+                    })
                 })
-            })
-            .catch((error) => {
-                setIsLoading(false);
-                toast.error(error.message, {
-                    position: "top-right",
+                .catch((error) => {
+                    setIsLoading(false);
+                    toast.error(error.message, {
+                        position: "top-right",
+                    });
                 });
-            });
-        }else{ 
+        } else {
             await updateEvent(bodyUpdate, dataEdit?.data?._id?.$oid)
-            .then(() => {
-                refetch();
-                refetchDay();
-                reset();
-                setIsLoading(false);
-                setOpenModal(false);
-                onOpenAlertDialog({
-                    isOpen: true,
-                    title: t("calendar:pos:update"),
-                    description: t("calendar:pos:msgUpdate"),
-                    titleStyles: "success",
-                    buttonAccept: false,
-                    buttonCancel: false,
+                .then(() => {
+                    refetch();
+                    refetchDay();
+                    reset();
+                    setIsLoading(false);
+                    setOpenModal(false);
+                    onOpenAlertDialog({
+                        isOpen: true,
+                        title: t("calendar:pos:update"),
+                        description: t("calendar:pos:msgUpdate"),
+                        titleStyles: "success",
+                        buttonAccept: false,
+                        buttonCancel: false,
+                    })
                 })
-            })
-            .catch((error) => {
-                setIsLoading(false);
-                toast.error(error.message, {
-                    position: "top-right",
+                .catch((error) => {
+                    setIsLoading(false);
+                    toast.error(error.message, {
+                        position: "top-right",
+                    });
                 });
-            });
         }
     }
 
-    const handleSubmitDataActivity = async(data: PosActivityForm) => { 
-        let resources: ResponseResources[] = []; 
-        if ( data?.items){      
+    const handleSubmitDataActivity = async (data: PosActivityForm) => {
+        let resources: ResponseResources[] = [];
+        if (data?.items) {
             const filteredItemsTrue = data?.items.filter((item: ItemsActivityForm) => item.check);
             if (filteredItemsTrue.length > 0) {
                 resources = filteredItemsTrue.map((item: ItemsActivityForm) => {
@@ -1062,7 +1076,7 @@ export const useCalendarEvents = (dataEdit?: any, setOpenModal?: any, activity?:
                 })
             }
         }
-        const body = {            
+        const body = {
             name: dataStep1.name,
             location: dataStep1.location,
             contact_name: dataStep1.contactName,
@@ -1077,7 +1091,7 @@ export const useCalendarEvents = (dataEdit?: any, setOpenModal?: any, activity?:
             resources: resources
         }
 
-        const bodyUpdate = {   
+        const bodyUpdate = {
             location: dataStep1.location,
             date_init: getHourFormatRequest(dataStep1.date, dataStep1.timeStart),
             date_end: getHourFormatRequest(dataStep1.date, dataStep1.timeEnd),
@@ -1086,58 +1100,58 @@ export const useCalendarEvents = (dataEdit?: any, setOpenModal?: any, activity?:
         setIsLoading(true);
         if (dataEdit.newEvent) {
             await createPosActivity(body, rolesRequestEvents.includes(session?.user?.type_rol) ? 0 : 1)
-            .then(() => {
-                refetch();
-                refetchDay();
-                reset();
-                setIsLoading(false);
-                setOpenModal(false);
-                setDataStep1(null);
-                onChangeStep(0, false);
-                onOpenAlertDialog({
-                    isOpen: true,
-                    title: t("calendar:pos:add"),
-                    description: t("calendar:pos:msgAdd"),
-                    titleStyles: "success",
-                    buttonAccept: false,
-                    buttonCancel: false,
+                .then(() => {
+                    refetch();
+                    refetchDay();
+                    reset();
+                    setIsLoading(false);
+                    setOpenModal(false);
+                    setDataStep1(null);
+                    onChangeStep(0, false);
+                    onOpenAlertDialog({
+                        isOpen: true,
+                        title: t("calendar:pos:add"),
+                        description: t("calendar:pos:msgAdd"),
+                        titleStyles: "success",
+                        buttonAccept: false,
+                        buttonCancel: false,
+                    })
                 })
-            })
-            .catch((error) => {
-                setIsLoading(false);
-                toast.error(error.message, {
-                    position: "top-right",
+                .catch((error) => {
+                    setIsLoading(false);
+                    toast.error(error.message, {
+                        position: "top-right",
+                    });
                 });
-            });
-        }else {
+        } else {
             await updateEvent(bodyUpdate, dataEdit?.data?._id?.$oid)
-            .then(() => {
-                refetch();
-                refetchDay();
-                reset();
-                setIsLoading(false);
-                setOpenModal(false);
-                setDataStep1(null);
-                onChangeStep(0, false);
-                onOpenAlertDialog({
-                    isOpen: true,
-                    title: t("calendar:pos:update"),
-                    description: t("calendar:pos:msgUpdate"),
-                    titleStyles: "success",
-                    buttonAccept: false,
-                    buttonCancel: false,
+                .then(() => {
+                    refetch();
+                    refetchDay();
+                    reset();
+                    setIsLoading(false);
+                    setOpenModal(false);
+                    setDataStep1(null);
+                    onChangeStep(0, false);
+                    onOpenAlertDialog({
+                        isOpen: true,
+                        title: t("calendar:pos:update"),
+                        description: t("calendar:pos:msgUpdate"),
+                        titleStyles: "success",
+                        buttonAccept: false,
+                        buttonCancel: false,
+                    })
                 })
-            })
-            .catch((error) => {
-                setIsLoading(false);
-                toast.error(error.message, {
-                    position: "top-right",
+                .catch((error) => {
+                    setIsLoading(false);
+                    toast.error(error.message, {
+                        position: "top-right",
+                    });
                 });
-            });            
         }
     }
 
-    return{
+    return {
         handleSubmitData,
         register,
         handleSubmit,

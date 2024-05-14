@@ -1093,7 +1093,19 @@ export const useBarGraphic = () => {
             },
             series: [
                 {
-                    data: [3, 6],
+                    data: [
+                        {
+                            value: 6,
+                            itemStyle: {
+                                color: '#69A297'
+                            }
+                        }, {
+                            value: 3,
+                            itemStyle: {
+                                color: '#88C946'
+                            }
+                        },
+                    ],
                     type: 'bar'
                 }
             ]
@@ -1216,11 +1228,11 @@ export const useNotification = () => {
     const showCardbyType = (data: notificationCardProps) => {
         switch (data.type) {
             case "POS":
-                return <CardEvent data={data}/>
+                return <CardEvent data={data} />
             case "Event":
-                return <CardEvent data={data}/>
+                return <CardEvent data={data} />
             case "Notification":
-                return <CardNotification data={data}/>
+                return <CardNotification data={data} />
 
             default:
                 break;

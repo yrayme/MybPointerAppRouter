@@ -79,7 +79,7 @@ export const InputSelect: React.FC<
           })}
         </select>
         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-1">
-          <AllIcons name="ArrowDownIcon" className="h-4 w-4" />
+          <AllIcons name="ArrowDownIcon" className="h-4 w-4 text-black" />
         </div>
       </div>
       {((error && error.message) || helperText) && (

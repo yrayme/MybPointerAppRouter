@@ -56,7 +56,7 @@ const NavbarMobile: React.FC<NavbarMobileProps> = ({ pages }) => {
                         rightIcon="SearchIcon"
                     />
                 </div>
-                <ButtonFilters showFilter={showFilter} setShowFilter={setShowFilter}/>
+                {!routes.includes(currentRoute) && <ButtonFilters showFilter={showFilter} setShowFilter={setShowFilter}/>}
             </div>
         </div>
     )
