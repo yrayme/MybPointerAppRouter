@@ -16,7 +16,7 @@ const CardUpcomming: React.FC<PosProps> = ({ data, title, pos }) => {
                 <p className="text-base font-semibold mt-2">{title}</p>
                 <div className='flex gap-2 items-center'>
                     <div className="">
-                        <DateRangeComponent stateDate={stateDate} setState={setStateDate} />
+                        <DateRangeComponent stateDate={stateDate} setState={setStateDate} position={`${pos ? "sm:left-0 right-0" : "right-0"}`}/>
                     </div>
                     <div className='hidden md:block'>
                         <Button

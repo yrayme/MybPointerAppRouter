@@ -5,7 +5,6 @@ import React from "react";
 //   Slider,
 // } from "pure-react-carousel";
 // import "pure-react-carousel/dist/react-carousel.es.css";
-import DateRangeComponent from "@/components/common/ButtonDateRange/DateRange";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import useWindowSize from "@/hooks/useWindowSize";

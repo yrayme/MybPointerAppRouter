@@ -38,7 +38,7 @@ const AppointmentTracker = () => {
       <div className={`flex ${showFilter ? "justify-between" : "justify-end"} items-center`}>
         {showFilter && (
           <form className='w-full flex gap-2 items-center flex-wrap' autoComplete='off'>
-            <DateRangeComponent stateDate={stateDate} setState={setStateDate} />
+            <DateRangeComponent stateDate={stateDate} setState={setStateDate}/>
             <ComboBoxAutocompleteAsync
               onChange={(value) => {
                 value && setSeller(value?._id.$oid);

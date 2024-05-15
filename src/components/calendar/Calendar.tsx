@@ -150,7 +150,7 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
 
 
     return (
-        <div className='h-full relative'>
+        <div className='h-full relative w-full'>
             <Calendar
                 views={["day", "week", "month"]}
                 defaultDate={defaultDate}

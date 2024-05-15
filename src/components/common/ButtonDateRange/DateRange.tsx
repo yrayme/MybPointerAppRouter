@@ -19,9 +19,10 @@ interface DateRangeProps {
     goal?: boolean;
     setState: React.Dispatch<React.SetStateAction<Range>>;
     stateDate: Range;
+    position?: string;
 }
 
-const DateRangeComponent: React.FC<DateRangeProps> = ({ label, goal, setState, stateDate }) => {
+const DateRangeComponent: React.FC<DateRangeProps> = ({ label, goal, setState, stateDate, position }) => {
     const { t } = useTranslation();
     const { staticRanges, handleRange } = useDateRange(goal, setState);
     const params = useParams();
@@ -66,7 +67,7 @@ const DateRangeComponent: React.FC<DateRangeProps> = ({ label, goal, setState, s
     };
 
     return (
-        <div className=''>
+        <div className='relative z-10'>
             {label && (
                 <div className='mb-2'>
                     <label className="text-sm font-medium">{label}</label>
@@ -91,7 +92,7 @@ const DateRangeComponent: React.FC<DateRangeProps> = ({ label, goal, setState, s
                         leaveFrom="transform opacity-100 scale-100"
                         leaveTo="transform opacity-0 scale-95"
                     >
-                        <Menu.Items className="absolute left-0 mt-2 w-[500px] rounded-md bg-white shadow-lg focus:outline-none ">
+                        <Menu.Items className={`absolute ${position} -top-20 mt-2 w-[450px] rounded-md bg-white shadow-lg focus:outline-none`}>
                             <div className="p-3">
                                 <div className='flex justify-between items-center'>
                                     <div className='flex gap-x-2'>
@@ -120,7 +121,7 @@ const DateRangeComponent: React.FC<DateRangeProps> = ({ label, goal, setState, s
                                         <Button
                                             title={t('common:buttons:apply')}
                                             ButtonStyle="primary"
-                                            className='px-4 sm:py-2 py-0.5'
+                                            className='px-4 sm:py-2 py-1'
                                             iconLeft="CheckIcon"
                                         />
                                     </div>

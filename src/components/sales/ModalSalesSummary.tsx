@@ -46,7 +46,7 @@ const ModalSalesSummary: React.FC<ModalSalesProps> = ({ open, setOpen, edit }) =
                                 leaveTo="translate-x-full"
                             >
                                 <Dialog.Panel className="pointer-events-auto ">
-                                    <div className="flex flex-col h-full overflow-y-scroll bg-white shadow-xl md:w-[600px] w-screen md:p-6 p-4"> 
+                                    <div className="flex flex-col h-full overflow-y-scroll bg-white shadow-xl md:w-[600px] w-[380px] md:p-6 p-4"> 
                                         <div className='flex justify-between items-center'>
                                             <Dialog.Title
                                                 as="h3"

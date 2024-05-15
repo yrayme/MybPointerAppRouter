@@ -19,10 +19,10 @@ interface Filterprops {
 const Filter: React.FC<Filterprops> = ({ label, optimizedFn, register, client, stateDate, setState }) => {
     const { t } = useTranslation();
     return (
-        <div className='flex sm:justify-end items-start sm:items-center md:gap-6 gap-4 md:flex-row flex-col mt-2'>
+        <div className='flex justify-end md:gap-6 gap-4 md:flex-row flex-col mt-2'>
             {!client && (
                 <div className='flex justify-end'>
-                    <DateRangeComponent stateDate={stateDate} setState={setState} />
+                    <DateRangeComponent stateDate={stateDate} setState={setState} position={`right-0`}/>
                 </div>
             )}
         </div>

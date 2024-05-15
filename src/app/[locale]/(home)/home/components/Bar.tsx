@@ -18,7 +18,7 @@ const Bar: React.FC<GaugeProps> = ({ value }) => {
             <div className="mt-4 flex justify-between items-center">
                 <p className="font-semibold text-base">{t("dashboard:home:totalSales")}</p>
                 <div className="">
-                    <DateRangeComponent stateDate={stateDate} setState={setStateDate} />
+                    <DateRangeComponent stateDate={stateDate} setState={setStateDate} position='right-0'/>
                 </div>
             </div>
             <div className="md:h-[32vh] h-[200px] flex justify-center items-center w-full z-10">

@@ -60,6 +60,8 @@ const CalendarView = () => {
         }
     ]
 
+    console.log("dataDayEvents", dataDayEvents)
+
     return (
         <div className=''>
             <div className='w-full flex md:flex-row flex-col gap-4 md:justify-between items-center'>
@@ -113,8 +115,8 @@ const CalendarView = () => {
                     </div>
                 )}
             </div>
-            <div className={`flex gap-4 md:flex-row flex-col ${Roles.promotor === session?.user?.type_rol ? "md:h-[76vh]" : "md:h-[80vh]"}`}>
-                <div className={`w-full md:w-4/5 h-[60vh] ${Roles.promotor === session?.user?.type_rol ? "md:h-[76vh]" : "md:h-[80vh]"}`}>
+            <div className={`w-full flex gap-4 lg:flex-row flex-col ${Roles.promotor === session?.user?.type_rol ? "md:h-[76vh]" : "md:h-[80vh]"}`}>
+                <div className={` ${dataDayEvents.data ? " w-full xl:w-4/5 lg:w-3/5" : "w-full"} h-[60vh] ${Roles.promotor === session?.user?.type_rol ? "md:h-[76vh]" : "md:h-[80vh]"}`}>
                     <CalendarComponent
                         defaultDate={defaultDate}
                         localizer={localizer}
@@ -134,9 +136,11 @@ const CalendarView = () => {
                         optionsView={optionsView}
                     />
                 </div>
-                <div className='w-full md:w-1/5'>
-                    <CardToday data={dataDayEvents} date={date} />
-                </div>
+                {dataDayEvents.data && (
+                    <div className={`${dataDayEvents.data ? "w-full xl:w-1/5 lg:w-2/5" : "w-full"}`}>
+                        <CardToday data={dataDayEvents} date={date} />
+                    </div>
+                )}
             </div>
         </div>
     )

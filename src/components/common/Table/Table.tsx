@@ -12,7 +12,7 @@ const Table: React.FC<TableProps> = ({ name, body, pagActual, setPagActual, getD
     
     return (
         <div className=''>
-            <div className={`${targetRef && "-mx-8 px-8 pt-8"}`} ref={targetRef}>
+            <div className={`${targetRef && "pt-8"}`} ref={targetRef}>
                 <div className='overflow-x-auto'>
                     <table className='min-w-full divide-y table-auto p-20'>
                         <thead className='bg-gray-1 border border-gray-4'>

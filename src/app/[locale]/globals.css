@@ -211,6 +211,10 @@ body {
     width: 50px !important;
     min-width: 50px !important;
   }
+
+  .rbc-event-content{
+    height: 5px !important;
+  }
   /* .rbc-row-bg .rbc-day-bg{
     display: flex !important;
     position: absolute !important;

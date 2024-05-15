@@ -38,7 +38,7 @@ const InputDateRange: React.FC<
 
   const CustomInput: React.FC<CustomInputProps> = forwardRef(({ value, onClick }, ref)  => (
     <div className={clsx(StylesInput)}>
-      <p className="text-sem">{value}</p>
+      <p className="text-sm">{value}</p>
       <div onClick={onClick} className="cursor-pointer">
         <AllIcons name="CalendarIcon" className={`h-5 w-5 text-gray-1`}/>
       </div>
