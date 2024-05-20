@@ -213,7 +213,7 @@ body {
   }
 
   .rbc-event-content{
-    height: 5px !important;
+    /* height: 5px !important; */
   }
   /* .rbc-row-bg .rbc-day-bg{
     display: flex !important;

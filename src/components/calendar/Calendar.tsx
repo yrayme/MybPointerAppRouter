@@ -128,7 +128,7 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
     const CustomEvent = ({ event }: { event: AllCalendarEvents }) => {
         const mobile = [Views.WEEK as string, Views.MONTH as string]
         return (
-            <div className={`${selectView === Views.MONTH ? "bg-gray-3 md:bg-white md:border md:border-gray-1 md:p-1 md:rounded-md" : selectView === Views.WEEK ? "" : "bg-white border border-gray-1 p-1 rounded-md"}`}>
+            <div className={`${mobile.includes(selectView)? "bg-gray-3 md:bg-white md:border md:border-gray-1 md:p-1 md:rounded-md" : "bg-white border border-gray-1 p-1 rounded-md"} md:drop-shadow-md`}>
                 <div className={`${mobile.includes(selectView) && "hidden md:flex "} flex gap-1 border-l-2 ${event?.type?.name === eventsType.appointment ? "border-blue-500" : event?.type?.name === eventsType.pos ? "border-red-500" : "border-primary"}`}>
                     <div className="ml-1 flex gap-1 items-center">
                         {event.request_event_status?.name === statusRequestEvent.approved
